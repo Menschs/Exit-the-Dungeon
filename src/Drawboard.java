@@ -30,7 +30,7 @@ public class Drawboard extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        entities.forEach(entity -> entity.paint((Graphics2D) g));
         objects.forEach(object -> object.paint((Graphics2D) g));
+        entities.forEach(entity -> entity.paint((Graphics2D) g));
     }
 }
