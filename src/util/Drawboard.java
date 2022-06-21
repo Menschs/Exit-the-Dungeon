@@ -1,3 +1,5 @@
+package util;
+
 import entities.Entity;
 import entities.Object;
 
@@ -31,6 +33,8 @@ public class Drawboard extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         objects.forEach(object -> object.paint((Graphics2D) g));
-        entities.forEach(entity -> entity.paint((Graphics2D) g));
+        entities.forEach(entity -> {
+            entity.paint((Graphics2D) g);
+        });
     }
 }
