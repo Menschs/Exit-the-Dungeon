@@ -34,11 +34,15 @@ public class RoundHitbox implements Collider{
 
     @Override
     public boolean isColliding(Collider c) {
+        if(c == this) return false;
+        double[] c1 = getCenter();
         if(c instanceof RoundHitbox hb) {
-            Vector v = new Vector(getX(), getY(), hb.getX(), hb.getY());
-            return (v.lengthSquared() <= Math.pow(size, 2) + Math.pow(size, 2));
+            double[] c2 = hb.getCenter();
+            Vector v = new Vector(c1[0], c1[1], c2[0], c2[1]);
+            System.out.println(v.lengthSquared() + "  " + (Math.pow(getRadius(), 2) + Math.pow(hb.getRadius(), 2)));
+            return (v.lengthSquared() <= Math.pow(getRadius(), 2) + Math.pow(hb.getRadius(), 2));
         } else {
-            return new Vector(x, y, this.x, this.y).lengthSquared() < Math.pow(getRadius(), 2);
+            return new Vector(x, y, this.x, this.y).lengthSquared() <= Math.pow(getRadius(), 2);
         }
     }
 
@@ -48,7 +52,7 @@ public class RoundHitbox implements Collider{
     }
 
     public double[] getCenter() {
-        return new double[] {x, y};
+        return new double[] {x + size/2, y + size/2};
     }
 
     public void setOnHit(HitboxAction onHit) {
