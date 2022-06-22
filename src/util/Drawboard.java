@@ -1,5 +1,6 @@
 package util;
 
+import entities.Collider;
 import entities.Entity;
 import entities.Object;
 

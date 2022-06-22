@@ -6,18 +6,21 @@ import java.util.List;
 public interface Updating {
 
     List<Updating> update = new ArrayList<>();
+    List<Updating> remove = new ArrayList<>();
 
     static void update() {
-        update.forEach(updating -> {
-            if(!updating.isRemoved()) updating.tick();
-        });
+        update.forEach(Updating::tick);
+        update.removeAll(remove);
+        remove.clear();
     }
 
     default void create() {
         update.add(this);
     }
 
-    boolean isRemoved();
+    default void remove() {
+        remove.add(this);
+    }
 
     void tick();
 }

@@ -6,6 +6,7 @@ import util.Drawboard;
 import util.KeyyyListener;
 
 import javax.swing.*;
+import java.util.ConcurrentModificationException;
 
 public class ExitTheDungeon {
 
@@ -26,15 +27,19 @@ public class ExitTheDungeon {
         t = new Thread(new Runnable() {
             @Override
             public void run() {
-                if(!tick) return;
-                Updating.update();
-                board.repaint();
                 try {
-                    Thread.sleep(1000/60);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    if(!tick) return;
+                    Updating.update();
+                    board.repaint();
+                    try {
+                        Thread.sleep(1000/60);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    run();
+                } catch (ConcurrentModificationException | StackOverflowError cx) {
+                    run();
                 }
-                run();
             }
         });
         t.start();

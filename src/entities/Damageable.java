@@ -2,8 +2,8 @@ package entities;
 
 public interface Damageable {
 
-    void damage(float damage);
-    void heal(float heal);
+    void damage(double damage);
+    void heal(double heal);
 
     void kill();
 }

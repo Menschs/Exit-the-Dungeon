@@ -11,19 +11,22 @@ public class Player implements Entity, Damageable {
 
     private Color c = Color.BLACK;
 
-    private float x = 0;
-    private float y = 0;
-    private float rotation = 0;
+    private double x = 0;
+    private double y = 0;
+    private double rotation = 0;
 
     private int max_health;
     private int health;
 
+    private final Hitbox hitbox;
+
     private Vector velocity = new Vector(0, 0);
 
-    public Player(float x, float y, float rotation) {
+    public Player(double x, double y, double rotation) {
         this.x = x;
         this.y = y;
         this.rotation = rotation;
+        hitbox = new Hitbox(x, y, 60, 70, this, null);
         create();
     }
 
@@ -34,13 +37,15 @@ public class Player implements Entity, Damageable {
     }
 
     @Override
-    public void move(float x, float y) {
+    public void move(double x, double y) {
         this.x += x;
         this.y += y;
+        hitbox.move((int) this.x - 30,(int) this.y - 35);
+        hitbox.rotate((int) this.x, (int) this.y, rotation);
     }
 
     @Override
-    public void rotate(float rotation) {
+    public void rotate(double rotation) {
         this.rotation += rotation * Math.PI/180;
     }
 
@@ -61,7 +66,7 @@ public class Player implements Entity, Damageable {
 
     @Override
     public Vector getDirection() {
-        float[] rot = rotate(0, -1, rotation);
+        double[] rot = rotate(0, -1, rotation);
         return new Vector(rot[0], rot[1]);
     }
 
@@ -70,28 +75,29 @@ public class Player implements Entity, Damageable {
         g.setColor(c);
         int[][] model = rotate(modelX, modelY, rotation);
         g.drawPolygon(model[0], model[1], 3);
+        hitbox.paint(g);
     }
 
-    public float[] rotate(float x, float y, float theta) {
+    public double[] rotate(double x, double y, double theta) {
         var sinTheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
         return rotate(x, y, sinTheta, cosTheta);
     }
 
-    public float[] rotate(float x, float y, double sinTheta, double cosTheta) {
-        float nx = (float) (x * cosTheta - y * sinTheta);
-        float ny = (float) (y * cosTheta + x * sinTheta);
-        return new float[] {nx, ny};
+    public double[] rotate(double x, double y, double sinTheta, double cosTheta) {
+        double nx = (double) (x * cosTheta - y * sinTheta);
+        double ny = (double) (y * cosTheta + x * sinTheta);
+        return new double[] {nx, ny};
     }
 
-    public int[][] rotate(int[] toRX, int[] toRY, float theta) {
+    public int[][] rotate(int[] toRX, int[] toRY, double theta) {
         int[][] result = new int[2][toRX.length];
         var sinTheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
         for (int i = 0; i < toRX.length; i++) {
             var x = toRX[i] - 30;
             var y = toRY[i] - 35;
-            float[] rot = rotate(x, y, sinTheta, cosTheta);
+            double[] rot = rotate(x, y, sinTheta, cosTheta);
             result[0][i] = (int) (rot[0] + this.x);
             result[1][i] = (int) (rot[1] + this.y);
         }
@@ -99,27 +105,32 @@ public class Player implements Entity, Damageable {
     }
 
     @Override
-    public float getX() {
+    public double getX() {
         return x;
     }
 
     @Override
-    public float getY() {
+    public double getY() {
         return y;
     }
 
-    public float getRotation() {
+    @Override
+    public Hitbox getHitbox() {
+        return hitbox;
+    }
+
+    public double getRotation() {
         return rotation;
     }
 
     @Override
-    public void damage(float damage) {
+    public void damage(double damage) {
         health -= damage;
         if(health <= 0) kill();
     }
 
     @Override
-    public void heal(float heal) {
+    public void heal(double heal) {
         health += heal;
         if(health > 0) c = Color.black;
     }
@@ -127,10 +138,5 @@ public class Player implements Entity, Damageable {
     @Override
     public void kill() {
         c = Color.red;
-    }
-
-    @Override
-    public boolean isRemoved() {
-        return false;
     }
 }

@@ -39,16 +39,10 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
     }
 
     @Override
-    public boolean isRemoved() {
-        return false;
-    }
-
-    @Override
     public void tick() {
         Player p = ExitTheDungeon.getPlayer();
         Vector v = new Vector(0, 0);
         pressed.forEach(character -> {
-            System.out.println(character);
             switch (character) {
                 case "q" -> p.rotate(5);
                 case "e" -> p.rotate(-5);
@@ -69,7 +63,7 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
     @Override
     public void mousePressed(MouseEvent e) {
         Player p = ExitTheDungeon.getPlayer();
-        Ball b = new Ball(p.getX(), p.getY(), p.getDirection().multiply(5));
+        Ball b = new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(4));
         ExitTheDungeon.getBoard().addEntity(b);
     }
 

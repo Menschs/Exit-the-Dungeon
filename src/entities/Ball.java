@@ -7,33 +7,50 @@ import java.awt.*;
 
 public class Ball implements Entity{
 
-    private float x = 0;
-    private float y = 0;
+    public static final int SIZE = 15;
+    private static final double DAMAGE = 5;
+
+    private double x = 0;
+    private double y = 0;
 
     private Vector velocity;
     private boolean removed = false;
 
-    public Ball(float x, float y, Vector velocity) {
+    private final RoundHitbox hitbox;
+    private final Entity shooter;
+
+    public Ball(double x, double y, Entity shooter, Vector velocity) {
         this.x = x;
         this.y = y;
         this.velocity = velocity;
+        this.shooter = shooter;
+        hitbox = new RoundHitbox(x, y, SIZE, this, new HitboxAction() {
+            @Override
+            public void hit(Collider c) {
+                if(c.getEntity() != null && !(c.getEntity() instanceof Ball) && shooter != c.getEntity()) {
+                    c.getEntity().damage(DAMAGE);
+                    System.out.println("damaging");
+                    kill();
+                }
+            }
+        });
         create();
     }
 
     @Override
     public void move(Vector v) {
-        x += v.getX();
-        y += v.getY();
+        move(v.getX(), v.getY());
     }
 
     @Override
-    public void move(float x, float y) {
+    public void move(double x, double y) {
         this.x += x;
         this.y += y;
+        hitbox.move(this.x, this.y);
     }
 
     @Override
-    public void rotate(float rotation) {
+    public void rotate(double rotation) {
 
     }
 
@@ -48,13 +65,18 @@ public class Ball implements Entity{
     }
 
     @Override
-    public float getX() {
+    public double getX() {
         return x;
     }
 
     @Override
-    public float getY() {
+    public double getY() {
         return y;
+    }
+
+    @Override
+    public Hitbox getHitbox() {
+        return null;
     }
 
     @Override
@@ -70,16 +92,17 @@ public class Ball implements Entity{
     @Override
     public void paint(Graphics2D g) {
         g.setColor(Color.BLUE);
-        g.fillOval((int) x, (int) y, 15, 15);
+        g.fillOval((int) x, (int) y, SIZE, SIZE);
+        hitbox.paint(g);
     }
 
     @Override
-    public void damage(float damage) {
+    public void damage(double damage) {
 
     }
 
     @Override
-    public void heal(float heal) {
+    public void heal(double heal) {
 
     }
 
@@ -88,10 +111,7 @@ public class Ball implements Entity{
         System.out.println("killing...");
         removed = true;
         ExitTheDungeon.getBoard().removeEntity(this);
-    }
-
-    @Override
-    public boolean isRemoved() {
-        return removed;
+        hitbox.remove();
+        remove();
     }
 }

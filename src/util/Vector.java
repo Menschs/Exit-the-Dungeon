@@ -2,14 +2,19 @@ package util;
 
 public class Vector {
 
-    private float x, y;
+    private double x, y;
 
-    public Vector(float x, float y) {
+    public Vector(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public void add(float x, float y) {
+    public Vector(double x, double y, double x2, double y2) {
+        this.x = x2 - x;
+        this.y = y2 - y;
+    }
+
+    public void add(double x, double y) {
         this.x += x;
         this.y += y;
     }
@@ -19,7 +24,7 @@ public class Vector {
         y += v.getY();
     }
 
-    public void subtract(float x, float y) {
+    public void subtract(double x, double y) {
         this.x -= x;
         this.y -= y;
     }
@@ -29,26 +34,34 @@ public class Vector {
         y -= v.getY();
     }
 
-    public Vector multiply(float multi) {
+    public Vector multiply(double multi) {
         x *= multi;
         y *= multi;
         return this;
     }
 
-    public void setX(float x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public void setY(float y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public float getX() {
+    public double getX() {
         return x;
     }
 
-    public float getY() {
+    public double getY() {
         return y;
+    }
+
+    public double length() {
+        return Math.sqrt(lengthSquared());
+    }
+
+    public double lengthSquared() {
+        return Math.pow(x, 2) + Math.pow(y, 2);
     }
 
     @Override

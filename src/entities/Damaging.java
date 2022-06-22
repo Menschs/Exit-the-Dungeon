@@ -2,6 +2,6 @@ package entities;
 
 public interface Damaging {
 
-    void setDamage(float damage);
-    void getDamage(float damage);
+    void setDamage(double damage);
+    void getDamage(double damage);
 }
