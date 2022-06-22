@@ -29,17 +29,16 @@ public class RoundHitbox implements Collider{
     @Override
     public void paint(Graphics2D g) {
         g.setColor(Color.red);
-        g.drawOval((int) (x), (int) (y), (int) size, (int) size);
+        g.drawOval((int) x, (int) y, (int) size, (int) size);
     }
 
     @Override
     public boolean isColliding(Collider c) {
-        if(c instanceof RoundHitbox) {
-            RoundHitbox hb = (RoundHitbox) c;
+        if(c instanceof RoundHitbox hb) {
             Vector v = new Vector(getX(), getY(), hb.getX(), hb.getY());
             return (v.lengthSquared() <= Math.pow(size, 2) + Math.pow(size, 2));
         } else {
-            return new Vector(x, y, this.x, this.y).lengthSquared() <= Math.pow(size/2, 2);
+            return new Vector(x, y, this.x, this.y).lengthSquared() < Math.pow(getRadius(), 2);
         }
     }
 

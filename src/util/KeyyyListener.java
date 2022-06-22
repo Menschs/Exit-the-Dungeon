@@ -42,6 +42,7 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
     public void tick() {
         Player p = ExitTheDungeon.getPlayer();
         Vector v = new Vector(0, 0);
+        List<String> remove = new ArrayList<>();
         pressed.forEach(character -> {
             switch (character) {
                 case "q" -> p.rotate(5);
@@ -50,9 +51,13 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
                 case "s" -> v.add(0, 5);
                 case "a" -> v.subtract(5, 0);
                 case "d" -> v.add(5, 0);
-                case "b" -> ExitTheDungeon.getBoard().addObject(new Bomb((int) p.getX(), (int) p.getY()));
+                case "b" -> {
+                    ExitTheDungeon.getBoard().addObject(new Bomb((int) p.getX(), (int) p.getY()));
+                    remove.add("b");
+                }
             }
         });
+        pressed.removeAll(remove);
         p.setVelocity(v);
     }
 
@@ -63,7 +68,7 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
     @Override
     public void mousePressed(MouseEvent e) {
         Player p = ExitTheDungeon.getPlayer();
-        Ball b = new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(4));
+        Ball b = new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(0.5));
         ExitTheDungeon.getBoard().addEntity(b);
     }
 
