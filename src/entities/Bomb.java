@@ -27,6 +27,16 @@ public class Bomb implements Object{
     }
 
     @Override
+    public double getX() {
+        return x;
+    }
+
+    @Override
+    public double getY() {
+        return y;
+    }
+
+    @Override
     public void paint(Graphics2D g) {
         g.setColor(Color.BLACK);
         g.fillOval(x, y, SIZE, SIZE);

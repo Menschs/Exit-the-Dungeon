@@ -46,13 +46,19 @@ public class RoundHitbox implements Collider{
     public boolean isColliding(Collider c) {
         if(c == this || (c.getObject() instanceof Object && this.getObject() instanceof Object)) return false;
         double[] c1 = getCenter();
+        double maxdistance = Math.pow(getRadius(), 2);
         if(c instanceof RoundHitbox hb) {
             double[] c2 = hb.getCenter();
             Vector v = new Vector(c1[0], c1[1], c2[0], c2[1]);
-            System.out.println(v.lengthSquared() + "  " + (Math.pow(getRadius(), 2) + Math.pow(hb.getRadius(), 2)));
-            return (v.lengthSquared() <= Math.pow(getRadius(), 2) + Math.pow(hb.getRadius(), 2));
+            return (v.lengthSquared() <= maxdistance + Math.pow(hb.getRadius(), 2));
         } else {
-            return new Vector(x, y, this.x, this.y).lengthSquared() <= Math.pow(getRadius(), 2);
+            List<Point> p = c.getPoints();
+            if(p == null) return false;
+
+            for (Point point : c.getPoints()) {
+                if(new Vector(point.getX(), point.getY(), c1[0], c1[1]).lengthSquared() <= maxdistance) return true;
+            }
+            return false;
         }
     }
 

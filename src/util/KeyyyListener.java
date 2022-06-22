@@ -52,7 +52,8 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
                 case "a" -> v.subtract(5, 0);
                 case "d" -> v.add(5, 0);
                 case "b" -> {
-                    ExitTheDungeon.getBoard().addObject(new Bomb((int) p.getX(), (int) p.getY()));
+                    Vector v1 = p.getDirection().add(100, 100);
+                    ExitTheDungeon.getBoard().addObject(new Bomb((int) (p.getX() + v1.getX()), (int) (p.getY() + v1.getY())));
                     remove.add("b");
                 }
             }

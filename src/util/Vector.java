@@ -14,9 +14,10 @@ public class Vector {
         this.y = y2 - y;
     }
 
-    public void add(double x, double y) {
+    public Vector add(double x, double y) {
         this.x += x;
         this.y += y;
+        return this;
     }
 
     public void add(Vector v) {
@@ -50,6 +51,13 @@ public class Vector {
 
     public double getX() {
         return x;
+    }
+
+    public void rotate(double theta) {
+        var sinTheta = Math.sin(theta);
+        var cosTheta = Math.cos(theta);
+        x = (x * cosTheta - y * sinTheta);
+        y = (y * cosTheta + x * sinTheta);
     }
 
     public double getY() {

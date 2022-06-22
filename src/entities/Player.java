@@ -20,20 +20,28 @@ public class Player implements Entity, Damageable {
 
     private final Hitbox hitbox;
 
+    private boolean doNotMove = false;
+
     private Vector velocity = new Vector(0, 0);
 
     public Player(double x, double y, double rotation) {
         this.x = x;
         this.y = y;
         this.rotation = rotation;
-        hitbox = new Hitbox(x, y, 60, 70, this, null);
+        hitbox = new Hitbox(x, y, 60, 70, this, new HitboxAction() {
+            @Override
+            public void hit(Collider c) {
+                if(c.getObject() != null) {
+                    velocity = new Vector(0, 0);
+                }
+            }
+        });
         create();
     }
 
     @Override
     public void move(Vector v) {
-        x += v.getX();
-        y += v.getY();
+        move(v.getX(), v.getY());
     }
 
     @Override
