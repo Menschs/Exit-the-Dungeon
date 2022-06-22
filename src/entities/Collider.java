@@ -62,6 +62,7 @@ public interface Collider extends Updating {
     }
 
     Entity getEntity();
+    Object getObject();
 
     HitboxAction getHitboxAction();
 }

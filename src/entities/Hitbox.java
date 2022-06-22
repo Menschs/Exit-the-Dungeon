@@ -11,7 +11,8 @@ public class Hitbox implements Collider {
     private final List<Point> points = new ArrayList<>();
     private double width;
     private double height;
-    private final Entity parent;
+    private Entity parentEntity;
+    private Object parentObject;
 
     private HitboxAction onHit;
 
@@ -19,7 +20,23 @@ public class Hitbox implements Collider {
         this.width = width;
         this.height = height;
         this.onHit = onHit;
-        this.parent = parent;
+        this.parentEntity = parent;
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                points.add(new Point((int) (x + i), (int) (y + j)));
+                if(i != 0 && i != (int) width -1) {
+                    j += height -2;
+                }
+            }
+        }
+        createCollider();
+    }
+
+    public Hitbox(double x, double y, double width, double height, Object parent, HitboxAction onHit) {
+        this.width = width;
+        this.height = height;
+        this.onHit = onHit;
+        this.parentObject = parent;
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 points.add(new Point((int) (x + i), (int) (y + j)));
@@ -60,7 +77,12 @@ public class Hitbox implements Collider {
 
     @Override
     public Entity getEntity() {
-        return parent;
+        return parentEntity;
+    }
+
+    @Override
+    public Object getObject() {
+        return parentObject;
     }
 
     @Override

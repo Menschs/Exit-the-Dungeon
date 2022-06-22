@@ -16,7 +16,7 @@ public class Bomb implements Object{
     }
 
     public void hitbox() {
-        hitbox = new RoundHitbox(x, y, SIZE, null, new HitboxAction() {
+        hitbox = new RoundHitbox(x, y, SIZE, this, new HitboxAction() {
             @Override
             public void hit(Collider c) {
                 if(c.getEntity() instanceof Ball) {

@@ -9,7 +9,8 @@ public class RoundHitbox implements Collider{
 
     private double x, y;
     private final double size;
-    private final Entity parent;
+    private Entity parentEntity;
+    private Object parentObject;
     private HitboxAction onHit;
 
     public RoundHitbox(double x, double y, double size, Entity parent, HitboxAction onHit) {
@@ -17,7 +18,16 @@ public class RoundHitbox implements Collider{
         this.y = y;
         this.size = size;
         this.onHit = onHit;
-        this.parent = parent;
+        this.parentEntity = parent;
+        createCollider();
+    }
+
+    public RoundHitbox(double x, double y, double size, Object parent, HitboxAction onHit) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.onHit = onHit;
+        this.parentObject = parent;
         createCollider();
     }
 
@@ -34,7 +44,7 @@ public class RoundHitbox implements Collider{
 
     @Override
     public boolean isColliding(Collider c) {
-        if(c == this) return false;
+        if(c == this || (c.getObject() instanceof Object && this.getObject() instanceof Object)) return false;
         double[] c1 = getCenter();
         if(c instanceof RoundHitbox hb) {
             double[] c2 = hb.getCenter();
@@ -78,6 +88,11 @@ public class RoundHitbox implements Collider{
 
     @Override
     public Entity getEntity() {
-        return parent;
+        return parentEntity;
+    }
+
+    @Override
+    public Object getObject() {
+        return parentObject;
     }
 }

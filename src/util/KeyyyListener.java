@@ -45,8 +45,8 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
         List<String> remove = new ArrayList<>();
         pressed.forEach(character -> {
             switch (character) {
-                case "q" -> p.rotate(5);
-                case "e" -> p.rotate(-5);
+                case "q" -> p.rotate(2.5);
+                case "e" -> p.rotate(-2.5);
                 case "w" -> v.subtract(0, 5);
                 case "s" -> v.add(0, 5);
                 case "a" -> v.subtract(5, 0);
@@ -68,7 +68,7 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
     @Override
     public void mousePressed(MouseEvent e) {
         Player p = ExitTheDungeon.getPlayer();
-        Ball b = new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(0.5));
+        Ball b = new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(3));
         ExitTheDungeon.getBoard().addEntity(b);
     }
 
