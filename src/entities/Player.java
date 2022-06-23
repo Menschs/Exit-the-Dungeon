@@ -20,8 +20,6 @@ public class Player implements Entity, Damageable {
 
     private final Hitbox hitbox;
 
-    private boolean doNotMove = false;
-
     private Vector velocity = new Vector(0, 0);
 
     public Player(double x, double y, double rotation) {
