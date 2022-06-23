@@ -47,11 +47,11 @@ public class ExitTheDungeon {
 
     public static void lorenzWindow() {
 
-        frame = new JFrame("Pollycloud");
+        frame = new JFrame("Exit the Dungeon");
         frame.setVisible(true);
         frame.setSize(1000,1000);
-        frame.setLocation(2300, 30);
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        frame.setLocation(100, 30);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
         board.addEntity(p);
