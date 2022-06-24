@@ -4,6 +4,7 @@ import main.ExitTheDungeon;
 import objects.Point;
 import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
+import util.Colors;
 import util.Vector;
 
 import java.awt.*;
@@ -15,8 +16,10 @@ public class Dummy implements Entity {
     private static final int SIZE = 20;
 
     private double health = 1000;
-    private Color c = Color.YELLOW;
+    private Color c = Colors.gold.getColor();
     private final Hitbox hitbox;
+
+    private int damagedFrames = 0;
 
     private Vector velocity = new Vector(0, 0);
 
@@ -29,6 +32,7 @@ public class Dummy implements Entity {
     @Override
     public void damage(double damage) {
         health -= damage;
+        damagedFrames = 5;
         if(health <= 0) kill();
     }
 
@@ -101,7 +105,8 @@ public class Dummy implements Entity {
 
     @Override
     public void paint(Graphics2D g) {
-        g.setColor(c);
+        g.setColor((damagedFrames > 0) ? new Color(255, c.getGreen()/2, c.getBlue()/2) : c);
+        damagedFrames--;
         g.fillOval((int) x, (int) y, SIZE, SIZE);
         hitbox.paint(g);
     }

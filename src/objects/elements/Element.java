@@ -14,4 +14,8 @@ public interface Element {
     default void remove() {
         ExitTheDungeon.getBoard().removeElement(this);
     }
+
+    default boolean isBarrier() {
+        return true;
+    }
 }

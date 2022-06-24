@@ -54,7 +54,7 @@ public class Player implements Entity, Damageable {
         hitbox.move((int) this.x - 30,(int) this.y - 30);
         if(x == 0 && y == 0) return;
         Collider connect = hitbox.wouldCollide(new Point(this.x + x - 30, this.y + y - 30));
-        if(connect == null || connect.getObject() == null) {
+        if(connect == null || connect.getObject() == null || !connect.getObject().isBarrier()) {
             this.x += x;
             this.y += y;
             moved = true;
@@ -206,6 +206,7 @@ public class Player implements Entity, Damageable {
     @Override
     public void damage(double damage) {
         health -= damage;
+        System.out.println(damage);
         if(health <= 0) kill();
     }
 
