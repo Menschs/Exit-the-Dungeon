@@ -1,11 +1,15 @@
 package main;
 
+import de.jcm.discordgamesdk.Core;
+import de.jcm.discordgamesdk.CreateParams;
+import discord.DiscordSDK;
 import objects.entities.Player;
 import objects.Updating;
 import util.Drawboard;
 import util.KeyyyListener;
 
 import javax.swing.*;
+import java.io.File;
 import java.util.ConcurrentModificationException;
 
 public class ExitTheDungeon {
@@ -18,7 +22,10 @@ public class ExitTheDungeon {
     private static boolean tick = true;
     private static Thread t;
 
+    private static DiscordSDK discord;
+
     public static void main(String[] args) {
+        discord = new DiscordSDK(989883971598966803L);
         lorenzWindow();
         tick();
     }
@@ -73,5 +80,9 @@ public class ExitTheDungeon {
 
     public static JFrame getFrame() {
         return frame;
+    }
+
+    public static DiscordSDK getDiscord() {
+        return discord;
     }
 }

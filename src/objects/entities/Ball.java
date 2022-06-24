@@ -95,7 +95,7 @@ public class Ball implements Entity{
     public void paint(Graphics2D g) {
         g.setColor(Color.BLUE);
         g.fillOval((int) x, (int) y, SIZE, SIZE);
-        hitbox.paint(g);
+        //hitbox.paint(g);
     }
 
     @Override

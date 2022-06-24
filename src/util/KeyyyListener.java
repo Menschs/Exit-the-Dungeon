@@ -35,6 +35,23 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
 
     @Override
     public void keyReleased(KeyEvent e) {
+        Player p = ExitTheDungeon.getPlayer();
+        switch (e.getKeyChar() + "") {
+            case "t" -> {
+                Wall w = new Wall((int) (p.getX() + 100), (int) (p.getY() + 100), 100, 20);
+                ExitTheDungeon.getBoard().addObject(w);
+                return;
+            }
+            case "g" -> {
+                ExitTheDungeon.getBoard().addEntity(new Dummy(p.getX(), p.getY()));
+                return;
+            }
+            case "b" -> {
+                Vector v1 = p.getDirection().add(100, 100);
+                ExitTheDungeon.getBoard().addObject(new Bomb((int) (p.getX() + v1.getX()), (int) (p.getY() + v1.getY())));
+                return;
+            }
+        }
         String character = (e.getKeyChar() + "").toLowerCase();
         pressed.remove(character);
     }
@@ -51,20 +68,6 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
                 case "a" -> p.rotate(-2.5);
                 case "w" -> multiply[0] = 5;
                 case "s" -> multiply[0] = -5;
-                case "t" -> {
-                    Wall w = new Wall((int) (p.getX() + 100), (int) (p.getY() + 100), 100, 20);
-                    ExitTheDungeon.getBoard().addObject(w);
-                    remove.add("t");
-                }
-                case "g" -> {
-                    ExitTheDungeon.getBoard().addEntity(new Dummy(p.getX(), p.getY()));
-                    remove.add("g");
-                }
-                case "b" -> {
-                    Vector v1 = p.getDirection().add(100, 100);
-                    ExitTheDungeon.getBoard().addObject(new Bomb((int) (p.getX() + v1.getX()), (int) (p.getY() + v1.getY())));
-                    remove.add("b");
-                }
             }
         });
         pressed.removeAll(remove);
@@ -84,7 +87,7 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
         System.out.println(e.getButton());
         switch (e.getButton()) {
             case 1 -> {
-                Ball b = new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(3));
+                Ball b = new Ball(p.getX() - Ball.SIZE/2, p.getY() - Ball.SIZE/2, p, p.getDirection().multiply(3));
                 ExitTheDungeon.getBoard().addEntity(b);
             }
             case 3 -> {

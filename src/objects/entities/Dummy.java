@@ -108,6 +108,6 @@ public class Dummy implements Entity {
         g.setColor((damagedFrames > 0) ? new Color(255, c.getGreen()/2, c.getBlue()/2) : c);
         damagedFrames--;
         g.fillOval((int) x, (int) y, SIZE, SIZE);
-        hitbox.paint(g);
+        //hitbox.paint(g);
     }
 }

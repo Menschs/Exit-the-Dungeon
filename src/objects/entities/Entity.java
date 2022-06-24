@@ -30,9 +30,6 @@ public interface Entity extends Updating, Damageable {
         for (int i = 1; i < 11; i++) {
             move(XperI, YperI);
         }
-        if(!(this instanceof Player) && (getX() <= -50 || getY() <= -50 || getX() >= ExitTheDungeon.frame.getWidth() + 50 || getY() >= ExitTheDungeon.frame.getHeight() + 50)) {
-            kill();
-        }
     }
 
     Vector getVelocity();

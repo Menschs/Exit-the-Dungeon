@@ -17,6 +17,8 @@ public class Bomb implements Element, Damaging {
 
     private Hitbox hitbox;
 
+    private boolean damaged = false;
+
     public Bomb(int x, int y) {
         this.x = x - SIZE/2;
         this.y = y - SIZE/2;
@@ -27,8 +29,10 @@ public class Bomb implements Element, Damaging {
         hitbox = new Hitbox(x, y, SIZE, SIZE, this, new HitboxAction() {
             @Override
             public void hit(Collider c) {
+                if(damaged) return;
                 if(c.getEntity() != null && !(c.getEntity() instanceof Ball)) {
                     c.getEntity().damage(DAMAGE);
+                    damaged = true;
                     hitbox.remove();
                     remove();
                 }
@@ -50,7 +54,7 @@ public class Bomb implements Element, Damaging {
     public void paint(Graphics2D g) {
         g.setColor(Color.BLACK);
         g.fillOval(x, y, SIZE, SIZE);
-        hitbox.paint(g);
+        //hitbox.paint(g);
     }
 
     @Override

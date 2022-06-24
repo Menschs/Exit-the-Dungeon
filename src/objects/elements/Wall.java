@@ -33,6 +33,6 @@ public class Wall implements Element {
     public void paint(Graphics2D g) {
         g.setColor(Color.DARK_GRAY);
         g.fillRect(x, y, width, height);
-        hitbox.paint(g);
+        //hitbox.paint(g);
     }
 }

@@ -36,11 +36,9 @@ public class Player implements Entity, Damageable {
         this.x = x;
         this.y = y;
         this.rotation = rotation;
-        hitbox = new Hitbox(0, 0, 60, 60, this, new HitboxAction() {
+        hitbox = new Hitbox(0, 0, 50, 50, this, new HitboxAction() {
             @Override
             public void hit(Collider c) {
-                if(c.getObject() != null)
-                    damage(1);
             }
         });
         rotate(0);
@@ -51,7 +49,7 @@ public class Player implements Entity, Damageable {
 
     @Override
     public void move(double x, double y) {
-        hitbox.move((int) this.x - 30,(int) this.y - 30);
+        hitbox.move((int) this.x - 25,(int) this.y - 25);
         if(x == 0 && y == 0) return;
         Collider connect = hitbox.wouldCollide(new Point(this.x + x - 30, this.y + y - 30));
         if(connect == null || connect.getObject() == null || !connect.getObject().isBarrier()) {
@@ -141,7 +139,7 @@ public class Player implements Entity, Damageable {
         g.setColor(Color.red);
         double percentage = (health+0.0)/(max_health+0.0);
         g.fillRoundRect(x, y, (int) (250 * percentage), 10, 5, 5);
-        hitbox.paint(g);
+        //hitbox.paint(g);
     }
 
     public double[] rotate(double x, double y, double theta) {
