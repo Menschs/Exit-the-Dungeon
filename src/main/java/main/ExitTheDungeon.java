@@ -55,7 +55,8 @@ public class ExitTheDungeon {
                     }
                 }
             }
-        }.start();}
+        }.start();
+    }
 
     public static void update(String first, String second) {
         DiscordRichPresence.Builder b = new DiscordRichPresence.Builder(second);
