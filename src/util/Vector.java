@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Objects;
+
 public class Vector {
 
     private double x, y;
@@ -41,6 +43,10 @@ public class Vector {
         return this;
     }
 
+    public double crossProduct(Vector v) {
+        return x * v.getY() - y * v.getX();
+    }
+
     public void setX(double x) {
         this.x = x;
     }
@@ -53,11 +59,25 @@ public class Vector {
         return x;
     }
 
-    public void rotate(double theta) {
+    public double dotProduct(Vector v) {
+        return v.getX() * x + v.getY() * y;
+    }
+
+    public double angle(Vector v) {
+        double sin = Math.asin(crossProduct(v)/(length() * v.length()));
+        if(dotProduct(v) < 0) {
+            sin *= -1;
+            sin += Math.PI;
+        }
+        return sin;
+    }
+
+    public Vector rotate(double theta) {
         var sinTheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
         x = (x * cosTheta - y * sinTheta);
         y = (y * cosTheta + x * sinTheta);
+        return this;
     }
 
     public double getY() {
@@ -72,11 +92,31 @@ public class Vector {
         return Math.pow(x, 2) + Math.pow(y, 2);
     }
 
+    public Vector normalize() {
+        double length = length();
+        if(length == 0) return this;
+        multiply(1/length);
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Vector{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vector vector = (Vector) o;
+        return Double.compare(vector.x, x) == 0 && Double.compare(vector.y, y) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

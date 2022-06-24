@@ -1,20 +1,19 @@
 package util;
 
-import entities.Ball;
-import entities.Bomb;
-import entities.Player;
-import entities.Updating;
+import objects.entities.Ball;
+import objects.entities.Dummy;
+import objects.elements.Bomb;
+import objects.entities.Player;
+import objects.Updating;
 import main.ExitTheDungeon;
-import util.Vector;
+import objects.elements.Wall;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.swing.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeyyyListener implements KeyListener, MouseListener,  Updating {
+public class KeyyyListener implements KeyListener, MouseListener, MouseMotionListener,  Updating {
 
     private final Drawboard board;
     private final List<String> pressed = new ArrayList<>();
@@ -30,27 +29,37 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(!pressed.contains(e.getKeyChar() + "")) pressed.add(e.getKeyChar() + "");
+        String character = (e.getKeyChar() + "").toLowerCase();
+        if(!pressed.contains(character)) pressed.add(character);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        pressed.remove(e.getKeyChar() + "");
+        String character = (e.getKeyChar() + "").toLowerCase();
+        pressed.remove(character);
     }
 
     @Override
     public void tick() {
         Player p = ExitTheDungeon.getPlayer();
-        Vector v = new Vector(0, 0);
+        final double[] multiply = {0};
+        final double[] rotation = {0};
         List<String> remove = new ArrayList<>();
         pressed.forEach(character -> {
             switch (character) {
-                case "q" -> p.rotate(2.5);
-                case "e" -> p.rotate(-2.5);
-                case "w" -> v.subtract(0, 5);
-                case "s" -> v.add(0, 5);
-                case "a" -> v.subtract(5, 0);
-                case "d" -> v.add(5, 0);
+                case "d" -> p.rotate(2.5);
+                case "a" -> p.rotate(-2.5);
+                case "w" -> multiply[0] = 5;
+                case "s" -> multiply[0] = -5;
+                case "t" -> {
+                    Wall w = new Wall((int) (p.getX() + 100), (int) (p.getY() + 100), 100, 20);
+                    ExitTheDungeon.getBoard().addObject(w);
+                    remove.add("t");
+                }
+                case "g" -> {
+                    ExitTheDungeon.getBoard().addEntity(new Dummy(p.getX(), p.getY()));
+                    remove.add("g");
+                }
                 case "b" -> {
                     Vector v1 = p.getDirection().add(100, 100);
                     ExitTheDungeon.getBoard().addObject(new Bomb((int) (p.getX() + v1.getX()), (int) (p.getY() + v1.getY())));
@@ -59,6 +68,9 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
             }
         });
         pressed.removeAll(remove);
+        Vector v = p.getDirection();
+        v.rotate(rotation[0]);
+        v.normalize().multiply(multiply[0]);
         p.setVelocity(v);
     }
 
@@ -69,8 +81,17 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
     @Override
     public void mousePressed(MouseEvent e) {
         Player p = ExitTheDungeon.getPlayer();
-        Ball b = new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(3));
-        ExitTheDungeon.getBoard().addEntity(b);
+        System.out.println(e.getButton());
+        switch (e.getButton()) {
+            case 1 -> {
+                Ball b = new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(3));
+                ExitTheDungeon.getBoard().addEntity(b);
+            }
+            case 3 -> {
+                Vector v = new Vector(p.getX(), p.getY(), e.getX(), e.getY());
+                p.rotate(v.normalize());
+            }
+        }
     }
 
     @Override
@@ -85,6 +106,20 @@ public class KeyyyListener implements KeyListener, MouseListener,  Updating {
 
     @Override
     public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        Player p = ExitTheDungeon.getPlayer();
+        if (SwingUtilities.isRightMouseButton(e)) {
+            Vector v = new Vector(p.getX(), p.getY(), e.getX(), e.getY());
+            p.rotate(v.normalize());
+        }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
 
     }
 }

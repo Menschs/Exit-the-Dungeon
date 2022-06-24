@@ -1,6 +1,9 @@
-package entities;
+package objects.entities;
 
 import main.ExitTheDungeon;
+import objects.hitboxes.Collider;
+import objects.hitboxes.Hitbox;
+import objects.hitboxes.HitboxAction;
 import util.Vector;
 
 import java.awt.*;
@@ -14,9 +17,8 @@ public class Ball implements Entity{
     private double y = 0;
 
     private Vector velocity;
-    private boolean removed = false;
 
-    private final RoundHitbox hitbox;
+    private final Hitbox hitbox;
     private final Entity shooter;
 
     public Ball(double x, double y, Entity shooter, Vector velocity) {
@@ -24,12 +26,12 @@ public class Ball implements Entity{
         this.y = y;
         this.velocity = velocity;
         this.shooter = shooter;
-        hitbox = new RoundHitbox(x, y, SIZE, this, new HitboxAction() {
+        hitbox = new Hitbox((int) x, (int) y, SIZE, SIZE, this, new HitboxAction() {
             @Override
             public void hit(Collider c) {
+                if(c.getObject() != null) kill();
                 if(c.getEntity() != null && !(c.getEntity() instanceof Ball) && shooter != c.getEntity()) {
                     c.getEntity().damage(DAMAGE);
-                    System.out.println("damaging");
                     kill();
                 }
             }
@@ -38,19 +40,19 @@ public class Ball implements Entity{
     }
 
     @Override
-    public void move(Vector v) {
-        move(v.getX(), v.getY());
-    }
-
-    @Override
     public void move(double x, double y) {
         this.x += x;
         this.y += y;
-        hitbox.move(this.x, this.y);
+        hitbox.move((int)this.x,(int) this.y);
     }
 
     @Override
     public void rotate(double rotation) {
+
+    }
+
+    @Override
+    public void rotate(Vector v) {
 
     }
 
@@ -108,8 +110,6 @@ public class Ball implements Entity{
 
     @Override
     public void kill() {
-        System.out.println("killing...");
-        removed = true;
         ExitTheDungeon.getBoard().removeEntity(this);
         hitbox.remove();
         remove();

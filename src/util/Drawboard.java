@@ -1,8 +1,7 @@
 package util;
 
-import entities.Collider;
-import entities.Entity;
-import entities.Object;
+import objects.entities.Entity;
+import objects.elements.Element;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,13 +11,13 @@ import java.util.ArrayList;
 public class Drawboard extends JPanel {
 
     private final List<Entity> entities = new ArrayList<>();
-    private final List<Object> objects = new ArrayList<>();
+    private final List<Element> objects = new ArrayList<>();
 
-    public void addObject(Object o) {
+    public void addObject(Element o) {
         objects.add(o);
     }
 
-    public void remove(Object o) {
+    public void removeElement(Element o) {
         objects.remove(o);
     }
 

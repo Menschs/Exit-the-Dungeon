@@ -1,4 +1,4 @@
-package entities;
+package objects.hitboxes;
 
 public interface HitboxAction {
 

@@ -1,7 +1,7 @@
 package main;
 
-import entities.Player;
-import entities.Updating;
+import objects.entities.Player;
+import objects.Updating;
 import util.Drawboard;
 import util.KeyyyListener;
 
@@ -50,7 +50,7 @@ public class ExitTheDungeon {
         frame = new JFrame("Exit the Dungeon");
         frame.setVisible(true);
         frame.setSize(1000,1000);
-        frame.setLocation(100, 30);
+        frame.setLocation(2300, 30);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
@@ -59,6 +59,7 @@ public class ExitTheDungeon {
         KeyyyListener listener = new KeyyyListener(board);
         frame.addKeyListener(listener);
         frame.addMouseListener(listener);
+        frame.addMouseMotionListener(listener);
         frame.repaint();
     }
 
@@ -68,5 +69,9 @@ public class ExitTheDungeon {
 
     public static Drawboard getBoard() {
         return board;
+    }
+
+    public static JFrame getFrame() {
+        return frame;
     }
 }
