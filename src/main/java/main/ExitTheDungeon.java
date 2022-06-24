@@ -25,6 +25,8 @@ public class ExitTheDungeon {
 
     private static boolean runCallback = true;
 
+    private static DiscordRichPresence rp = new DiscordRichPresence.Builder("starting...").setStartTimestamps(System.currentTimeMillis()/1000).build();
+
     public static void main(String[] args) {
         //DiscordRPC.discordUpdatePresence(new DiscordRichPresence.Builder("awerrqc").setDetails("abasdfasd").setBigImage("test", "lol").build());
         discord();
@@ -32,18 +34,41 @@ public class ExitTheDungeon {
         tick();
     }
 
+    //public static void discord() {
+    //    DiscordRPC lib = DiscordRPC.INSTANCE;
+    //    DiscordEventHandlers handlers = new DiscordEventHandlers();
+    //    handlers.ready = discordUser -> System.out.println("Ready!");
+    //    lib.Discord_Initialize("989883971598966803", handlers, true, null);
+    //    DiscordRichPresence presence = new DiscordRichPresence();
+    //    presence.details = "Testing RPC";
+    //    lib.Discord_UpdatePresence(presence);
+//
+    //    new Thread() {
+    //        @Override
+    //        public void run() {
+    //            lib.Discord_UpdatePresence(presence);
+    //            try {
+    //                Thread.sleep(500);
+    //            } catch (InterruptedException e) {
+    //                e.printStackTrace();
+    //            }
+    //            run();
+    //        }
+    //    }.start();
+    //}
+
     public static void discord() {
         DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(new ReadyCallback() {
             @Override
             public void apply(DiscordUser discordUser) {
                 System.out.println("Welcome " + discordUser.username + "#" + discordUser.discriminator + "!");
-                update("Booting up...", "");
             }
         }).build();
         DiscordRPC.discordInitialize("989883971598966803", handlers, false);
         DiscordRPC.discordRegister("989883971598966803", "");
+        update("lol" , "");
         new Thread("Discord RPC Callback") {
-
+//
             @Override
             public void run() {
                 while(runCallback) {
@@ -56,13 +81,22 @@ public class ExitTheDungeon {
                 }
             }
         }.start();
-    }
 
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DiscordRPC.discordShutdown();
+            }
+        }));
+    }
+//
     public static void update(String first, String second) {
         DiscordRichPresence.Builder b = new DiscordRichPresence.Builder(second);
         b.setBigImage("test", "");
         b.setDetails(first);
-        DiscordRPC.discordUpdatePresence(b.build());
+        b.setStartTimestamps(rp.startTimestamp);
+        rp = b.build();
+        DiscordRPC.discordUpdatePresence(rp);
     }
 
     public static void tick() {

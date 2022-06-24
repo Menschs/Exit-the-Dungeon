@@ -88,6 +88,7 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
         switch (e.getButton()) {
             case 1 -> {
                 Ball b = new Ball(p.getX() - Ball.SIZE/2, p.getY() - Ball.SIZE/2, p, p.getDirection().multiply(3));
+                ExitTheDungeon.update("throwing a Ball..." , "");
                 ExitTheDungeon.getBoard().addEntity(b);
             }
             case 3 -> {
