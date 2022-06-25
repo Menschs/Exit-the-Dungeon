@@ -1,4 +1,4 @@
-package inventory;
+package inventory.irelevant;
 
 import java.awt.*;
 import java.util.HashMap;

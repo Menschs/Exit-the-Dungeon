@@ -3,93 +3,54 @@ package main;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
-import net.arikia.dev.drpc.DiscordUser;
-import net.arikia.dev.drpc.callbacks.ReadyCallback;
 import objects.entities.Player;
 import objects.Updating;
 import util.Drawboard;
 import util.KeyyyListener;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ConcurrentModificationException;
 
 public class ExitTheDungeon {
 
-    static String last = ""; //testing
     public static JFrame frame;
 
     private static final Player p = new Player(200, 200, 0);
     private static final Drawboard board = new Drawboard();
-    private static boolean tick = true;
-    private static Thread t;
-
-    private static boolean runCallback = true;
-
+    private static final boolean tick = true;
     private static DiscordRichPresence rp = new DiscordRichPresence.Builder("starting...").setStartTimestamps(System.currentTimeMillis()/1000).build();
 
     public static void main(String[] args) {
-        //DiscordRPC.discordUpdatePresence(new DiscordRichPresence.Builder("awerrqc").setDetails("abasdfasd").setBigImage("test", "lol").build());
         discord();
         lorenzWindow();
         tick();
     }
 
-    //public static void discord() {
-    //    DiscordRPC lib = DiscordRPC.INSTANCE;
-    //    DiscordEventHandlers handlers = new DiscordEventHandlers();
-    //    handlers.ready = discordUser -> System.out.println("Ready!");
-    //    lib.Discord_Initialize("989883971598966803", handlers, true, null);
-    //    DiscordRichPresence presence = new DiscordRichPresence();
-    //    presence.details = "Testing RPC";
-    //    lib.Discord_UpdatePresence(presence);
-//
-    //    new Thread() {
-    //        @Override
-    //        public void run() {
-    //            lib.Discord_UpdatePresence(presence);
-    //            try {
-    //                Thread.sleep(500);
-    //            } catch (InterruptedException e) {
-    //                e.printStackTrace();
-    //            }
-    //            run();
-    //        }
-    //    }.start();
-    //}
-
     public static void discord() {
-        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(new ReadyCallback() {
-            @Override
-            public void apply(DiscordUser discordUser) {
-                System.out.println("Welcome " + discordUser.username + "#" + discordUser.discriminator + "!");
-            }
-        }).build();
+        DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler(discordUser -> System.out.println("Welcome " + discordUser.username + "#" + discordUser.discriminator + "!")).build();
         DiscordRPC.discordInitialize("989883971598966803", handlers, false);
         DiscordRPC.discordRegister("989883971598966803", "");
         update("lol" , "");
         new Thread("Discord RPC Callback") {
-//
             @Override
             public void run() {
-                while(runCallback) {
+                while(true) {
                     DiscordRPC.discordRunCallbacks();
                     try {
                         Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    } catch (InterruptedException ignored) {}
                 }
             }
         }.start();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DiscordRPC.discordShutdown();
-            }
-        }));
+        Runtime.getRuntime().addShutdownHook(new Thread(DiscordRPC::discordShutdown));
     }
-//
+
     public static void update(String first, String second) {
         DiscordRichPresence.Builder b = new DiscordRichPresence.Builder(second);
         b.setBigImage("test", "");
@@ -100,15 +61,15 @@ public class ExitTheDungeon {
     }
 
     public static void tick() {
-        t = new Thread(new Runnable() {
+        Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if(!tick) return;
+                    if (!tick) return;
                     Updating.update();
                     board.repaint();
                     try {
-                        Thread.sleep(1000/60);
+                        Thread.sleep(1000 / 60);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -136,7 +97,17 @@ public class ExitTheDungeon {
         frame.addKeyListener(listener);
         frame.addMouseListener(listener);
         frame.addMouseMotionListener(listener);
-        frame.repaint();
+
+        icon();
+    }
+
+    public static void icon() {
+        try {
+            BufferedImage image = ImageIO.read(new File("assets/icon/icon.png"));
+            frame.setIconImage(image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Player getPlayer() {
@@ -149,9 +120,5 @@ public class ExitTheDungeon {
 
     public static JFrame getFrame() {
         return frame;
-    }
-
-    public static void setRunCallback(boolean runCallback) {
-        ExitTheDungeon.runCallback = runCallback;
     }
 }

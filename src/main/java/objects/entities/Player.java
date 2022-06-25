@@ -1,5 +1,6 @@
 package objects.entities;
 
+import inventory.*;
 import main.ExitTheDungeon;
 import objects.hitboxes.Collider;
 import objects.Damageable;
@@ -11,7 +12,7 @@ import util.Vector;
 
 import java.awt.*;
 
-public class Player implements Entity, Damageable {
+public class Player implements Entity, Damageable, Inventoryholder {
 
     private final static int[] modelX = new int[] {30, 0, 60};
     private final static int[] modelY = new int[] {0, 60, 60};
@@ -29,6 +30,9 @@ public class Player implements Entity, Damageable {
     private int health = max_health;
 
     private final Hitbox hitbox;
+    private final Inventory inventory = new Inventory(this, "Ahmeds Inventar");
+
+    private Inventory openedInventory;
 
     private Vector velocity = new Vector(0, 0);
 
@@ -43,6 +47,7 @@ public class Player implements Entity, Damageable {
         });
         rotate(0);
         create();
+        inventory.addItem(new ItemStack(Material.sword, Itemtype.weapon, Rarity.rare));
     }
 
     boolean moved = false;
@@ -140,6 +145,27 @@ public class Player implements Entity, Damageable {
         double percentage = (health+0.0)/(max_health+0.0);
         g.fillRoundRect(x, y, (int) (250 * percentage), 10, 5, 5);
         //hitbox.paint(g);
+        if(openedInventory != null) openedInventory.paint(g);
+    }
+
+    public void openInventory() {
+        openedInventory = inventory;
+    }
+
+    public void openInventory(Inventory inv) {
+        openedInventory = inv;
+    }
+
+    public void closeInventory() {
+        openedInventory = null;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public boolean hasOpenInventory() {
+        return (openedInventory != null);
     }
 
     public double[] rotate(double x, double y, double theta) {

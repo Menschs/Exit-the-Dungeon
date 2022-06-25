@@ -1,5 +1,10 @@
 package util;
 
+import inventory.ItemStack;
+import inventory.Itemtype;
+import inventory.Material;
+import inventory.Rarity;
+import inventory.irelevant.Item;
 import objects.entities.Ball;
 import objects.entities.Dummy;
 import objects.elements.Bomb;
@@ -36,20 +41,44 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
     @Override
     public void keyReleased(KeyEvent e) {
         Player p = ExitTheDungeon.getPlayer();
-        switch (e.getKeyChar() + "") {
-            case "t" -> {
-                Wall w = new Wall((int) (p.getX() + 100), (int) (p.getY() + 100), 100, 20);
-                ExitTheDungeon.getBoard().addObject(w);
-                return;
+        String key = e.getKeyChar() + "";
+        key = key.toLowerCase();
+        if(key.equals("i")) {
+            if (p.hasOpenInventory()) p.closeInventory();
+                else p.openInventory();
+        }
+        if(p.hasOpenInventory()) {
+            switch (key) {
+                case "o" -> {
+                    p.getInventory().addItem(new ItemStack(Material.longsword, Itemtype.weapon, Rarity.weird));
+                    return;
+                }
+                case "p" -> {
+                    p.getInventory().removeItem(new ItemStack(Material.longsword, Itemtype.weapon, Rarity.weird).setAmount(3));
+                    return;
+                }
+                case "r" -> {
+                    ItemStack i = p.getInventory().getItem(0);
+                    i.setRarity(i.getRarity().next());
+                    return;
+                }
             }
-            case "g" -> {
-                ExitTheDungeon.getBoard().addEntity(new Dummy(p.getX(), p.getY()));
-                return;
-            }
-            case "b" -> {
-                Vector v1 = p.getDirection().add(100, 100);
-                ExitTheDungeon.getBoard().addObject(new Bomb((int) (p.getX() + v1.getX()), (int) (p.getY() + v1.getY())));
-                return;
+        } else {
+            switch (key) {
+                case "t" -> {
+                    Wall w = new Wall((int) (p.getX() + 100), (int) (p.getY() + 100), 100, 20);
+                    ExitTheDungeon.getBoard().addObject(w);
+                    return;
+                }
+                case "g" -> {
+                    ExitTheDungeon.getBoard().addEntity(new Dummy(p.getX(), p.getY()));
+                    return;
+                }
+                case "b" -> {
+                    Vector v1 = p.getDirection().add(100, 100);
+                    ExitTheDungeon.getBoard().addObject(new Bomb((int) (p.getX() + v1.getX()), (int) (p.getY() + v1.getY())));
+                    return;
+                }
             }
         }
         String character = (e.getKeyChar() + "").toLowerCase();
@@ -61,15 +90,16 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
         Player p = ExitTheDungeon.getPlayer();
         final double[] multiply = {0};
         final double[] rotation = {0};
-        List<String> remove = new ArrayList<>();
-        pressed.forEach(character -> {
-            switch (character) {
-                case "d" -> p.rotate(2.5);
-                case "a" -> p.rotate(-2.5);
-                case "w" -> multiply[0] = 5;
-                case "s" -> multiply[0] = -5;
-            }
-        });
+        if(!p.hasOpenInventory()) {
+            pressed.forEach(character -> {
+                switch (character) {
+                    case "d" -> p.rotate(2.5);
+                    case "a" -> p.rotate(-2.5);
+                    case "w" -> multiply[0] = 5;
+                    case "s" -> multiply[0] = -5;
+                }
+            });
+        }
         pressed.removeAll(remove);
         Vector v = p.getDirection();
         v.rotate(rotation[0]);
@@ -84,9 +114,9 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
     @Override
     public void mousePressed(MouseEvent e) {
         Player p = ExitTheDungeon.getPlayer();
-        System.out.println(e.getButton());
         switch (e.getButton()) {
             case 1 -> {
+                if(p.hasOpenInventory()) return;
                 Ball b = new Ball(p.getX() - Ball.SIZE/2, p.getY() - Ball.SIZE/2, p, p.getDirection().multiply(3));
                 ExitTheDungeon.update("throwing a Ball..." , "");
                 ExitTheDungeon.getBoard().addEntity(b);
