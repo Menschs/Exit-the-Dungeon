@@ -43,7 +43,7 @@ public class Hitbox implements Collider {
         this.height = height;
         this.onHit = onHit;
         this.parentObject = parent;
-        this.rect = new Rectangle(x - width/2, y - height/2, width, height);
+        this.rect = new Rectangle(x, y, width, height);
         //for (int i = 0; i < width; i++) {
         //    for (int j = 0; j < height; j++) {
         //        points.add(new Point(x + i, y + j));
