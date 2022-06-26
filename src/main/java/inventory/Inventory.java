@@ -2,13 +2,13 @@ package inventory;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class Inventory {
 
-
-    private static final int x = 30;
-    private static final int y = 30;
+    static final int y = 30;
+    static final int invSize = 5;
 
     private final List<ItemStack> items = new ArrayList<>();
     private final Inventoryholder holder;
@@ -23,11 +23,11 @@ public class Inventory {
         return holder;
     }
 
-    public void paint(Graphics2D g) {
+    public void paint(Graphics2D g, int addX) {
         g.setColor(Color.BLACK);
-        g.drawString(name, x + 5, y- 5);
+        g.drawString(name, addX + 5, y - 5);
         for (int i = 0; i < items.size(); i++) {
-            items.get(i).paint(g, x, y + (i) * 20);
+            items.get(i).paint(g, addX, y + (i) * 20);
         }
     }
 
@@ -40,11 +40,10 @@ public class Inventory {
         for (ItemStack item : items) {
             if(item.equals(i)) {
                 add = item.add(add);
-                System.out.println(add);
                 if(add <= 0) return 0;
             }
         }
-        if(items.size() < 32) {
+        if(items.size() < invSize) {
             i.setAmount(add);
             items.add(i);
             return 0;
@@ -53,21 +52,36 @@ public class Inventory {
         }
     }
 
+    public ItemStack removeItem(int index) {
+        if(items.size() <= index) return null;
+        var i = items.get(index);
+        items.remove(index);
+        return i;
+    }
+
     public void removeItem(ItemStack i) {
-        int remove = i.getAmount();
-        List<ItemStack> removeT = new ArrayList<>();
-        for (ItemStack item : items) {
-            if(item.equals(i)) {
-                remove = item.remove(remove);
-                System.out.println(remove);
-                if(item.getAmount() <= 0){
-                    removeT.add(item);
-                }
-                if(remove <= 0) {
-                    return;
-                }
+        removeAlg(i, 0);
+    }
+
+    public void removeAlg(ItemStack i, int index) {
+        ItemStack item = items.get(index);
+        if(item.equals(i)) {
+            int remove = i.getAmount();
+            remove = item.remove(remove);
+            if(item.getAmount() <= 0){
+                items.remove(item);
+                index--;
             }
+            if(remove <= 0) {
+                return;
+            }
+            i.setAmount(remove);
         }
-        items.removeAll(removeT);
+        index++;
+        if(index < items.size()) removeAlg(i, index);
+    }
+
+    public List<ItemStack> getItems() {
+        return items;
     }
 }

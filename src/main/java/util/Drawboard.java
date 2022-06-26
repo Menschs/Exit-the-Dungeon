@@ -5,6 +5,7 @@ import objects.elements.Element;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -32,9 +33,12 @@ public class Drawboard extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        objects.forEach(object -> object.paint((Graphics2D) g));
-        entities.forEach(entity -> {
-            entity.paint((Graphics2D) g);
-        });
+        try {
+            objects.forEach(object -> object.paint((Graphics2D) g));
+            entities.forEach(entity -> {
+                entity.paint((Graphics2D) g);
+            });
+        } catch (ConcurrentModificationException ignored){}
+        repaint();
     }
 }

@@ -7,16 +7,17 @@ import objects.elements.Element;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Hitbox implements Collider {
 
     private final List<objects.Point> points = new ArrayList<>();
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
     private Entity parentEntity;
     private Element parentObject;
 
-    private Rectangle rect;
+    private final Rectangle rect;
 
     private HitboxAction onHit;
 
@@ -25,7 +26,7 @@ public class Hitbox implements Collider {
         this.height = height;
         this.onHit = onHit;
         this.parentEntity = parent;
-        this.rect = new Rectangle((int) x, (int) y, (int) width, (int) height);
+        this.rect = new Rectangle(x - width/2, y - height/2, width, height);
         //for (int i = 0; i < width; i++) {
         //    for (int j = 0; j < height; j++) {
         //        points.add(new Point(x + i, y + j));
@@ -42,7 +43,7 @@ public class Hitbox implements Collider {
         this.height = height;
         this.onHit = onHit;
         this.parentObject = parent;
-        this.rect = new Rectangle((int) x, (int) y, (int) width, (int) height);
+        this.rect = new Rectangle(x - width/2, y - height/2, width, height);
         //for (int i = 0; i < width; i++) {
         //    for (int j = 0; j < height; j++) {
         //        points.add(new Point(x + i, y + j));
@@ -86,6 +87,14 @@ public class Hitbox implements Collider {
         if(r != null) g.fill(r);
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     @Override
     public void paintThis(Rectangle r) {
         this.r = r;
@@ -113,5 +122,18 @@ public class Hitbox implements Collider {
 
     public void setOnHit(HitboxAction onHit) {
         this.onHit = onHit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hitbox hitbox = (Hitbox) o;
+        return Objects.equals(parentEntity, hitbox.parentEntity) && Objects.equals(parentObject, hitbox.parentObject);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(parentEntity, parentObject);
     }
 }

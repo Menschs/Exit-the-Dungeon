@@ -4,27 +4,23 @@ import inventory.ItemStack;
 import inventory.Itemtype;
 import inventory.Material;
 import inventory.Rarity;
-import inventory.irelevant.Item;
-import objects.entities.Ball;
-import objects.entities.Dummy;
+import objects.entities.*;
 import objects.elements.Bomb;
-import objects.entities.Player;
 import objects.Updating;
 import main.ExitTheDungeon;
 import objects.elements.Wall;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class KeyyyListener implements KeyListener, MouseListener, MouseMotionListener,  Updating {
 
-    private final Drawboard board;
     private final List<String> pressed = new ArrayList<>();
 
-    public KeyyyListener(Drawboard board) {
-        this.board = board;
+    public KeyyyListener() {
         create();
     }
 
@@ -41,16 +37,22 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
     @Override
     public void keyReleased(KeyEvent e) {
         Player p = ExitTheDungeon.getPlayer();
+        Point mouse = MouseInfo.getPointerInfo().getLocation();
+        mouse.setLocation(mouse.getX() - ExitTheDungeon.getFrame().getX(), mouse.getY() - ExitTheDungeon.getFrame().getY());
         String key = e.getKeyChar() + "";
         key = key.toLowerCase();
-        if(key.equals("i")) {
+        if(key.equals("e")) {
             if (p.hasOpenInventory()) p.closeInventory();
                 else p.openInventory();
+        }
+        if(e.getKeyCode() == 27) {
+            p.closeInventory();
+            return;
         }
         if(p.hasOpenInventory()) {
             switch (key) {
                 case "o" -> {
-                    p.getInventory().addItem(new ItemStack(Material.longsword, Itemtype.weapon, Rarity.weird));
+                    p.addItem(new ItemStack(Material.longsword, Itemtype.weapon, Rarity.weird).setAmount(20));
                     return;
                 }
                 case "p" -> {
@@ -71,7 +73,7 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
                     return;
                 }
                 case "g" -> {
-                    ExitTheDungeon.getBoard().addEntity(new Dummy(p.getX(), p.getY()));
+                    new Dummy(p.getX(), p.getY());
                     return;
                 }
                 case "b" -> {
@@ -81,8 +83,27 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
                 }
             }
         }
-        String character = (e.getKeyChar() + "").toLowerCase();
-        pressed.remove(character);
+        switch (key) {
+            case "q" -> {
+                if(p.hasOpenInventory()) {
+                    if(!p.getOpenedInventory().drop((int) mouse.getX(), (int) mouse.getY())) {
+                        p.dropItem(0);
+                    }
+                } else {
+                    p.dropItem(0);
+                }
+                return;
+            }
+            case "l" -> {
+                new LootChest((int) p.getX(), (int) p.getY());
+                return;
+            }
+            case "c" -> {
+                new Crate((int) p.getX(), (int) p.getY());
+                return;
+            }
+        }
+        pressed.remove(key);
     }
 
     @Override
@@ -116,10 +137,12 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
         Player p = ExitTheDungeon.getPlayer();
         switch (e.getButton()) {
             case 1 -> {
-                if(p.hasOpenInventory()) return;
-                Ball b = new Ball(p.getX() - Ball.SIZE/2, p.getY() - Ball.SIZE/2, p, p.getDirection().multiply(3));
-                ExitTheDungeon.update("throwing a Ball..." , "");
-                ExitTheDungeon.getBoard().addEntity(b);
+                if(p.hasOpenInventory())  {
+                    p.getOpenedInventory().click(e.getX(), e.getY());
+                } else {
+                    Ball b = new Ball(p.getX() - Ball.SIZE/2, p.getY() - Ball.SIZE/2, p, p.getDirection().multiply(3));
+                    ExitTheDungeon.update("throwing a Ball..." , "");
+                }
             }
             case 3 -> {
                 Vector v = new Vector(p.getX(), p.getY(), e.getX(), e.getY());

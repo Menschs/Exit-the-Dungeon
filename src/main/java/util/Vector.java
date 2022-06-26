@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Vector {
 
+    private static final Vector nullVector = new Vector(0, 0);
     private double x, y;
 
     public Vector(double x, double y) {
@@ -97,6 +98,10 @@ public class Vector {
         if(length == 0) return this;
         multiply(1/length);
         return this;
+    }
+
+    public static Vector getNullVector() {
+        return nullVector;
     }
 
     @Override
