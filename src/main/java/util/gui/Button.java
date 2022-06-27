@@ -1,4 +1,4 @@
-package util;
+package util.gui;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -23,8 +23,6 @@ public class Button {
     }
 
     public void click(int x, int y) {
-        y -= 30;
-        x -= 8;
         if(x >= this.x && x <= this.x + width) {
             if(y >= this.y && y <= this.y + height) {
                 new Thread(onClick).start();

@@ -1,4 +1,4 @@
-package util;
+package util.gui;
 
 import java.awt.*;
 import java.util.List;

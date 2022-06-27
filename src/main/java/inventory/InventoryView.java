@@ -84,7 +84,7 @@ public class InventoryView {
         if(inv == null) return null;
 
         for (int i1 = 0; i1 < inv.getItems().size(); i1++) {
-            int sY = Inventory.y*2 + i1 * 20;
+            int sY = Inventory.y + i1 * 20;
             if(y >= sY && y <= sY + 20) {
                 itemIndex = i1;
                 return inv.getItem(i1);

@@ -6,9 +6,9 @@ import net.arikia.dev.drpc.DiscordRichPresence;
 import objects.entities.Player;
 import objects.Updating;
 import util.Drawboard;
-import util.GUI;
+import util.gui.GUI;
 import util.KeyyyListener;
-import util.StartGUI;
+import util.gui.guis.StartGUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

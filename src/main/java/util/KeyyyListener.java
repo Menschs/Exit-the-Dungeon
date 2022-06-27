@@ -9,6 +9,7 @@ import objects.elements.Bomb;
 import objects.Updating;
 import main.ExitTheDungeon;
 import objects.elements.Wall;
+import util.gui.guis.PauseGUI;
 
 import javax.swing.*;
 import java.awt.*;
