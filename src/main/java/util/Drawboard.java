@@ -38,13 +38,14 @@ public class Drawboard extends JPanel {
         Graphics2D gx = (Graphics2D) g;
         gx.setColor(Color.darkGray);
         gx.fillRect(0, 0, ExitTheDungeon.getFrame().getWidth(), ExitTheDungeon.getFrame().getHeight());
-        if(ExitTheDungeon.isGaming()) {
+        if(ExitTheDungeon.isStarted()) {
             try {
                 objects.forEach(object -> object.paint(gx));
                 entities.forEach(entity -> {
                     if(!(entity instanceof Player)) entity.paint(gx);
                 });
                 ExitTheDungeon.getPlayer().paint(gx);
+                if(!ExitTheDungeon.isGaming()) ExitTheDungeon.getGui().paint(gx);
             } catch (ConcurrentModificationException ignored){}
         } else {
             ExitTheDungeon.getGui().paint(gx);

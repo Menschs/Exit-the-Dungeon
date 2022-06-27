@@ -71,8 +71,10 @@ public class ExitTheDungeon {
             public void run() {
                 try {
                     if (!tick) return;
-                    Updating.update();
-                    Updating.clear();
+                    if(isGaming()) {
+                        Updating.update();
+                        Updating.clear();
+                    }
                     board.repaint();
                     try {
                         Thread.sleep(1000 / 60);
