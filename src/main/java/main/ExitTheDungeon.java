@@ -31,7 +31,7 @@ public class ExitTheDungeon {
     private static GUI gui = new StartGUI();
 
     public static void main(String[] args) {
-        //discord();
+        discord();
         lorenzWindow();
         tick();
     }
