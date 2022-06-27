@@ -7,12 +7,13 @@ import objects.Damageable;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
 import objects.Point;
+import org.jetbrains.annotations.NotNull;
 import util.Colors;
 import util.Vector;
 
 import java.awt.*;
 
-public class Player implements Entity, Damageable, Inventoryholder {
+public class Player implements Entity, Inventoryholder {
 
     private final static int[] modelX = new int[] {30, 0, 60};
     private final static int[] modelY = new int[] {0, 60, 60};
@@ -31,8 +32,11 @@ public class Player implements Entity, Damageable, Inventoryholder {
 
     private final Hitbox hitbox;
     private final Inventory inventory = new Inventory(this, "Ahmeds Inventar");
+    private final InventoryView invV = new InventoryView(inventory);
 
-    private Inventory openedInventory;
+    private InventoryView openedInventory = invV;
+
+    private boolean openInv;
 
     private Vector velocity = new Vector(0, 0);
 
@@ -145,19 +149,27 @@ public class Player implements Entity, Damageable, Inventoryholder {
         double percentage = (health+0.0)/(max_health+0.0);
         g.fillRoundRect(x, y, (int) (250 * percentage), 10, 5, 5);
         //hitbox.paint(g);
-        if(openedInventory != null) openedInventory.paint(g);
+        if(openInv) openedInventory.paint(g);
     }
 
     public void openInventory() {
-        openedInventory = inventory;
+        openedInventory = invV;
+        openInv = true;
     }
 
-    public void openInventory(Inventory inv) {
+    public void openInventory(InventoryView inv) {
+        if(inv.hashCode() == openedInventory.hashCode()) return;
+        openedInventory = inv;
+        openInv = true;
+    }
+
+    public void setOpenedInventory(InventoryView inv) {
+        if(inv.hashCode() == openedInventory.hashCode()) return;
         openedInventory = inv;
     }
 
     public void closeInventory() {
-        openedInventory = null;
+        openInv = false;
     }
 
     public Inventory getInventory() {
@@ -165,7 +177,11 @@ public class Player implements Entity, Damageable, Inventoryholder {
     }
 
     public boolean hasOpenInventory() {
-        return (openedInventory != null);
+        return openInv;
+    }
+
+    public InventoryView getOpenedInventory() {
+        return openedInventory;
     }
 
     public double[] rotate(double x, double y, double theta) {
@@ -208,6 +224,17 @@ public class Player implements Entity, Damageable, Inventoryholder {
         return result;
     }
 
+    public void dropItem(@NotNull ItemStack i) {
+        Vector v = getDirection().normalize().multiply(60);
+        i.drop((int) (x + v.getX()), (int) (y + v.getY()));
+    }
+
+    public void dropItem(int index) {
+        ItemStack i = inventory.removeItem(index);
+        if(i == null) return;
+        dropItem(i);
+    }
+
     @Override
     public double getX() {
         return x;
@@ -230,7 +257,6 @@ public class Player implements Entity, Damageable, Inventoryholder {
     @Override
     public void damage(double damage) {
         health -= damage;
-        System.out.println(damage);
         if(health <= 0) kill();
     }
 

@@ -1,5 +1,7 @@
 package objects;
 
+import main.ExitTheDungeon;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,9 @@ public interface Updating {
 
     static void update() {
         update.forEach(Updating::tick);
+    }
+
+    static void clear() {
         update.removeAll(remove);
         remove.clear();
     }

@@ -1,6 +1,6 @@
 package inventory;
 
-import inventory.irelevant.Item;
+import objects.entities.DroppedItem;
 
 import java.awt.*;
 import java.util.Objects;
@@ -23,13 +23,21 @@ public class ItemStack {
         return modifyAmount(amount);
     }
 
+    @Override
+    protected ItemStack clone() {
+        return new ItemStack(material, type, rarity).setAmount(amount);
+    }
+
     public int remove(int amount) {
         return modifyAmount(-amount);
     }
 
     public int modifyAmount(int amount) {
         int result = this.amount + amount;
-        if(result > material.getMaxStack()) return result - material.getMaxStack();
+        if(result > material.getMaxStack())  {
+            this.amount = material.getMaxStack();
+            return result - material.getMaxStack();
+        }
         this.amount += amount;
         if(result <= 0) return Math.abs(this.amount);
         return 0;
@@ -48,6 +56,7 @@ public class ItemStack {
     }
 
     public ItemStack setAmount(int amount) {
+        amount = Math.min(amount, material.getMaxStack());
         this.amount = amount;
         return this;
     }
@@ -65,6 +74,10 @@ public class ItemStack {
         if (o == null || getClass() != o.getClass()) return false;
         ItemStack itemStack = (ItemStack) o;
         return material == itemStack.material && type == itemStack.type && rarity == itemStack.rarity;
+    }
+
+    public void drop(int x, int y) {
+        new DroppedItem(x, y, this);
     }
 
     @Override

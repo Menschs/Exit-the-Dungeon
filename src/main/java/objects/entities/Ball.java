@@ -1,6 +1,5 @@
 package objects.entities;
 
-import main.ExitTheDungeon;
 import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
@@ -18,6 +17,8 @@ public class Ball implements Entity{
 
     private Vector velocity;
 
+    private final boolean[] damaged = {false};
+
     private final Hitbox hitbox;
     private final Entity shooter;
 
@@ -29,14 +30,17 @@ public class Ball implements Entity{
         hitbox = new Hitbox((int) x, (int) y, SIZE, SIZE, this, new HitboxAction() {
             @Override
             public void hit(Collider c) {
+                if(damaged[0]) return;
                 if(c.getObject() != null) kill();
                 if(c.getEntity() != null && !(c.getEntity() instanceof Ball) && shooter != c.getEntity()) {
+                    if(c.getEntity() instanceof Permeable) return;
                     c.getEntity().damage(DAMAGE);
+                    damaged[0] = true;
                     kill();
                 }
             }
         });
-        create();
+        createEntity();
     }
 
     @Override
@@ -110,8 +114,6 @@ public class Ball implements Entity{
 
     @Override
     public void kill() {
-        ExitTheDungeon.getBoard().removeEntity(this);
-        hitbox.remove();
-        remove();
+        removeEntity();
     }
 }

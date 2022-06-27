@@ -1,5 +1,6 @@
 package objects.entities;
 
+import inventory.ItemStack;
 import main.ExitTheDungeon;
 import objects.Damageable;
 import objects.hitboxes.Hitbox;
@@ -7,8 +8,13 @@ import objects.Updating;
 import util.Vector;
 
 import java.awt.*;
+import java.util.Random;
 
 public interface Entity extends Updating, Damageable {
+
+    Random r = new Random();
+
+    void paint(Graphics2D g);
 
     default void move(Vector v) {
         move(v.getX(), v.getY());
@@ -32,8 +38,21 @@ public interface Entity extends Updating, Damageable {
         }
     }
 
+    default void removeEntity() {
+        if(getHitbox() != null) getHitbox().remove();
+        ExitTheDungeon.getBoard().removeEntity(this);
+        remove();
+    }
+
+    default void createEntity() {
+        create();
+        ExitTheDungeon.getBoard().addEntity(this);
+    }
+
+    default void dropLoot(ItemStack item) {
+        item.drop((int) (getX() + r.nextInt(getHitbox().getWidth())), (int) (getY() + r.nextInt(getHitbox().getHeight())));
+    }
+
     Vector getVelocity();
     Vector getDirection();
-
-    void paint(Graphics2D g);
 }

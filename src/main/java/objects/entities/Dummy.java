@@ -1,5 +1,9 @@
 package objects.entities;
 
+import inventory.ItemStack;
+import inventory.Itemtype;
+import inventory.Material;
+import inventory.Rarity;
 import main.ExitTheDungeon;
 import objects.Point;
 import objects.hitboxes.Collider;
@@ -13,13 +17,14 @@ public class Dummy implements Entity {
 
     private double x, y;
 
-    private static final int SIZE = 20;
+    private static final int SIZE = 80;
 
-    private double health = 1000;
+    private double health = 300;
     private Color c = Colors.gold.getColor();
     private final Hitbox hitbox;
 
-    private int damagedFrames = 0;
+    private int damagedSeconds = 0;
+    private final ItemStack[] loot = {new ItemStack(Material.sword, Itemtype.weapon, Rarity.uncommon), new ItemStack(Material.longsword, Itemtype.weapon, Rarity.legendary)};
 
     private Vector velocity = new Vector(0, 0);
 
@@ -27,12 +32,27 @@ public class Dummy implements Entity {
         this.x = x;
         this.y = y;
         this.hitbox = new Hitbox((int) x, (int) y, SIZE, SIZE, this, null);
+        createEntity();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(health > 0) {
+                    damagedSeconds--;
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+            }
+        }).start();
     }
 
     @Override
     public void damage(double damage) {
+        if(health <= 0) return;
         health -= damage;
-        damagedFrames = 5;
+        System.out.println(this + "  "  + health);
+        damagedSeconds = 1;
         if(health <= 0) kill();
     }
 
@@ -44,9 +64,10 @@ public class Dummy implements Entity {
     @Override
     public void kill() {
         c = Color.red;
-        ExitTheDungeon.getBoard().removeEntity(this);
-        hitbox.remove();
-        remove();
+        for (ItemStack itemStack : loot) {
+            dropLoot(itemStack);
+        }
+        removeEntity();
     }
 
     @Override
@@ -105,8 +126,7 @@ public class Dummy implements Entity {
 
     @Override
     public void paint(Graphics2D g) {
-        g.setColor((damagedFrames > 0) ? new Color(255, c.getGreen()/2, c.getBlue()/2) : c);
-        damagedFrames--;
+        g.setColor((damagedSeconds > 0) ? new Color(255, c.getGreen()/2, c.getBlue()/2) : c);
         g.fillOval((int) x, (int) y, SIZE, SIZE);
         //hitbox.paint(g);
     }

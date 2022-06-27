@@ -67,7 +67,7 @@ public class ExitTheDungeon {
                 try {
                     if (!tick) return;
                     Updating.update();
-                    board.repaint();
+                    Updating.clear();
                     try {
                         Thread.sleep(1000 / 60);
                     } catch (InterruptedException e) {
@@ -93,7 +93,13 @@ public class ExitTheDungeon {
 
         board.addEntity(p);
         frame.add(board);
-        KeyyyListener listener = new KeyyyListener(board);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                board.repaint();
+            }
+        }).start();
+        KeyyyListener listener = new KeyyyListener();
         frame.addKeyListener(listener);
         frame.addMouseListener(listener);
         frame.addMouseMotionListener(listener);
