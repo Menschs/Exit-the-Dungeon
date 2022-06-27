@@ -17,14 +17,14 @@ public class StartGUI implements GUI {
     private final List<Text> texts = new ArrayList<>();
 
     public StartGUI() {
-        addText(new Text("Exit-The-Dungeon", frame.getWidth()/2, frame.getHeight()/5, Color.red, new Font(Font.DIALOG, Font.PLAIN, frame.getWidth()/20)));
-        addButton(new util.gui.Button("hardcore", frame.getWidth()/2 + 250, frame.getHeight()/3, frame.getWidth()/8, frame.getHeight()/12, Color.red, new Runnable() {
+        addText(new Text("Exit-The-Dungeon", frame.getWidth()/2, frame.getHeight()/4, Color.red, new Font(Font.DIALOG, Font.PLAIN, frame.getWidth()/20)));
+        addButton(new util.gui.Button(new Text("hardcore", 0, 0, Color.white, 20), frame.getWidth()/2 + 250, frame.getHeight()/2, frame.getWidth()/8, frame.getHeight()/12, Color.red, new Runnable() {
             @Override
             public void run() {
                 ExitTheDungeon.resumeGame();
             }
         }));
-        addButton(new util.gui.Button("casual", frame.getWidth()/2 - 250, frame.getHeight()/3, frame.getWidth()/8, frame.getHeight()/12, Color.red, new Runnable() {
+        addButton(new util.gui.Button(new Text("casual", 0, 0, Color.white, 20), frame.getWidth()/2 - 250, frame.getHeight()/2, frame.getWidth()/8, frame.getHeight()/12, Color.red, new Runnable() {
             @Override
             public void run() {
                 ExitTheDungeon.resumeGame();

@@ -6,13 +6,13 @@ import java.awt.geom.Rectangle2D;
 public class Button {
 
 
-    private final String text;
+    private final Text text;
     private final int x, y, width, height;
     private Color c;
 
     private final Runnable onClick;
 
-    public Button(String text, int x, int y, int width, int height, Color c, Runnable onClick) {
+    public Button(Text text, int x, int y, int width, int height, Color c, Runnable onClick) {
         this.text = text;
         this.x = x - width/2;
         this.y = y - height/2;
@@ -34,9 +34,10 @@ public class Button {
         g.setColor(c);
         g.fillRoundRect(x, y, width, height, 5, 5);
         g.setColor(Color.WHITE);
-        Rectangle2D r = g.getFontMetrics().getStringBounds(text, g);
-        int mX = (int) (x + width/2 - r.getWidth()/2);
-        int mY = (int) (y + height/2 - r.getHeight()/2);
-        g.drawString(text, mX, mY);
+        int mX = x + width/2;
+        int mY = y + height/2;
+        text.setX(mX);
+        text.setY(mY);
+        text.paint(g);
     }
 }

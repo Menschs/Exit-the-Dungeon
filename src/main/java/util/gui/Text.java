@@ -26,6 +26,14 @@ public class Text {
         this.f = f;
     }
 
+    public Text(String text, int x, int y, Color c, int fSize) {
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.c = c;
+        f = new Font(Font.DIALOG, Font.PLAIN, fSize);
+    }
+
     public void paint(Graphics2D g) {
         g.setColor(c);
         g.setFont(f);
@@ -33,5 +41,21 @@ public class Text {
         int mX = (int) (x - r.getWidth()/2);
         int mY = (int) (y - r.getHeight()/2);
         g.drawString(text, mX, mY);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 }

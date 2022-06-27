@@ -17,8 +17,8 @@ public class PauseGUI implements GUI {
     private final List<Text> texts = new ArrayList<>();
 
     public PauseGUI() {
-        addText(new Text("pause II", frame.getWidth()/2, frame.getHeight()/5, Color.red, new Font(Font.DIALOG, Font.PLAIN, frame.getWidth()/25)));
-        addButton(new util.gui.Button("resume", ExitTheDungeon.getFrame().getWidth()/2, frame.getHeight()/3, frame.getWidth()/8, frame.getHeight()/12, Color.red, new Runnable() {
+        addText(new Text("II pause", frame.getWidth()/2, frame.getHeight()/4, Color.red, new Font(Font.DIALOG, Font.PLAIN, frame.getWidth()/25)));
+        addButton(new util.gui.Button(new Text("resume", 0, 0, Color.white, 20), ExitTheDungeon.getFrame().getWidth()/2, frame.getHeight()/2, frame.getWidth()/8, frame.getHeight()/12, Color.red, new Runnable() {
             @Override
             public void run() {
                 ExitTheDungeon.resumeGame();
