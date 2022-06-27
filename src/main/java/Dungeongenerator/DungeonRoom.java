@@ -10,6 +10,10 @@ public class DungeonRoom {
         this.type = type;
         neighbors = new DungeonRoom[4];
     }
+
+    public void addneighbor(){
+        neighbors[0] = new DungeonRoom(10000000,roomType.Normal);
+    }
 }
 enum roomType{
     Start,

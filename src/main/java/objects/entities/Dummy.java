@@ -17,9 +17,9 @@ public class Dummy implements Entity {
 
     private double x, y;
 
-    private static final int SIZE = 80;
+    private static final int SIZE = 30;
 
-    private double health = 300;
+    private double health = 20;
     private Color c = Colors.gold.getColor();
     private final Hitbox hitbox;
 

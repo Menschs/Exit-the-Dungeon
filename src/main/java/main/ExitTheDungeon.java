@@ -30,6 +30,8 @@ public class ExitTheDungeon {
         discord();
         lorenzWindow();
         tick();
+
+        dg.generate(0);
     }
 
     public static void discord() {
