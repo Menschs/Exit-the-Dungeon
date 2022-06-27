@@ -1,17 +1,17 @@
 package main;
 
-import Dungeongenerator.Dungeongenerator;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import objects.entities.Player;
 import objects.Updating;
 import util.Drawboard;
+import util.GUI;
 import util.KeyyyListener;
+import util.StartGUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,19 +19,21 @@ import java.util.ConcurrentModificationException;
 
 public class ExitTheDungeon {
 
-    public static JFrame frame;
+    public static JFrame frame = new JFrame("Exit the Dungeon");;
 
     private static final Player p = new Player(200, 200, 0);
     private static final Drawboard board = new Drawboard();
     private static final boolean tick = true;
     private static DiscordRichPresence rp = new DiscordRichPresence.Builder("starting...").setStartTimestamps(System.currentTimeMillis()/1000).build();
-    private static Dungeongenerator dg = new Dungeongenerator();
+
+    private static boolean gaming;
+    private static boolean started;
+    private static GUI gui = new StartGUI();
+
     public static void main(String[] args) {
-        discord();
+        //discord();
         lorenzWindow();
         tick();
-
-        dg.generate(0);
     }
 
     public static void discord() {
@@ -71,6 +73,7 @@ public class ExitTheDungeon {
                     if (!tick) return;
                     Updating.update();
                     Updating.clear();
+                    board.repaint();
                     try {
                         Thread.sleep(1000 / 60);
                     } catch (InterruptedException e) {
@@ -88,26 +91,35 @@ public class ExitTheDungeon {
     public static void lorenzWindow() {
 
         frame = new JFrame("Exit the Dungeon");
+
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(true);
         frame.setVisible(true);
-        frame.setSize(1000,1000);
-        frame.setLocation(100, 30);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
-        board.addEntity(p);
+        setGui(new StartGUI());
+        //resumeGame();
+
         frame.add(board);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                board.repaint();
-            }
-        }).start();
+        board.addEntity(p);
+        //new Thread(new Runnable() {
+        //    @Override
+        //    public void run() {
+        //        board.repaint();
+        //    }
+        //}).start();
         KeyyyListener listener = new KeyyyListener();
         frame.addKeyListener(listener);
         frame.addMouseListener(listener);
         frame.addMouseMotionListener(listener);
 
         icon();
+    }
+
+    public static void resumeGame() {
+        gaming = true;
+        if(!started) started = true;
     }
 
     public static void icon() {
@@ -117,6 +129,19 @@ public class ExitTheDungeon {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isGaming() {
+        return gaming;
+    }
+
+    public static GUI getGui() {
+        return gui;
+    }
+
+    public static void setGui(GUI gui) {
+        ExitTheDungeon.gui = gui;
+        gaming = false;
     }
 
     public static Player getPlayer() {
@@ -129,5 +154,13 @@ public class ExitTheDungeon {
 
     public static JFrame getFrame() {
         return frame;
+    }
+
+    public static boolean isStarted() {
+        return started;
+    }
+
+    public static void setStarted(boolean started) {
+        ExitTheDungeon.started = started;
     }
 }

@@ -1,7 +1,9 @@
 package util;
 
+import main.ExitTheDungeon;
 import objects.entities.Entity;
 import objects.elements.Element;
+import objects.entities.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,12 +35,20 @@ public class Drawboard extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        try {
-            objects.forEach(object -> object.paint((Graphics2D) g));
-            entities.forEach(entity -> {
-                entity.paint((Graphics2D) g);
-            });
-        } catch (ConcurrentModificationException ignored){}
-        repaint();
+        Graphics2D gx = (Graphics2D) g;
+        gx.setColor(Color.darkGray);
+        gx.fillRect(0, 0, ExitTheDungeon.getFrame().getWidth(), ExitTheDungeon.getFrame().getHeight());
+        if(ExitTheDungeon.isGaming()) {
+            try {
+                objects.forEach(object -> object.paint(gx));
+                entities.forEach(entity -> {
+                    if(!(entity instanceof Player)) entity.paint(gx);
+                });
+                ExitTheDungeon.getPlayer().paint(gx);
+            } catch (ConcurrentModificationException ignored){}
+        } else {
+            ExitTheDungeon.getGui().paint(gx);
+        }
+        //repaint();
     }
 }

@@ -24,7 +24,7 @@ public class Inventory {
     }
 
     public void paint(Graphics2D g, int addX) {
-        g.setColor(Color.BLACK);
+        g.setColor(Color.LIGHT_GRAY);
         g.drawString(name, addX + 5, y - 5);
         for (int i = 0; i < items.size(); i++) {
             items.get(i).paint(g, addX, y + (i) * 20);

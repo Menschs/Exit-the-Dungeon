@@ -30,6 +30,9 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
 
     @Override
     public void keyPressed(KeyEvent e) {
+        Point mouse = MouseInfo.getPointerInfo().getLocation();
+        mouse.setLocation(mouse.getX() - ExitTheDungeon.getFrame().getX(), mouse.getY() - ExitTheDungeon.getFrame().getY());
+        if(!ExitTheDungeon.isGaming()) return;
         String character = (e.getKeyChar() + "").toLowerCase();
         if(!pressed.contains(character)) pressed.add(character);
     }
@@ -37,9 +40,20 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
     @Override
     public void keyReleased(KeyEvent e) {
         Player p = ExitTheDungeon.getPlayer();
+        String key = e.getKeyChar() + "";
+        if(key.equals("p") && ExitTheDungeon.isStarted()) {
+            if (ExitTheDungeon.isGaming()) {
+                ExitTheDungeon.setGui(new PauseGUI());
+            } else {
+                ExitTheDungeon.resumeGame();
+            }
+            return;
+        }
+        if(!ExitTheDungeon.isGaming()) {
+            return;
+        }
         Point mouse = MouseInfo.getPointerInfo().getLocation();
         mouse.setLocation(mouse.getX() - ExitTheDungeon.getFrame().getX(), mouse.getY() - ExitTheDungeon.getFrame().getY());
-        String key = e.getKeyChar() + "";
         key = key.toLowerCase();
         if(key.equals("e")) {
             if (p.hasOpenInventory()) p.closeInventory();
@@ -108,6 +122,7 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
 
     @Override
     public void tick() {
+        if(!ExitTheDungeon.isGaming()) return;
         Player p = ExitTheDungeon.getPlayer();
         final double[] multiply = {0};
         final double[] rotation = {0};
@@ -134,17 +149,22 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if(!ExitTheDungeon.isGaming()) {
+            ExitTheDungeon.getGui().click(e.getX(), e.getY());
+            return;
+        }
         Player p = ExitTheDungeon.getPlayer();
         switch (e.getButton()) {
             case 1 -> {
                 if(p.hasOpenInventory())  {
                     p.getOpenedInventory().click(e.getX(), e.getY());
                 } else {
-                    Ball b = new Ball(p.getX() - Ball.SIZE/2, p.getY() - Ball.SIZE/2, p, p.getDirection().multiply(3));
+                    new Ball(p.getX() - Ball.SIZE/2, p.getY() - Ball.SIZE/2, p, p.getDirection().multiply(3));
                     ExitTheDungeon.update("throwing a Ball..." , "");
                 }
             }
             case 3 -> {
+                System.out.println(e.getX() + " " + e.getY());
                 Vector v = new Vector(p.getX(), p.getY(), e.getX(), e.getY());
                 p.rotate(v.normalize());
             }

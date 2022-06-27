@@ -18,7 +18,7 @@ public class Player implements Entity, Inventoryholder {
     private final static int[] modelX = new int[] {30, 0, 60};
     private final static int[] modelY = new int[] {0, 60, 60};
 
-    private Color c = Color.BLACK;
+    private Color c = Color.LIGHT_GRAY;
 
     private double x = 0;
     private double y = 0;

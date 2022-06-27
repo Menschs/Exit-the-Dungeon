@@ -64,7 +64,7 @@ public class ItemStack {
     public void paint(Graphics2D g, int x, int y) {
         g.setColor(rarity.getColor());
         g.fillRect(x, y, 120, 20);
-        g.setColor(Color.black);
+        g.setColor(Color.DARK_GRAY);
         g.drawString(material.getName() + " x" + amount, x + 5, y + 15);
     }
 

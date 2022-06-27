@@ -31,7 +31,7 @@ public class Wall implements Element {
 
     @Override
     public void paint(Graphics2D g) {
-        g.setColor(Color.DARK_GRAY);
+        g.setColor(Color.LIGHT_GRAY);
         g.fillRect(x, y, width, height);
         //hitbox.paint(g);
     }
