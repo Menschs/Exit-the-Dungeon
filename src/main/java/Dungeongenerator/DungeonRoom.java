@@ -2,9 +2,18 @@ package Dungeongenerator;
 
 public class DungeonRoom {
     public DungeonRoom[] neighbors;
-    int number;
+    int id;
+    roomType type;
 
-    public DungeonRoom(int _number){
-        number = _number;
+    public DungeonRoom(int id, roomType type){
+        this.id = id;
+        this.type = type;
+        neighbors = new DungeonRoom[4];
     }
+}
+enum roomType{
+    Start,
+    End,
+    Special,
+    Normal
 }

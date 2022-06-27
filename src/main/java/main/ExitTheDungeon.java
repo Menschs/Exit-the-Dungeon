@@ -1,5 +1,6 @@
 package main;
 
+import Dungeongenerator.Dungeongenerator;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
@@ -24,7 +25,7 @@ public class ExitTheDungeon {
     private static final Drawboard board = new Drawboard();
     private static final boolean tick = true;
     private static DiscordRichPresence rp = new DiscordRichPresence.Builder("starting...").setStartTimestamps(System.currentTimeMillis()/1000).build();
-
+    private static Dungeongenerator dg = new Dungeongenerator();
     public static void main(String[] args) {
         discord();
         lorenzWindow();
@@ -87,7 +88,7 @@ public class ExitTheDungeon {
         frame = new JFrame("Exit the Dungeon");
         frame.setVisible(true);
         frame.setSize(1000,1000);
-        frame.setLocation(2300, 30);
+        frame.setLocation(100, 30);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
