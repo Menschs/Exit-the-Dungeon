@@ -1,4 +1,4 @@
-package objects.entities;
+package objects.entities.interfaces;
 
 import util.Vector;
 

@@ -4,12 +4,13 @@ import inventory.ItemStack;
 import inventory.Itemtype;
 import inventory.Material;
 import inventory.Rarity;
+import objects.entities.interfaces.StaticEntity;
 import objects.hitboxes.Hitbox;
 import util.Colors;
 
 import java.awt.*;
 
-public class Crate implements StaticEntity{
+public class Crate implements StaticEntity {
 
     private static final int SIZE = 15;
 

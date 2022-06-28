@@ -4,11 +4,13 @@ import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import objects.entities.Player;
-import objects.Updating;
-import util.Drawboard;
-import util.gui.GUI;
-import util.KeyyyListener;
-import util.gui.guis.StartGUI;
+import objects.interfaces.Updating;
+import util.frame.gui.Drawboard;
+import util.frame.gui.HUDs;
+import util.frame.gui.GUI;
+import util.frame.gui.KeyyyListener;
+import util.frame.gui.guis.StartGUI;
+import util.frame.gui.guis.StatusHUD;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 
 public class ExitTheDungeon {
 
@@ -23,11 +26,11 @@ public class ExitTheDungeon {
 
     private static final Player p = new Player(200, 200, 0);
     private static final Drawboard board = new Drawboard();
-    private static final boolean tick = true;
     private static DiscordRichPresence rp = new DiscordRichPresence.Builder("starting...").setStartTimestamps(System.currentTimeMillis()/1000).build();
 
     private static boolean gaming;
     private static boolean started;
+    private static final HashMap<HUDs, GUI> huds = new HashMap<>();
     private static GUI gui = new StartGUI();
 
     public static void main(String[] args) {
@@ -66,18 +69,37 @@ public class ExitTheDungeon {
     }
 
     public static void tick() {
+        Thread repaint = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    board.repaint();
+                    try {
+                        Thread.sleep(1000 / 144);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    run();
+                } catch (ConcurrentModificationException | StackOverflowError cx) {
+                    run();
+                }
+            }
+        });
+        repaint.start();
+        final int[] ticksPerCurrentSecond = {0};
+        final int ticksPerSecond = 60;
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if (!tick) return;
                     if(isGaming()) {
-                        Updating.update();
+                        if(ticksPerCurrentSecond[0] >= ticksPerSecond) ticksPerCurrentSecond[0] = 0;
+                        Updating.update(ticksPerCurrentSecond[0]);
                         Updating.clear();
+                        ticksPerCurrentSecond[0]++;
                     }
-                    board.repaint();
                     try {
-                        Thread.sleep(1000 / 60);
+                        Thread.sleep(1000 / ticksPerSecond);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -121,7 +143,10 @@ public class ExitTheDungeon {
 
     public static void resumeGame() {
         gaming = true;
-        if(!started) started = true;
+        if(!started) {
+            addHUD(HUDs.status, new StatusHUD());
+            started = true;
+        }
     }
 
     public static void icon() {
@@ -146,6 +171,18 @@ public class ExitTheDungeon {
         gaming = false;
     }
 
+    public static void addHUD(HUDs id, GUI gui) {
+        if(huds.containsKey(id)) return;
+        huds.put(id, gui);
+    }
+
+    public static void removeHUD(HUDs id) {
+        huds.remove(id);
+    }
+
+    public static HashMap<HUDs, GUI> getHUDs() {
+        return huds;
+    }
     public static Player getPlayer() {
         return p;
     }

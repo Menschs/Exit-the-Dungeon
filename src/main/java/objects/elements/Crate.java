@@ -1,6 +1,7 @@
 package objects.elements;
 
-import objects.Damageable;
+import objects.interfaces.Damageable;
+import objects.elements.interfaces.Element;
 import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;

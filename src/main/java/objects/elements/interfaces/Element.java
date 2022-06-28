@@ -1,4 +1,4 @@
-package objects.elements;
+package objects.elements.interfaces;
 
 import main.ExitTheDungeon;
 

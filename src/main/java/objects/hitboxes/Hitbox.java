@@ -1,8 +1,8 @@
 package objects.hitboxes;
 
-import objects.Point;
-import objects.entities.Entity;
-import objects.elements.Element;
+import util.Point;
+import objects.entities.interfaces.Entity;
+import objects.elements.interfaces.Element;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class Hitbox implements Collider {
 
-    private final List<objects.Point> points = new ArrayList<>();
+    private final List<Point> points = new ArrayList<>();
     private final int width;
     private final int height;
     private Entity parentEntity;

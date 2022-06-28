@@ -1,9 +1,9 @@
-package util.gui.guis;
+package util.frame.gui.guis;
 
 import main.ExitTheDungeon;
-import util.gui.Button;
-import util.gui.GUI;
-import util.gui.Text;
+import util.frame.gui.GUI;
+import util.frame.gui.Text;
+import util.frame.gui.Button;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -13,18 +13,18 @@ import static main.ExitTheDungeon.frame;
 
 public class StartGUI implements GUI {
 
-    private final List<util.gui.Button> buttons = new ArrayList<>();
+    private final List<Button> buttons = new ArrayList<>();
     private final List<Text> texts = new ArrayList<>();
 
     public StartGUI() {
         addText(new Text("Exit-The-Dungeon", frame.getWidth()/2, frame.getHeight()/4, Color.red, new Font(Font.DIALOG, Font.PLAIN, frame.getWidth()/20)));
-        addButton(new util.gui.Button(new Text("hardcore", 0, 0, Color.white, 20), frame.getWidth()/2 + 250, frame.getHeight()/2, frame.getWidth()/8, frame.getHeight()/12, Color.red, new Runnable() {
+        addButton(new Button(new Text("hardcore", 0, 0, Color.white, 20), frame.getWidth()/2 + 250, frame.getHeight()/2, frame.getWidth()/8, frame.getHeight()/12, Color.red, new Runnable() {
             @Override
             public void run() {
                 ExitTheDungeon.resumeGame();
             }
         }));
-        addButton(new util.gui.Button(new Text("casual", 0, 0, Color.white, 20), frame.getWidth()/2 - 250, frame.getHeight()/2, frame.getWidth()/8, frame.getHeight()/12, Color.red, new Runnable() {
+        addButton(new Button(new Text("casual", 0, 0, Color.white, 20), frame.getWidth()/2 - 250, frame.getHeight()/2, frame.getWidth()/8, frame.getHeight()/12, Color.red, new Runnable() {
             @Override
             public void run() {
                 ExitTheDungeon.resumeGame();

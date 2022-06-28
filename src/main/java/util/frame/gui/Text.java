@@ -1,6 +1,5 @@
-package util.gui;
+package util.frame.gui;
 
-import javax.swing.text.Style;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
@@ -10,6 +9,7 @@ public class Text {
     private int x, y;
     private Color c;
     private Font f = new Font(Font.DIALOG, Font.PLAIN, 15);
+    private TextCenter center = TextCenter.mid;
 
     public Text(String text, int x, int y, Color c) {
         this.text = text;
@@ -38,9 +38,13 @@ public class Text {
         g.setColor(c);
         g.setFont(f);
         Rectangle2D r = g.getFontMetrics().getStringBounds(text, g);
-        int mX = (int) (x - r.getWidth()/2);
-        int mY = (int) (y - r.getHeight()/2);
+        int mX = (center == TextCenter.left) ? x : (int) ((center == TextCenter.mid) ? x - r.getWidth() / 2 : x - r.getWidth());
+        int mY = (center == TextCenter.left) ? y : (int) ((center == TextCenter.mid) ? y - r.getHeight() / 2 : y - r.getHeight());
         g.drawString(text, mX, mY);
+    }
+
+    public void setCenter(TextCenter center) {
+        this.center = center;
     }
 
     public int getX() {

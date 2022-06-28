@@ -4,14 +4,17 @@ import inventory.ItemStack;
 import inventory.Itemtype;
 import inventory.Material;
 import inventory.Rarity;
-import main.ExitTheDungeon;
-import objects.Point;
+import objects.entities.interfaces.effects.StatusEffect;
+import util.Point;
+import objects.entities.interfaces.Entity;
 import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
 import util.Colors;
 import util.Vector;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Dummy implements Entity {
 

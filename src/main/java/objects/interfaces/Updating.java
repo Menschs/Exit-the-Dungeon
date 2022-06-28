@@ -1,6 +1,4 @@
-package objects;
-
-import main.ExitTheDungeon;
+package objects.interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +8,8 @@ public interface Updating {
     List<Updating> update = new ArrayList<>();
     List<Updating> remove = new ArrayList<>();
 
-    static void update() {
-        update.forEach(Updating::tick);
+    static void update(int curTicks) {
+        update.forEach(updating -> updating.tick(curTicks));
     }
 
     static void clear() {
@@ -27,5 +25,5 @@ public interface Updating {
         remove.add(this);
     }
 
-    void tick();
+    void tick(int curTicks);
 }

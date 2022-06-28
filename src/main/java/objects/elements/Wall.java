@@ -1,5 +1,6 @@
 package objects.elements;
 
+import objects.elements.interfaces.Element;
 import objects.hitboxes.Hitbox;
 
 import java.awt.*;

@@ -1,11 +1,11 @@
-package util.gui;
+package util.frame.gui;
 
 import java.awt.*;
 import java.util.List;
 
 public interface GUI {
 
-    List<Button> getButtons();
+    List<util.frame.gui.Button> getButtons();
     List<Text> getTexts();
 
     default void addButton(Button b) {

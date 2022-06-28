@@ -2,21 +2,26 @@ package objects.entities;
 
 import inventory.*;
 import main.ExitTheDungeon;
+import objects.entities.interfaces.Entity;
+import objects.entities.interfaces.effects.StatusEffect;
+import objects.entities.interfaces.effects.StatusEffects;
 import objects.hitboxes.Collider;
-import objects.Damageable;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
-import objects.Point;
+import util.Point;
 import org.jetbrains.annotations.NotNull;
 import util.Colors;
 import util.Vector;
 
 import java.awt.*;
+import java.util.HashMap;
 
 public class Player implements Entity, Inventoryholder {
 
     private final static int[] modelX = new int[] {30, 0, 60};
     private final static int[] modelY = new int[] {0, 60, 60};
+
+    private final HashMap<StatusEffects, StatusEffect> effects = new HashMap<>();
 
     private Color c = Color.LIGHT_GRAY;
 
@@ -27,7 +32,7 @@ public class Player implements Entity, Inventoryholder {
 
     private int[][] model;
 
-    private int max_health = 100;
+    private final int max_health = 100;
     private int health = max_health;
 
     private final Hitbox hitbox;
@@ -262,6 +267,7 @@ public class Player implements Entity, Inventoryholder {
 
     @Override
     public void heal(double heal) {
+        if(max_health < health + heal) return;
         health += heal;
         if(health > 0) c = Color.black;
     }
@@ -269,5 +275,10 @@ public class Player implements Entity, Inventoryholder {
     @Override
     public void kill() {
         c = Color.red;
+    }
+
+    @Override
+    public HashMap<StatusEffects, StatusEffect> getEffects() {
+        return effects;
     }
 }

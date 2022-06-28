@@ -1,8 +1,8 @@
-package util;
+package util.frame.gui;
 
 import main.ExitTheDungeon;
-import objects.entities.Entity;
-import objects.elements.Element;
+import objects.entities.interfaces.Entity;
+import objects.elements.interfaces.Element;
 import objects.entities.Player;
 
 import javax.swing.*;
@@ -45,6 +45,7 @@ public class Drawboard extends JPanel {
                     if(!(entity instanceof Player)) entity.paint(gx);
                 });
                 ExitTheDungeon.getPlayer().paint(gx);
+                ExitTheDungeon.getHUDs().forEach((huDs, gui) -> gui.paint(gx));
                 if(!ExitTheDungeon.isGaming()) ExitTheDungeon.getGui().paint(gx);
             } catch (ConcurrentModificationException ignored){}
         } else {

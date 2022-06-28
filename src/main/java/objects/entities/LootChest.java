@@ -2,6 +2,8 @@ package objects.entities;
 
 import inventory.*;
 import main.ExitTheDungeon;
+import objects.entities.interfaces.Permeable;
+import objects.entities.interfaces.StaticEntity;
 import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;

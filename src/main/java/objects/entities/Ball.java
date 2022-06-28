@@ -1,5 +1,7 @@
 package objects.entities;
 
+import objects.entities.interfaces.Entity;
+import objects.entities.interfaces.Permeable;
 import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
@@ -7,7 +9,7 @@ import util.Vector;
 
 import java.awt.*;
 
-public class Ball implements Entity{
+public class Ball implements Entity {
 
     public static final int SIZE = 15;
     private static final double DAMAGE = 5;

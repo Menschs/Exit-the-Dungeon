@@ -1,4 +1,4 @@
-package util;
+package util.frame.gui;
 
 import inventory.ItemStack;
 import inventory.Itemtype;
@@ -6,10 +6,12 @@ import inventory.Material;
 import inventory.Rarity;
 import objects.entities.*;
 import objects.elements.Bomb;
-import objects.Updating;
+import objects.entities.statuseffects.HealingEffect;
+import objects.interfaces.Updating;
 import main.ExitTheDungeon;
 import objects.elements.Wall;
-import util.gui.guis.PauseGUI;
+import util.Vector;
+import util.frame.gui.guis.PauseGUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -117,12 +119,18 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
                 new Crate((int) p.getX(), (int) p.getY());
                 return;
             }
+            case "h" -> {
+                HealingEffect healing = new HealingEffect();
+                healing.setLevel(-1);
+                healing.setTime(12);
+                p.addEffect(healing);
+            }
         }
         pressed.remove(key);
     }
 
     @Override
-    public void tick() {
+    public void tick(int curTicks) {
         if(!ExitTheDungeon.isGaming()) return;
         Player p = ExitTheDungeon.getPlayer();
         final double[] multiply = {0};

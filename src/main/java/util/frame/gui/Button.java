@@ -1,7 +1,6 @@
-package util.gui;
+package util.frame.gui;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 public class Button {
 

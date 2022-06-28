@@ -1,14 +1,18 @@
-package objects.entities;
+package objects.entities.interfaces;
 
 import inventory.ItemStack;
 import main.ExitTheDungeon;
-import objects.Damageable;
+import objects.entities.interfaces.effects.StatusEffect;
+import objects.entities.interfaces.effects.StatusEffects;
+import objects.interfaces.Damageable;
 import objects.hitboxes.Hitbox;
-import objects.Updating;
+import objects.interfaces.Updating;
 import util.Vector;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Random;
+import java.util.List;
 
 public interface Entity extends Updating, Damageable {
 
@@ -18,6 +22,15 @@ public interface Entity extends Updating, Damageable {
 
     default void move(Vector v) {
         move(v.getX(), v.getY());
+    }
+    default HashMap<StatusEffects, StatusEffect> getEffects() {
+        return new HashMap<>();
+    }
+    default void addEffect(StatusEffect effect) {
+        if(!getEffects().containsKey(effect.getEffectIdentifier())) getEffects().put(effect.getEffectIdentifier(), effect);
+    }
+    default void removeEffect(StatusEffects id) {
+        getEffects().remove(id);
     }
     void move(double x, double y);
     void rotate(double rotation);
@@ -29,13 +42,14 @@ public interface Entity extends Updating, Damageable {
     Hitbox getHitbox();
 
     @Override
-    default void tick() {
+    default void tick(int curTicks) {
         Vector v = getVelocity();
         double YperI = v.getY() / 10;
         double XperI = v.getX() / 10;
         for (int i = 1; i < 11; i++) {
             move(XperI, YperI);
         }
+        getEffects().values().forEach(statusEffects -> statusEffects.effect(this, curTicks));
     }
 
     default void removeEntity() {
