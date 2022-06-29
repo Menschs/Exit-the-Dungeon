@@ -1,3 +1,6 @@
+package Backend;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class Test extends Game{
     public static void main(String[] args)
@@ -7,15 +10,27 @@ public class Test extends Game{
     }
     ObjectData o ;
     int oID;
+    private float cx = 0, cy = 0;
+
     @Override
     public void runGameUpdate() {
         o.data[0] += deltaTime;
         o.data[1] *= deltaTime;
         updateObjectPosition(oID, o.data[0], o.data[1]);
 
-        if(isKeyPressed()){
-
+        if(isKeyPressed(GLFW_KEY_A)){
+            cx -= deltaTime * 2;
         }
+        if(isKeyPressed(GLFW_KEY_D)){
+            cx += deltaTime * 2;
+        }
+        if(isKeyPressed(GLFW_KEY_W)){
+            cy += deltaTime * 2;
+        }
+        if(isKeyPressed(GLFW_KEY_S)){
+            cy -= deltaTime * 2;
+        }
+        setCameraPos(cx, cy);
     }
     public float pX = 0.0f, pY = 0.0f;
 
@@ -41,6 +56,8 @@ public class Test extends Game{
         o3.data[2] = 1.5f;
         o3.data[3] = 1.5f;
         addObject(o3);
+
+        drawer.addTexture("assets/textures/MTest.jpg");
     }
 
 }
