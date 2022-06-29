@@ -1,6 +1,14 @@
 package objects.entities;
 
-import inventory.*;
+import inventory.inventory.Inventory;
+import inventory.inventory.InventoryView;
+import inventory.inventory.Inventoryholder;
+import inventory.items.ItemStack;
+import inventory.items.Itemtype;
+import inventory.items.Material;
+import inventory.items.Rarity;
+import inventory.items.items.LongSword;
+import inventory.items.items.Sword;
 import main.ExitTheDungeon;
 import objects.entities.interfaces.Permeable;
 import objects.entities.interfaces.StaticEntity;
@@ -32,9 +40,9 @@ public class LootChest implements StaticEntity, Inventoryholder, Permeable {
                 }
             }
         });
-        inv.addItem(new ItemStack(Material.longsword, Itemtype.weapon, Rarity.weird).setAmount(10));
-        inv.addItem(new ItemStack(Material.longsword, Itemtype.weapon, Rarity.uncommon).setAmount(10));
-        inv.addItem(new ItemStack(Material.longsword, Itemtype.weapon, Rarity.epic).setAmount(10));
+        inv.addItem(new LongSword(Rarity.weird).setAmount(10));
+        inv.addItem(new LongSword(Rarity.uncommon).setAmount(10));
+        inv.addItem(new Sword(Rarity.legendary).setAmount(10));
         createEntity();
     }
 

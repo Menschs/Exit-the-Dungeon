@@ -6,12 +6,12 @@ import java.awt.*;
 
 public enum StatusEffects {
 
-    healing("Healing", Color.red);
+    healing("Healing", Colors.red);
 
     final String name;
-    final Color color;
+    final Colors color;
 
-    StatusEffects(String name, Color color) {
+    StatusEffects(String name, Colors color) {
         this.name = name;
         this.color = color;
     }
@@ -20,7 +20,7 @@ public enum StatusEffects {
         return name;
     }
 
-    public Color getColor() {
+    public Colors getColor() {
         return color;
     }
 }

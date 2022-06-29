@@ -1,4 +1,4 @@
-package inventory;
+package inventory.items;
 
 public enum Itemtype {
 

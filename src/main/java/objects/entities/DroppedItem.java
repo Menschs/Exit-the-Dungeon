@@ -1,6 +1,6 @@
 package objects.entities;
 
-import inventory.ItemStack;
+import inventory.items.ItemStack;
 import objects.entities.interfaces.Permeable;
 import objects.entities.interfaces.StaticEntity;
 import objects.hitboxes.Collider;

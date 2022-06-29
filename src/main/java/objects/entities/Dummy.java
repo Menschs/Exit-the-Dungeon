@@ -1,10 +1,11 @@
 package objects.entities;
 
-import inventory.ItemStack;
-import inventory.Itemtype;
-import inventory.Material;
-import inventory.Rarity;
-import objects.entities.interfaces.effects.StatusEffect;
+import inventory.items.ItemStack;
+import inventory.items.Itemtype;
+import inventory.items.Material;
+import inventory.items.Rarity;
+import inventory.items.items.LongSword;
+import inventory.items.items.Sword;
 import util.Point;
 import objects.entities.interfaces.Entity;
 import objects.hitboxes.Collider;
@@ -13,8 +14,6 @@ import util.Colors;
 import util.Vector;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Dummy implements Entity {
 
@@ -27,7 +26,7 @@ public class Dummy implements Entity {
     private final Hitbox hitbox;
 
     private int damagedSeconds = 0;
-    private final ItemStack[] loot = {new ItemStack(Material.sword, Itemtype.weapon, Rarity.uncommon), new ItemStack(Material.longsword, Itemtype.weapon, Rarity.legendary)};
+    private final ItemStack[] loot = {new Sword(Rarity.uncommon), new LongSword(Rarity.legendary)};
 
     private Vector velocity = new Vector(0, 0);
 

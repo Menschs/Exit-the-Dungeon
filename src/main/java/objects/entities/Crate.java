@@ -1,9 +1,11 @@
 package objects.entities;
 
-import inventory.ItemStack;
-import inventory.Itemtype;
-import inventory.Material;
-import inventory.Rarity;
+import inventory.items.ItemStack;
+import inventory.items.Itemtype;
+import inventory.items.Material;
+import inventory.items.Rarity;
+import inventory.items.items.LongSword;
+import inventory.items.items.Sword;
 import objects.entities.interfaces.StaticEntity;
 import objects.hitboxes.Hitbox;
 import util.Colors;
@@ -17,7 +19,7 @@ public class Crate implements StaticEntity {
     private final int x, y;
     private final Hitbox hitbox;
 
-    private final ItemStack[] loot = {new ItemStack(Material.sword, Itemtype.weapon, Rarity.uncommon), new ItemStack(Material.longsword, Itemtype.weapon, Rarity.legendary)};
+    private final ItemStack[] loot = {new Sword(Rarity.uncommon), new LongSword(Rarity.legendary)};
 
     private boolean dead;
 
