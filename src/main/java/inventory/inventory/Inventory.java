@@ -1,8 +1,9 @@
-package inventory;
+package inventory.inventory;
+
+import inventory.items.ItemStack;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class Inventory {

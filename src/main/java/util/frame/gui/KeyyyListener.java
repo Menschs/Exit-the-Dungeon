@@ -1,9 +1,10 @@
 package util.frame.gui;
 
-import inventory.ItemStack;
-import inventory.Itemtype;
-import inventory.Material;
-import inventory.Rarity;
+import inventory.items.ItemStack;
+import inventory.items.Itemtype;
+import inventory.items.Material;
+import inventory.items.Rarity;
+import inventory.items.items.LongSword;
 import objects.entities.*;
 import objects.elements.Bomb;
 import objects.entities.statuseffects.HealingEffect;
@@ -19,7 +20,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeyyyListener implements KeyListener, MouseListener, MouseMotionListener,  Updating {
+public class KeyyyListener implements KeyListener, MouseListener, MouseMotionListener,  Updating, MouseWheelListener {
 
     private final List<String> pressed = new ArrayList<>();
 
@@ -69,11 +70,11 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
         if(p.hasOpenInventory()) {
             switch (key) {
                 case "o" -> {
-                    p.addItem(new ItemStack(Material.longsword, Itemtype.weapon, Rarity.weird).setAmount(20));
+                    p.addItem(new LongSword(Rarity.legendary).setAmount(20));
                     return;
                 }
                 case "p" -> {
-                    p.getInventory().removeItem(new ItemStack(Material.longsword, Itemtype.weapon, Rarity.weird).setAmount(3));
+                    p.getInventory().removeItem(new LongSword(Rarity.legendary).setAmount(3));
                     return;
                 }
                 case "r" -> {
@@ -121,7 +122,7 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
             }
             case "h" -> {
                 HealingEffect healing = new HealingEffect();
-                healing.setLevel(-1);
+                healing.setLevel(2);
                 healing.setTime(12);
                 p.addEffect(healing);
             }
@@ -206,6 +207,13 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        Player p = ExitTheDungeon.getPlayer();
+        if(p.hasOpenInventory())
+            p.getOpenedInventory().hover(e.getX(), e.getY());
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
 
     }
 }

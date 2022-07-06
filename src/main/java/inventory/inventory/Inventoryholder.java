@@ -1,8 +1,7 @@
-package inventory;
+package inventory.inventory;
 
+import inventory.items.ItemStack;
 import objects.entities.DroppedItem;
-
-import java.util.Objects;
 
 public interface Inventoryholder {
 

@@ -1,6 +1,13 @@
 package objects.entities;
 
-import inventory.*;
+import inventory.inventory.Inventory;
+import inventory.inventory.InventoryView;
+import inventory.inventory.Inventoryholder;
+import inventory.items.ItemStack;
+import inventory.items.Itemtype;
+import inventory.items.Material;
+import inventory.items.Rarity;
+import inventory.items.items.Sword;
 import main.ExitTheDungeon;
 import objects.entities.interfaces.Entity;
 import objects.entities.interfaces.effects.StatusEffect;
@@ -56,7 +63,7 @@ public class Player implements Entity, Inventoryholder {
         });
         rotate(0);
         create();
-        inventory.addItem(new ItemStack(Material.sword, Itemtype.weapon, Rarity.rare));
+        inventory.addItem(new Sword(Rarity.rare));
     }
 
     boolean moved = false;

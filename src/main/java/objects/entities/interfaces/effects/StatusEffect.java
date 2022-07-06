@@ -27,7 +27,7 @@ public interface StatusEffect {
 
     default void paint(Graphics2D g, int x, int y) {
         String minus = (getLevel() < 0) ? "  - " : "  ";
-        Text t = new Text(getEffectIdentifier().getName() + minus + RomanNumber.toRoman(getLevel()) + "  " + getTime() + "s", x, y, getEffectIdentifier().getColor());
+        Text t = new Text(getEffectIdentifier().getColor().getIdentifier() + getEffectIdentifier().getName() + minus + RomanNumber.toRoman(getLevel()) + "  " + getTime() + "s", x, y);
         t.setCenter(TextCenter.left);
         t.paint(g);
     }

@@ -1,6 +1,6 @@
 package objects.entities.interfaces;
 
-import inventory.ItemStack;
+import inventory.items.ItemStack;
 import main.ExitTheDungeon;
 import objects.entities.interfaces.effects.StatusEffect;
 import objects.entities.interfaces.effects.StatusEffects;
@@ -12,7 +12,6 @@ import util.Vector;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.List;
 
 public interface Entity extends Updating, Damageable {
 

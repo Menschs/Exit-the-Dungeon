@@ -1,7 +1,10 @@
-package inventory;
+package inventory.inventory;
 
+import inventory.items.ItemStack;
 import main.ExitTheDungeon;
 import objects.entities.Player;
+import util.Colors;
+import util.frame.gui.Text;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -13,6 +16,8 @@ public class InventoryView {
     private static final int x = 30;
 
     public final List<Inventory> invs;
+    private ItemStack paintLore = null;
+    private int[] lore = null;
 
     public InventoryView(Inventory... invs) {
         this.invs = Arrays.asList(invs);
@@ -21,6 +26,18 @@ public class InventoryView {
     public void paint(Graphics2D g) {
         for (int i = 0; i < invs.size(); i++) {
             invs.get(i).paint(g, x + 150*i);
+        }
+        if(paintLore != null) {
+            List<Text> loreText = paintLore.getLore();
+            int x = lore[0] + 20;
+            int y = lore[1];
+            for (int i = 0; i < loreText.size(); i++) {
+                loreText.get(i).setX(x + 5);
+                loreText.get(i).setY(y + 15 + i * 15);
+            }
+            g.setColor(Colors.black.getColor());
+            g.fillRoundRect(x, y, 200, loreText.size() * 15 + 5, 5, 5);
+            loreText.forEach(text -> text.paint(g));
         }
         //g.setColor(Color.red);
         //for (int i = 0; i < invs.size(); i++) {
@@ -57,6 +74,18 @@ public class InventoryView {
                 item.setAmount(added);
             }
         }
+    }
+
+    public void hover(int x, int y) {
+        Player p = ExitTheDungeon.getPlayer();
+        Inventory inv = getInventory(x);
+        ItemStack item = getItem(x, y);
+        if(item == null) {
+            paintLore = null;
+            return;
+        }
+        paintLore = item;
+        lore = new int[] {x, y};
     }
 
     public boolean drop(int x, int y) {

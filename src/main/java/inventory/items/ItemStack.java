@@ -1,11 +1,14 @@
-package inventory;
+package inventory.items;
 
 import objects.entities.DroppedItem;
+import util.frame.gui.Text;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class ItemStack {
+public abstract class ItemStack {
 
     private final Material material;
     private final Itemtype type;
@@ -24,8 +27,14 @@ public class ItemStack {
     }
 
     @Override
-    protected ItemStack clone() {
-        return new ItemStack(material, type, rarity).setAmount(amount);
+    public ItemStack clone() {
+        ItemStack clone = null;
+        try {
+            clone = (ItemStack) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return clone;
     }
 
     public int remove(int amount) {
@@ -92,4 +101,6 @@ public class ItemStack {
     public void setRarity(Rarity rarity) {
         this.rarity = rarity;
     }
+
+    public abstract List<Text> getLore();
 }
