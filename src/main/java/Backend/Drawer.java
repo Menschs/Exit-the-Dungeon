@@ -56,7 +56,7 @@ public class Drawer {
     FloatBuffer objectBuffer;
     private float vertices[];
     private int indices[];
-
+    int objectTextureIndices[];
     private int objectBufferID, amountObjects = 0;
 
     public Camera camera;
@@ -66,21 +66,29 @@ public class Drawer {
         //Bind pipeline and vertices
         int varloc = glGetUniformLocation(pipe, "camera");
         int samploc = glGetUniformLocation(pipe, "TEX_SAMPLER");
+        int obloc = glGetUniformLocation(pipe, "objectId");
 
         glUseProgram(pipe);
         camera.uploadToShader(varloc);
         glBindVertexArray(vaid);
-
-        glUniform1i(samploc, 0);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textures[0]);
 
         //Bind our storage buffer
         glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, objectBufferID);
 
         //Enable the vertex input layout aka vertex attribute pointer
         glEnableVertexAttribArray(0);
-        glDrawElementsInstanced(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0, amountObjects);
+
+        glUniform1i(samploc, 0);
+        glActiveTexture(GL_TEXTURE0);
+
+        //Draw single elements?
+        for (int i = 0; i < amountObjects; i++){
+            glBindTexture(GL_TEXTURE_2D, textures[objectTextureIndices[i]]);
+            glUniform1i(obloc, i);
+            glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0);
+        }
+        /*glBindTexture(GL_TEXTURE_2D, textures[0]);
+        glDrawElementsInstanced(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, 0, amountObjects);*/
 
         //Unbind stuff
         glDisableVertexAttribArray(0);
@@ -92,7 +100,7 @@ public class Drawer {
         //Set up error message output
         GLFWErrorCallback.createPrint(System.err).set();
 
-
+        objectTextureIndices = new int[maxObjectCount];
         mouseInput = MouseInput.get();
         keyInput = KeyInput.get();
 
@@ -129,10 +137,8 @@ public class Drawer {
                 "out vec2 texCords;\n" +
                 "\n" +
                 "uniform vec4 camera;\n" +
-                "\n" +
+                "uniform int objectId;\n" +
                 "flat out float depth;\n" +
-                "\n" +
-                "flat out float textureIndex;\n" +
                 "\n" +
                 "struct Obs{\n" +
                 "    vec2 pos;\n" +
@@ -148,9 +154,8 @@ public class Drawer {
                 "\n" +
                 "void main() {\n" +
                 "    texCords = vec2(max(0, pos.x), max(0, pos.y));\n" +
-                "    gl_Position = vec4(((pos.x * ObjectBuffer.objects[gl_InstanceID].scaling.x - camera.x + ObjectBuffer.objects[gl_InstanceID].pos.x) * camera.z) / camera.w, ((pos.y * ObjectBuffer.objects[gl_InstanceID].scaling.y- camera.y + ObjectBuffer.objects[gl_InstanceID].pos.y)) / camera.w, 0.0f, 1.0f);\n" +
-                "    depth = ObjectBuffer.objects[gl_InstanceID].depth;\n" +
-                "    textureIndex = ObjectBuffer.objects[gl_InstanceID].textureIndex;\n" +
+                "    gl_Position = vec4(((pos.x * ObjectBuffer.objects[objectId].scaling.x - camera.x + ObjectBuffer.objects[objectId].pos.x) * camera.z) / camera.w, ((pos.y * ObjectBuffer.objects[objectId].scaling.y- camera.y + ObjectBuffer.objects[objectId].pos.y)) / camera.w, 0.0f, 1.0f);\n" +
+                "    depth = ObjectBuffer.objects[objectId].depth;\n" +
                 "}";
 
         String fragShderSrc = "#version 430 core\n" +
@@ -159,7 +164,6 @@ public class Drawer {
                 "\n" +
                 "flat in float depth;\n" +
                 "uniform sampler2D TEX_SAMPLER;\n" +
-                "flat in float textureIndex;\n" +
                 "\n" +
                 "out vec4 color;\n" +
                 "\n" +
@@ -243,10 +247,11 @@ public class Drawer {
 
     }
 
-    public int addObject(ObjectData o){
+    public int addObject(ObjectData o, int textureIndex){
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, objectBufferID);
         glBufferSubData(GL_SHADER_STORAGE_BUFFER, amountObjects * 8 * 4, o.data);
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+        objectTextureIndices[amountObjects] = textureIndex;
         amountObjects++;
         return amountObjects - 1;
     }

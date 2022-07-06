@@ -19,16 +19,16 @@ public class Test extends Game{
         updateObjectPosition(oID, o.data[0], o.data[1]);
 
         if(isKeyPressed(GLFW_KEY_A)){
-            cx -= deltaTime * 2;
+            cx -= deltaTime * 4;
         }
         if(isKeyPressed(GLFW_KEY_D)){
-            cx += deltaTime * 2;
+            cx += deltaTime * 4;
         }
         if(isKeyPressed(GLFW_KEY_W)){
-            cy += deltaTime * 2;
+            cy += deltaTime * 4;
         }
         if(isKeyPressed(GLFW_KEY_S)){
-            cy -= deltaTime * 2;
+            cy -= deltaTime * 4;
         }
         setCameraPos(cx, cy);
     }
@@ -41,23 +41,24 @@ public class Test extends Game{
         o.data[0] = 1.0f;
         o.data[2] = 1.0f;
         o.data[3] = 1.0f;
-        oID = addObject(o);
+        oID = addObject(o, 1);
 
         ObjectData o2 = new ObjectData();
         o2.data[0] = -3.0f;
         o2.data[1] = -3.0f;
         o2.data[2] = 0.5f;
         o2.data[3] = 0.5f;
-        addObject(o2);
+        addObject(o2, 0);
 
         ObjectData o3 = new ObjectData();
         o3.data[0] = -1.0f;
         o3.data[1] = 1.0f;
         o3.data[2] = 1.5f;
         o3.data[3] = 1.5f;
-        addObject(o3);
+        addObject(o3, 0);
 
         drawer.addTexture("assets/textures/MTest.jpg");
+        drawer.addTexture("assets/textures/Character With Hat Right.png");
     }
 
 }

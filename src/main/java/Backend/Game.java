@@ -43,8 +43,8 @@ public abstract class Game {
         glfwWindowShouldClose(Drawer.getWindow());
     }
 
-    public int addObject(ObjectData o){
-        return drawer.addObject(o);
+    public int addObject(ObjectData o, int textureIndex){
+        return drawer.addObject(o, textureIndex);
     }
     public void updateObjectPosition(int ID, float newX, float newY){
         drawer.updateObjectPosition(ID, newX, newY);
