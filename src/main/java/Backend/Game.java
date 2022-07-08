@@ -46,6 +46,10 @@ public abstract class Game {
     public int addObject(ObjectData o, int textureIndex){
         return drawer.addObject(o, textureIndex);
     }
+
+    public void setObjectTextureIndex(int objectIndex, int n_textureIndex){
+        drawer.setObjectTextureIndex(objectIndex, n_textureIndex);
+    }
     public void updateObjectPosition(int ID, float newX, float newY){
         drawer.updateObjectPosition(ID, newX, newY);
     }

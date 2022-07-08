@@ -43,6 +43,10 @@ public class Drawer {
         return mouseInput.posX;
     }
 
+    public void setObjectTextureIndex(int objectIndex, int n_textureIndex){
+        objectTextureIndices[objectIndex] = n_textureIndex;
+    }
+
     public double getMouseY(){
         return mouseInput.posY;
     }
