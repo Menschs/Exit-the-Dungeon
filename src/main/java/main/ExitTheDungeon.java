@@ -1,10 +1,13 @@
 package main;
 
+import Backend.Game;
+import Backend.ObjectData;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import objects.entities.Player;
 import objects.interfaces.Updating;
+import textures.Texture;
 import util.frame.gui.Drawboard;
 import util.frame.gui.HUDs;
 import util.frame.gui.GUI;
@@ -20,11 +23,14 @@ import java.io.IOException;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 
-public class ExitTheDungeon {
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+
+public class ExitTheDungeon extends Game {
 
     public static JFrame frame = new JFrame("Exit the Dungeon");;
 
-    private static final Player p = new Player(200, 200, 0);
+    private static Player p;
     private static final Drawboard board = new Drawboard();
     private static DiscordRichPresence rp = new DiscordRichPresence.Builder("starting...").setStartTimestamps(System.currentTimeMillis()/1000).build();
 
@@ -33,10 +39,14 @@ public class ExitTheDungeon {
     private static final HashMap<HUDs, GUI> huds = new HashMap<>();
     private static GUI gui = new StartGUI();
 
+    private static ExitTheDungeon instance;
+
     public static void main(String[] args) {
-        discord();
-        lorenzWindow();
-        tick();
+        instance = new ExitTheDungeon();
+        instance.runGame();
+        //discord();
+        //lorenzWindow();
+        //tick();
     }
 
     public static void discord() {
@@ -201,5 +211,37 @@ public class ExitTheDungeon {
 
     public static void setStarted(boolean started) {
         ExitTheDungeon.started = started;
+    }
+
+
+    private ObjectData o;
+    private int oID;
+    private float cx = 0, cy = 0;
+
+    @Override
+    public void runGameUpdate() {
+        if(isKeyPressed(GLFW_KEY_A)){
+            cx -= deltaTime * 4;
+        }
+        if(isKeyPressed(GLFW_KEY_D)){
+            cx += deltaTime * 4;
+        }
+        if(isKeyPressed(GLFW_KEY_W)){
+            cy += deltaTime * 4;
+        }
+        if(isKeyPressed(GLFW_KEY_S)){
+            cy -= deltaTime * 4;
+        }
+        setCameraPos(cx, cy);
+    }
+
+    @Override
+    public void init() {
+        Texture.loadTextures();
+        p  = new Player(200, 200, 0);
+    }
+
+    public static ExitTheDungeon getInstance() {
+        return instance;
     }
 }

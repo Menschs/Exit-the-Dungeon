@@ -1,0 +1,16 @@
+#texture
+'type': player_skin
+texture:
+    '0': hat/left1
+    '1': hat/left2
+    '2': hat/right1
+    '3': hat/right2
+animation:
+    'delay': 500
+states:
+    left:
+        '0': 0
+        '1': 1
+    right:
+        '0': 2
+        '1': 3

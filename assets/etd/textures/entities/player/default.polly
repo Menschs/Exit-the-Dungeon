@@ -1,0 +1,10 @@
+#texture
+'type': player_skin
+texture:
+    '0': default/left
+    '1': default/right
+states:
+    left:
+       '0': 0
+    right:
+       '0': 1

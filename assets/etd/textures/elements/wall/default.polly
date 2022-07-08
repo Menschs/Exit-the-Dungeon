@@ -1,0 +1,4 @@
+#texture
+'type': wall_skin
+texture:
+    '0': default/tree

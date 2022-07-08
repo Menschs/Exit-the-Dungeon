@@ -42,7 +42,7 @@ public class InventoryView {
         //g.setColor(Color.red);
         //for (int i = 0; i < invs.size(); i++) {
         //    int sX = InventoryView.x + 150*i;
-        //        Inventory inv = invs.get(i);
+        //        Inventory inv = invs.getTextureObject(i);
         //        for (int i1 = 0; i1 < inv.getItems().size(); i1++) {
         //            int sY = Inventory.y + i1 * 20;
         //            g.drawRect(sX, sY, 120, 20);
