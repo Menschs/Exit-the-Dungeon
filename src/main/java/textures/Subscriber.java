@@ -2,7 +2,7 @@ package textures;
 
 public interface Subscriber {
 
-    void update(int newIndex);
+    void updateSubscriber(int newIndex);
 
     String getState();
 }

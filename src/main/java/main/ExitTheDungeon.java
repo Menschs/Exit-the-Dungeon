@@ -5,9 +5,13 @@ import Backend.ObjectData;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
+import objects.Ground;
+import objects.entities.Ball;
 import objects.entities.Player;
 import objects.interfaces.Updating;
 import textures.Texture;
+import util.Debugger;
+import util.Vector;
 import util.frame.gui.Drawboard;
 import util.frame.gui.HUDs;
 import util.frame.gui.GUI;
@@ -42,9 +46,9 @@ public class ExitTheDungeon extends Game {
     private static ExitTheDungeon instance;
 
     public static void main(String[] args) {
+        discord();
         instance = new ExitTheDungeon();
         instance.runGame();
-        //discord();
         //lorenzWindow();
         //tick();
     }
@@ -71,7 +75,7 @@ public class ExitTheDungeon extends Game {
 
     public static void update(String first, String second) {
         DiscordRichPresence.Builder b = new DiscordRichPresence.Builder(second);
-        b.setBigImage("test", "");
+        b.setBigImage("icon", "");
         b.setDetails(first);
         b.setStartTimestamps(rp.startTimestamp);
         rp = b.build();
@@ -216,29 +220,49 @@ public class ExitTheDungeon extends Game {
 
     private ObjectData o;
     private int oID;
-    private float cx = 0, cy = 0;
 
     @Override
     public void runGameUpdate() {
-        if(isKeyPressed(GLFW_KEY_A)){
-            cx -= deltaTime * 4;
+        double multiply = 0;
+        double rotation = 0;
+
+        for (Integer key : getPressed()) {
+            switch (key) {
+                case GLFW_KEY_W -> multiply = 0.25;
+                case GLFW_KEY_S -> multiply = -0.25;
+                case GLFW_KEY_A -> p.rotate(-2.5);
+                case GLFW_KEY_D -> p.rotate(2.5);
+            }
         }
-        if(isKeyPressed(GLFW_KEY_D)){
-            cx += deltaTime * 4;
+
+        if(isMousePressed(GLFW_MOUSE_BUTTON_LEFT)) {
+            if(p.hasOpenInventory())  {
+                p.getOpenedInventory().click((int) getMouseX(), (int) getMouseY());
+            } else {
+                Vector v = new Vector(p.getX(), p.getY(), getMouseWorldX(), getMouseWorldY());
+                new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(2));
+                p.setVelocity(p.getDirection().multiply(-0.1));
+                ExitTheDungeon.update("throwing a Ball..." , "");
+            }
         }
-        if(isKeyPressed(GLFW_KEY_W)){
-            cy += deltaTime * 4;
+        if(isMousePressed(GLFW_MOUSE_BUTTON_RIGHT)) {
+            Vector v = new Vector(p.getX(), p.getY(), getMouseWorldX(), getMouseWorldY());
+            p.rotate(v.normalize());
         }
-        if(isKeyPressed(GLFW_KEY_S)){
-            cy -= deltaTime * 4;
-        }
-        setCameraPos(cx, cy);
+        Vector v = p.getDirection();
+        v.rotate(rotation);
+        v.normalize().multiply(multiply);
+        if(v.lengthSquared() != 0) p.setVelocity(v);
+
+            Updating.update((int) deltaTime);
+            Updating.clear();
     }
 
     @Override
     public void init() {
         Texture.loadTextures();
-        p  = new Player(200, 200, 0);
+        Ground.paintGround();
+        p  = new Player(0, 0, 0);
     }
 
     public static ExitTheDungeon getInstance() {

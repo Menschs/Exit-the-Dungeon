@@ -43,11 +43,12 @@ public interface Entity extends Updating, Damageable {
     @Override
     default void tick(int curTicks) {
         Vector v = getVelocity();
-        double YperI = v.getY() / 10;
-        double XperI = v.getX() / 10;
-        for (int i = 1; i < 11; i++) {
+        double YperI = v.getY() / 5;
+        double XperI = v.getX() / 5;
             move(XperI, YperI);
-        }
+        setVelocity(getVelocity().multiply(0.9));
+        //if(!getVelocity().equals(Vector.getNullVector())) System.out.println(getVelocity().lengthSquared());
+        if(getVelocity().lengthSquared() < 0.0005) setVelocity(Vector.getNullVector());
         getEffects().values().forEach(statusEffects -> statusEffects.effect(this, curTicks));
     }
 
@@ -63,7 +64,7 @@ public interface Entity extends Updating, Damageable {
     }
 
     default void dropLoot(ItemStack item) {
-        item.drop((int) (getX() + r.nextInt(getHitbox().getWidth())), (int) (getY() + r.nextInt(getHitbox().getHeight())));
+        item.drop((int) (getX() + r.nextDouble(getHitbox().getWidth())), (int) (getY() + r.nextDouble(getHitbox().getHeight())));
     }
 
     Vector getVelocity();

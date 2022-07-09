@@ -3,6 +3,9 @@
 texture:
     '0': default/left
     '1': default/right
+scaling:
+    'x': 0.25
+    'y': 0.25
 states:
     left:
        '0': 0

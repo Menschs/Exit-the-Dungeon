@@ -2,7 +2,17 @@ package textures;
 
 public enum TextureType {
 
-    player_skin, wall_skin, ground_skin, unknown;
+    player_skin("entities.player"),
+    wall_skin("elements.wall"),
+    ground_skin("elements.ground"),
+    entity_skin("entities"),
+    unknown("");
+
+    private String directory;
+
+    TextureType(String directory) {
+        this.directory = directory;
+    }
 
     public static TextureType get(String s) {
         TextureType result;
@@ -12,5 +22,13 @@ public enum TextureType {
             result = unknown;
         }
         return result;
+    }
+
+    public String tex(String name) {
+        return this + "." + name;
+    }
+
+    public String getDirectory() {
+        return "textures." + directory + ".";
     }
 }

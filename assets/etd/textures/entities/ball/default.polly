@@ -1,0 +1,7 @@
+#texture
+'type': entity_skin
+texture:
+    '0': default/ball
+scaling:
+    'x': 0.08
+    'y': 0.08
