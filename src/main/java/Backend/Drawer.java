@@ -157,7 +157,7 @@ public class Drawer {
         //window = glfwCreateWindow(1800, 800, "Test", NULL, NULL);
         window =   glfwCreateWindow(width,
             height, "WindowSombrero",
-            glfwGetPrimaryMonitor(), NULL);
+            NULL, NULL);
         if(window == NULL) throw new RuntimeException("Creation failed: Window");
 
         //Set callbacks for window messages
