@@ -1,6 +1,7 @@
 package textures;
 
 import main.ExitTheDungeon;
+import org.intellij.lang.annotations.Identifier;
 import util.Debugger;
 import util.filelib.FileConfiguration;
 import util.filelib.exceptions.FileIncompatibleException;
@@ -70,6 +71,7 @@ public class Texture {
 
         type = TextureType.get(attributes.getOrDefault("type", "unknown"));
         String identifier = configFile.getPath().substring(configFile.getPath().indexOf("textures")).replace("\\", ".").replace(type.getDirectory(), "").replace(".polly", "");
+        System.out.println("identifier: " + identifier);
         textures.put(type + "." + identifier, this);
 
         for (int i = 0; i < attributes.size(); i++) {
