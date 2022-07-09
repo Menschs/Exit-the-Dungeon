@@ -149,7 +149,7 @@ public class Drawer {
         height = glfwGetVideoMode(glfwGetPrimaryMonitor()).height();
         //window = glfwCreateWindow(1800, 800, "Test", NULL, NULL);
         window =   glfwCreateWindow(width,
-            height, "My Title",
+            height, "WindowSombrero",
             NULL, NULL);
         if(window == NULL) throw new RuntimeException("Creation failed: Window");
 
