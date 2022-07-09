@@ -49,6 +49,14 @@ public class Skin implements Subscriber {
         data.data[3] = y;
     }
 
+    public double getScaleX() {
+        return data.data[2];
+    }
+
+    public double getScaleY() {
+        return data.data[3];
+    }
+
     @Override
     public void updateSubscriber(int newIndex) {
         if(pausedStates.contains(getState())) return;

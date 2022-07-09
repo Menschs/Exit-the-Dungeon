@@ -87,7 +87,7 @@ public class Player implements Entity, Inventoryholder {
             this.y += y;
             moved = true;
             skin.move(this.x, this.y);
-            ExitTheDungeon.getInstance().setCameraPos((float) this.x, (float) this.y);
+            ExitTheDungeon.getInstance().setCameraPos((float) (this.x - skin.getScaleX()/2), (float) (this.y - skin.getScaleY()/2));
         } else {
             if(moved) {
                 hitbox.collide(connect);
