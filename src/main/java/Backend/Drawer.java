@@ -189,7 +189,7 @@ public class Drawer {
                 "    vec2 scaling;\n" +
                 "    float depth;\n" +
                 "    float rotation;\n" +
-                "    vec2 padding;\n" +
+                "    vec2 pivot;\n" +
                 "};\n" +
                 "\n" +
                 "layout(binding = 1) buffer objectBuffer{\n" +

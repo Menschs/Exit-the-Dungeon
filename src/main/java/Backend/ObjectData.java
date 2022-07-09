@@ -7,6 +7,6 @@ public class ObjectData {
     public float scaley;
     public float depth;
     public float rotation;
-    public float padding, padding;*/
+    public float pivotx, pivoty;*/
     public float data[] = new float[8];
 }
