@@ -298,7 +298,7 @@ public class ExitTheDungeon extends Game {
             Vector v = new Vector(p.getX(), p.getY(), getMouseWorldX(), getMouseWorldY());
             p.rotate(v.normalize());
         }
-        Vector v = p.getDirection();
+        Vector v = new Vector(0, 1);
         v.rotateByDegrees(rotation);
         v.normalize().multiply(multiply);
         if(v.lengthSquared() != 0) p.setVelocity(v);
