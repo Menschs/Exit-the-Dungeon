@@ -1,4 +1,4 @@
-#version 430 core +
+#version 430 core
 
 layout (location = 0) in vec2 pos;
 
@@ -12,7 +12,7 @@ struct Obs{
     vec2 pos;
     vec2 scaling;
     float depth;
-    float someValue;
+    float rotation;
     vec2 padding;
 };
 
@@ -21,8 +21,28 @@ layout(binding = 1) buffer objectBuffer{
 } ObjectBuffer;
 
 void main() {
-    texCords = vec2(max(0, pos.x), max(0, pos.y));
-    gl_Position = vec4(((pos.x * ObjectBuffer.objects[objectId].scaling.x - camera.x + ObjectBuffer.objects[objectId].pos.x) * camera.z) / camera.w, ((pos.y * ObjectBuffer.objects[objectId].scaling.y- camera.y + ObjectBuffer.objects[objectId].pos.y)) / camera.w, 0.0f, 1.0f);
+    texCords = pos;
+    //gl_Position = vec4(((pos.x * ObjectBuffer.objects[objectId].scaling.x - camera.x + ObjectBuffer.objects[objectId].pos.x) * camera.z) / camera.w, ((pos.y * ObjectBuffer.objects[objectId].scaling.y- camera.y + ObjectBuffer.objects[objectId].pos.y)) / camera.w, ObjectBuffer.objects[objectId].depth, 1.0f);
+    vec2 mpos = pos;
+
+    //Rotate
+    mpos.x = (mpos.x * cos(ObjectBuffer.objects[objectId].rotation) - mpos.y * sin(ObjectBuffer.objects[objectId].rotation));
+    mpos.y = (mpos.y * cos(ObjectBuffer.objects[objectId].rotation) + mpos.x * sin(ObjectBuffer.objects[objectId].rotation));
+
+    //Scale
+    mpos = mpos * ObjectBuffer.objects[objectId].scaling;
+
+    //Transform with worldspace coordinates and camera coordinates
+    mpos = mpos + ObjectBuffer.objects[objectId].pos - camera.xy;
+
+    //Scale with width/height ratio
+    mpos.x = mpos.x * camera.z;
+
+    //Transform by camera distance
+    mpos = mpos / camera.w;
+
+    gl_Position = vec4(mpos, depth, 1.0f);
+    texCords = vec2(max(0, texCords.x), max(0, texCords.y));
     depth = ObjectBuffer.objects[objectId].depth;
 }
 
@@ -34,16 +54,12 @@ in vec2 texCords;
 
 flat in float depth;
 uniform sampler2D TEX_SAMPLER;
-uniform image2D delphi;
+
 out vec4 color;
 
 void main(){
     vec4 c = texture(TEX_SAMPLER, texCords);
-    if(gl_FragCoord.z < imageLoad(delphi, gl_FragCoord.xy)){
-        discard;
-    }
     color = c;
-    imageStore(delphi, glFragCoord.xy, imageStore(delphi, gl_FragCoord.xy, gl_FragCoord.z));
 }
 
 

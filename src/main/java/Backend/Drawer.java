@@ -190,8 +190,28 @@ public class Drawer {
                 "} ObjectBuffer;\n" +
                 "\n" +
                 "void main() {\n" +
-                "    texCords = vec2(max(0, pos.x), max(0, pos.y));\n" +
-                "    gl_Position = vec4(((pos.x * ObjectBuffer.objects[objectId].scaling.x - camera.x + ObjectBuffer.objects[objectId].pos.x) * camera.z) / camera.w, ((pos.y * ObjectBuffer.objects[objectId].scaling.y- camera.y + ObjectBuffer.objects[objectId].pos.y)) / camera.w, 0.0f, 1.0f);\n" +
+                "    texCords = pos;\n" +
+                "    //gl_Position = vec4(((pos.x * ObjectBuffer.objects[objectId].scaling.x - camera.x + ObjectBuffer.objects[objectId].pos.x) * camera.z) / camera.w, ((pos.y * ObjectBuffer.objects[objectId].scaling.y- camera.y + ObjectBuffer.objects[objectId].pos.y)) / camera.w, ObjectBuffer.objects[objectId].depth, 1.0f);\n" +
+                "    vec2 mpos = pos;\n" +
+                "\n" +
+                "    //Rotate\n" +
+                "    mpos.x = (mpos.x * cos(ObjectBuffer.objects[objectId].rotation) - mpos.y * sin(ObjectBuffer.objects[objectId].rotation));\n" +
+                "    mpos.y = (mpos.y * cos(ObjectBuffer.objects[objectId].rotation) + mpos.x * sin(ObjectBuffer.objects[objectId].rotation));\n" +
+                "\n" +
+                "    //Scale\n" +
+                "    mpos = mpos * ObjectBuffer.objects[objectId].scaling;\n" +
+                "\n" +
+                "    //Transform with worldspace coordinates and camera coordinates\n" +
+                "    mpos = mpos + ObjectBuffer.objects[objectId].pos - camera.xy;\n" +
+                "\n" +
+                "    //Scale with width/height ratio\n" +
+                "    mpos.x = mpos.x * camera.z;\n" +
+                "\n" +
+                "    //Transform by camera distance\n" +
+                "    mpos = mpos / camera.w;\n" +
+                "\n" +
+                "    gl_Position = vec4(mpos, depth, 1.0f);\n" +
+                "    texCords = vec2(max(0, texCords.x), max(0, texCords.y));\n" +
                 "    depth = ObjectBuffer.objects[objectId].depth;\n" +
                 "}";
 
@@ -206,7 +226,7 @@ public class Drawer {
                 "\n" +
                 "void main(){\n" +
                 "    vec4 c = texture(TEX_SAMPLER, texCords);\n" +
-                "    color = c;\n"+
+                "    color = c;\n" +
                 "}";
 
         //Create vertex shader
