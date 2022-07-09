@@ -293,12 +293,12 @@ public class Drawer {
             return amountObjects - 1;
         }
         else{
+            int index = freeIndices.remove();
             glBindBuffer(GL_SHADER_STORAGE_BUFFER, objectBufferID);
-            glBufferSubData(GL_SHADER_STORAGE_BUFFER, freeIndices * 8 * 4, o.data);
+            glBufferSubData(GL_SHADER_STORAGE_BUFFER, index * 8 * 4, o.data);
             glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-            objectTextureIndices[amountObjects] = textureIndex;
-            amountObjects++;
-            return amountObjects - 1;
+            objectTextureIndices[index] = textureIndex;
+            return index;
         }
     }
 
