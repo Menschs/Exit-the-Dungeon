@@ -148,9 +148,9 @@ public class Drawer {
         width = glfwGetVideoMode(glfwGetPrimaryMonitor()).width();
         height = glfwGetVideoMode(glfwGetPrimaryMonitor()).height();
         //window = glfwCreateWindow(1800, 800, "Test", NULL, NULL);
-        window =   glfwCreateWindow(glfwGetVideoMode(glfwGetPrimaryMonitor()).width(),
-            glfwGetVideoMode(glfwGetPrimaryMonitor()).height(), "My Title",
-            glfwGetPrimaryMonitor(), 0);
+        window =   glfwCreateWindow(width,
+            height, "My Title",
+            NULL, NULL);
         if(window == NULL) throw new RuntimeException("Creation failed: Window");
 
         //Set callbacks for window messages
@@ -181,7 +181,7 @@ public class Drawer {
                 "    vec2 pos;\n" +
                 "    vec2 scaling;\n" +
                 "    float depth;\n" +
-                "    float someValue;\n" +
+                "    float rotation;\n" +
                 "    vec2 padding;\n" +
                 "};\n" +
                 "\n" +
