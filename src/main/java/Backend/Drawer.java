@@ -103,6 +103,8 @@ public class Drawer {
         glBindVertexArray(0);
         glUseProgram(0);
     }
+
+    public int width = 600, height = 400;
     private Drawer()
     {
         //Set up error message output
@@ -121,7 +123,7 @@ public class Drawer {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
         //Create the window
-        window = glfwCreateWindow(600, 400, "Test", NULL, NULL);
+        window = glfwCreateWindow(width, height, "Test", NULL, NULL);
         if(window == NULL) throw new RuntimeException("Creation failed: Window");
 
         //Set callbacks for window messages
