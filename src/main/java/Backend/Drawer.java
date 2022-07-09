@@ -201,8 +201,6 @@ public class Drawer {
                 "\n" +
                 "void main(){\n" +
                 "    vec4 c = texture(TEX_SAMPLER, texCords);\n" +
-                "    if(c.w == 0.0){\n"+
-                "       discard;}\n"+
                 "    color = c;\n"+
                 "}";
 
@@ -280,6 +278,8 @@ public class Drawer {
         objectBuffer = BufferUtils.createFloatBuffer(maxObjectCount * 8);
         glBufferData(GL_SHADER_STORAGE_BUFFER, objectBuffer, GL_DYNAMIC_READ);
 
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     public int addObject(ObjectData o, int textureIndex){
