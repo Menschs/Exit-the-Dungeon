@@ -20,6 +20,9 @@ public abstract class Game {
         return drawer.isKeyPressed(keycode);
     }
 
+    public Camera getCamera(){
+        return drawer.getCamera();
+    }
     public double getMouseX(){
         return drawer.getMouseX();
     }

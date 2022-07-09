@@ -47,6 +47,10 @@ public class Drawer {
         objectTextureIndices[objectIndex] = n_textureIndex;
     }
 
+    public Camera getCamera(){
+        return camera;
+    }
+
     public double getMouseY(){
         return mouseInput.posY;
     }
