@@ -43,7 +43,7 @@ public class Drawer {
         return keyInput.keyPressed(keycode);
     }
 
-    public List<Integer> getPressed() {
+    public List<Long> getPressed() {
         return keyInput.getPressed();
     }
 
@@ -305,6 +305,7 @@ public class Drawer {
     private int amountTextures = 0;
     private int textures[] = new int[128];
     public int addTexture(String filename){
+        System.out.println(filename);
         //Load buffered image to file
         BufferedImage b = null;
         try {b = ImageIO.read(new File(filename));} catch (IOException e){

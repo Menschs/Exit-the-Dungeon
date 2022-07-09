@@ -24,8 +24,10 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
@@ -221,29 +223,61 @@ public class ExitTheDungeon extends Game {
     private ObjectData o;
     private int oID;
 
+    private final List<String> pressed = new ArrayList<>();
+
+    private boolean isHolding(long key) {
+        return pressed.contains("k" + key);
+    }
+
+    private void hold(long key) {
+        if(!pressed.contains("k" + key)) pressed.add("k" + key);
+    }
+
+    private void releaseKey(long key) {
+        pressed.remove("k"  + key);
+    }
+
+    private boolean isHoldingMouse(String key) {
+        return pressed.contains(key);
+    }
+
+    private void holdMouse(String key) {
+        if(!pressed.contains(key)) pressed.add(key);
+    }
+
+    private void releaseMouse(String key) {
+        pressed.remove(key);
+    }
+
     @Override
     public void runGameUpdate() {
         double multiply = 0;
         double rotation = 0;
 
-        for (Integer key : getPressed()) {
-            switch (key) {
+        for (Long key : getPressed()) {
+            switch (Math.toIntExact(key)) {
                 case GLFW_KEY_W -> multiply = 0.25;
                 case GLFW_KEY_S -> multiply = -0.25;
-                case GLFW_KEY_A -> p.rotate(-2.5);
-                case GLFW_KEY_D -> p.rotate(2.5);
+                case GLFW_KEY_D -> p.rotate(-2.5);
+                case GLFW_KEY_A -> p.rotate(2.5);
             }
+            hold(key);
         }
 
         if(isMousePressed(GLFW_MOUSE_BUTTON_LEFT)) {
             if(p.hasOpenInventory())  {
                 p.getOpenedInventory().click((int) getMouseX(), (int) getMouseY());
             } else {
-                Vector v = new Vector(p.getX(), p.getY(), getMouseWorldX(), getMouseWorldY());
-                new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(2));
-                p.setVelocity(p.getDirection().multiply(-0.1));
-                ExitTheDungeon.update("throwing a Ball..." , "");
+                if(!isHoldingMouse("left")) {
+                    Vector v = new Vector(p.getX(), p.getY(), getMouseWorldX(), getMouseWorldY());
+                    new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(2));
+                    p.setVelocity(p.getDirection().multiply(-0.1));
+                    ExitTheDungeon.update("throwing a Ball..." , "");
+                    holdMouse("left");
+                }
             }
+        } else {
+            releaseMouse("left");
         }
         if(isMousePressed(GLFW_MOUSE_BUTTON_RIGHT)) {
             Vector v = new Vector(p.getX(), p.getY(), getMouseWorldX(), getMouseWorldY());

@@ -21,7 +21,11 @@ public abstract class Game {
         return drawer.isKeyPressed(keycode);
     }
 
-    public List<Integer> getPressed() {
+    public void disableFreeObject(int objectIndex) {
+        drawer.disableFreeObject(objectIndex);
+    }
+
+    public List<Long> getPressed() {
         return drawer.getPressed();
     }
 

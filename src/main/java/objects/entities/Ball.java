@@ -125,5 +125,6 @@ public class Ball implements Entity {
     @Override
     public void kill() {
         removeEntity();
+        skin.remove();
     }
 }

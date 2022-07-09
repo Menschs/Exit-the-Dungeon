@@ -87,6 +87,7 @@ public class Skin implements Subscriber {
         }
     }
 
-    public void hide() {
+    public void remove() {
+        ExitTheDungeon.getInstance().disableFreeObject(OID);
     }
 }
