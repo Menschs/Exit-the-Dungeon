@@ -67,7 +67,6 @@ public class Texture {
 
     private void init() {
         attributes = config.getLoaded();
-        //attributes.forEach((s, s2) -> System.out.println(s + " " + s2));
 
         type = TextureType.get(attributes.getOrDefault("type", "unknown"));
         String identifier = configFile.getPath().substring(configFile.getPath().indexOf("textures")).replace("\\", ".").replace("/", ".").replace(type.getDirectory(), "").replace(".polly", "");
