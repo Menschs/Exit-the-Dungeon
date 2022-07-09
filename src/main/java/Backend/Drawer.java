@@ -176,7 +176,7 @@ public class Drawer {
                 "    vec2 pos;\n" +
                 "    vec2 scaling;\n" +
                 "    float depth;\n" +
-                "    float textureIndex;\n" +
+                "    float someValue;\n" +
                 "    vec2 padding;\n" +
                 "};\n" +
                 "\n" +
