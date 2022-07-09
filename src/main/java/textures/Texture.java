@@ -70,8 +70,7 @@ public class Texture {
         //attributes.forEach((s, s2) -> System.out.println(s + " " + s2));
 
         type = TextureType.get(attributes.getOrDefault("type", "unknown"));
-        String identifier = configFile.getPath().substring(configFile.getPath().indexOf("textures")).replace("\\", ".").replace(type.getDirectory(), "").replace(".polly", "");
-        System.out.println("identifier: " + identifier);
+        String identifier = configFile.getPath().substring(configFile.getPath().indexOf("textures")).replace("\\", ".").replace("/", ".").replace(type.getDirectory(), "").replace(".polly", "");
         textures.put(type + "." + identifier, this);
 
         for (int i = 0; i < attributes.size(); i++) {
