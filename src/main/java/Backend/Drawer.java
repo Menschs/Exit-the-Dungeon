@@ -255,6 +255,9 @@ public class Drawer {
         objectBuffer = BufferUtils.createFloatBuffer(maxObjectCount * 8);
         glBufferData(GL_SHADER_STORAGE_BUFFER, objectBuffer, GL_DYNAMIC_READ);
 
+        //Evil Alpha
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     public int addObject(ObjectData o, int textureIndex){
@@ -295,8 +298,8 @@ public class Drawer {
         //Load texture to gpu
         textures[amountTextures] = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, textures[amountTextures]);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, b.getWidth(), b.getHeight(), 0, GL_RGBA, GL_FLOAT, pixels);
