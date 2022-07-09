@@ -36,7 +36,7 @@ public class Test extends Game{
 
     @Override
     public void init() {
-        o = new ObjectData();
+        /*o = new ObjectData();
         o.data[0] = 1.0f;
         o.data[0] = 1.0f;
         o.data[2] = 1.0f;
@@ -55,9 +55,9 @@ public class Test extends Game{
         o3.data[1] = 1.0f;
         o3.data[2] = 1.5f;
         o3.data[3] = 1.5f;
-        addObject(o3, 0);
+        addObject(o3, 0);*/
 
-        drawer.addTexture("assets/textures/MTest.jpg");
+        drawer.addTexture("assets/etd/textures/entities/player/default/right.png");
     }
 
 }

@@ -298,7 +298,8 @@ public class Drawer {
                 pixels[((b.getHeight() - y - 1) * b.getWidth() + x) * 4 + 0] =  c.getRed() / 255.0f;
                 pixels[((b.getHeight() - y - 1) * b.getWidth() + x) * 4 + 1] =  c.getGreen() / 255.0f;
                 pixels[((b.getHeight() - y - 1) * b.getWidth() + x) * 4 + 2] =  c.getBlue() / 255.0f;
-                pixels[((b.getHeight() - y - 1) * b.getWidth() + x) * 4 + 3] =  c.getAlpha() / 255.0f;
+                float alpha []= new float[1];
+                pixels[((b.getHeight() - y - 1) * b.getWidth() + x) * 4 + 3] =  b.getAlphaRaster().getPixel(x, y, alpha)[0] / 255.0f;
             }
         }
 
