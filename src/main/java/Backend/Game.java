@@ -62,7 +62,7 @@ public abstract class Game {
     }
 
     public void endGame(){
-        glfwWindowShouldClose(Drawer.getWindow());
+        glfwSetWindowShouldClose(Drawer.getWindow(), true);
     }
 
     public int addObject(ObjectData o, int textureIndex){
