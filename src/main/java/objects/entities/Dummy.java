@@ -1,11 +1,13 @@
 package objects.entities;
 
+import Backend.Drawer;
 import inventory.items.ItemStack;
 import inventory.items.Itemtype;
 import inventory.items.Material;
 import inventory.items.Rarity;
 import inventory.items.items.LongSword;
 import inventory.items.items.Sword;
+import org.lwjgl.glfw.GLFW;
 import util.Point;
 import objects.entities.interfaces.Entity;
 import objects.hitboxes.Collider;
@@ -38,7 +40,7 @@ public class Dummy implements Entity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while(health > 0) {
+                while(health > 0 && !GLFW.glfwWindowShouldClose(Drawer.getWindow())) {
                     damagedSeconds--;
                     try {
                         Thread.sleep(1000);

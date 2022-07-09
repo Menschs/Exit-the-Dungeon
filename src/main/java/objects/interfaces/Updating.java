@@ -8,8 +8,8 @@ public interface Updating {
     List<Updating> update = new ArrayList<>();
     List<Updating> remove = new ArrayList<>();
 
-    static void update(int curTicks) {
-        update.forEach(updating -> updating.tick(curTicks));
+    static void update(double deltaTime) {
+        update.forEach(updating -> updating.tick(deltaTime));
     }
 
     static void clear() {
@@ -25,5 +25,5 @@ public interface Updating {
         remove.add(this);
     }
 
-    void tick(int curTicks);
+    void tick(double deltaTime);
 }

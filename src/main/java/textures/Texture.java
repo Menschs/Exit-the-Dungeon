@@ -1,7 +1,9 @@
 package textures;
 
+import Backend.Drawer;
 import main.ExitTheDungeon;
 import org.intellij.lang.annotations.Identifier;
+import org.lwjgl.glfw.GLFW;
 import util.Debugger;
 import util.filelib.FileConfiguration;
 import util.filelib.exceptions.FileIncompatibleException;
@@ -130,7 +132,7 @@ public class Texture {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (!stopTicks) {
+                while (!GLFW.glfwWindowShouldClose(Drawer.getWindow())) {
                     statedAnimations.forEach((s, integer) -> {
                         integer++;
                         List<Integer> cluster = imgCluster.get(s);

@@ -41,15 +41,16 @@ public interface Entity extends Updating, Damageable {
     Hitbox getHitbox();
 
     @Override
-    default void tick(int curTicks) {
+    default void tick(double deltaTime) {
         Vector v = getVelocity();
-        double YperI = v.getY() / 5;
-        double XperI = v.getX() / 5;
-            move(XperI, YperI);
+        double YperI = v.getY() * 15 * deltaTime;
+        double XperI = v.getX() * 15 * deltaTime;
+        move(XperI, YperI);
         setVelocity(getVelocity().multiply(0.9));
-        //if(!getVelocity().equals(Vector.getNullVector())) System.out.println(getVelocity().lengthSquared());
+        //if(!getVelocity().equals(Vector.getNullVector()))
+        //System.out.println(getVelocity().lengthSquared());
         if(getVelocity().lengthSquared() < 0.0005) setVelocity(Vector.getNullVector());
-        getEffects().values().forEach(statusEffects -> statusEffects.effect(this, curTicks));
+        getEffects().values().forEach(statusEffects -> statusEffects.effect(this, 2));
     }
 
     default void removeEntity() {

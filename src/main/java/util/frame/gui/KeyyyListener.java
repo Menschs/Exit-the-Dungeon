@@ -131,7 +131,7 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
     }
 
     @Override
-    public void tick(int curTicks) {
+    public void tick(double deltaTime) {
         if(!ExitTheDungeon.isGaming()) return;
         Player p = ExitTheDungeon.getPlayer();
         final double[] multiply = {0};

@@ -46,7 +46,7 @@ public interface Collider extends Updating {
     }
 
     @Override
-    default void tick(int curTicks) {
+    default void tick(double deltaTime) {
         //collider.forEach(collider1 -> {
         //    collider.forEach(collider2 -> {
         //        if (collider1 != collider2) {

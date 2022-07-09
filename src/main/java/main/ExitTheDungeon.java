@@ -51,8 +51,6 @@ public class ExitTheDungeon extends Game {
     public static void main(String[] args) {
         instance = new ExitTheDungeon();
         instance.runGame();
-        //lorenzWindow();
-        //tick();
     }
 
     public static void discord() {
@@ -84,93 +82,11 @@ public class ExitTheDungeon extends Game {
         DiscordRPC.discordUpdatePresence(rp);
     }
 
-    public static void tick() {
-        Thread repaint = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    board.repaint();
-                    try {
-                        Thread.sleep(1000 / 144);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    run();
-                } catch (ConcurrentModificationException | StackOverflowError cx) {
-                    run();
-                }
-            }
-        });
-        repaint.start();
-        final int[] ticksPerCurrentSecond = {0};
-        final int ticksPerSecond = 60;
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if(isGaming()) {
-                        if(ticksPerCurrentSecond[0] >= ticksPerSecond) ticksPerCurrentSecond[0] = 0;
-                        Updating.update(ticksPerCurrentSecond[0]);
-                        Updating.clear();
-                        ticksPerCurrentSecond[0]++;
-                    }
-                    try {
-                        Thread.sleep(1000 / ticksPerSecond);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    run();
-                } catch (ConcurrentModificationException | StackOverflowError cx) {
-                    run();
-                }
-            }
-        });
-        t.start();
-    }
-
-    public static void lorenzWindow() {
-
-        frame = new JFrame("Exit the Dungeon");
-
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(true);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setResizable(false);
-
-        setGui(new StartGUI());
-        //resumeGame();
-
-        frame.add(board);
-        board.addEntity(p);
-        //new Thread(new Runnable() {
-        //    @Override
-        //    public void run() {
-        //        board.repaint();
-        //    }
-        //}).start();
-        KeyyyListener listener = new KeyyyListener();
-        frame.addKeyListener(listener);
-        frame.addMouseListener(listener);
-        frame.addMouseMotionListener(listener);
-
-        icon();
-    }
-
     public static void resumeGame() {
         gaming = true;
         if(!started) {
             addHUD(HUDs.status, new StatusHUD());
             started = true;
-        }
-    }
-
-    public static void icon() {
-        try {
-            BufferedImage image = ImageIO.read(new File("assets/icon/icon.png"));
-            frame.setIconImage(image);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -271,6 +187,9 @@ public class ExitTheDungeon extends Game {
                     rotation = 90;
                     multiply = 0.25;
                 }
+                case GLFW_KEY_ESCAPE -> {
+                    endGame();
+                }
             }
             hold(key);
         }
@@ -295,7 +214,7 @@ public class ExitTheDungeon extends Game {
             } else {
                 if(!isHoldingMouse("left")) {
                     Vector v = new Vector(p.getX(), p.getY(), getMouseWorldX(), getMouseWorldY());
-                    new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(2));
+                    new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(3));
                     p.setVelocity(p.getDirection().multiply(-0.1));
                     ExitTheDungeon.update("throwing a Ball..." , "");
                     holdMouse("left");
@@ -313,7 +232,7 @@ public class ExitTheDungeon extends Game {
         v.normalize().multiply(multiply);
         if(v.lengthSquared() != 0) p.setVelocity(v);
 
-            Updating.update((int) deltaTime);
+            Updating.update(deltaTime);
             Updating.clear();
     }
 
