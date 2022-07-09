@@ -12,7 +12,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.*;
 
+import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Queue;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
@@ -73,6 +75,7 @@ public class Drawer {
     int objectTextureIndices[];
     private int objectBufferID, amountObjects = 0;
 
+    private Queue<Integer> freeIndices = new ArrayDeque<>();
     public Camera camera;
 
     public void draw()
@@ -115,6 +118,11 @@ public class Drawer {
         float possy[] = {0.0f, 0.0f};
         glBufferSubData(GL_SHADER_STORAGE_BUFFER, objectIndex * 8 * 4 + 2 * 4, possy);
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    }
+
+    public void disableFreeObject(int objectIndex){
+        disableObject(objectIndex);
+        freeIndices.add(objectIndex);
     }
 
     public int width = 1800, height = 800;
@@ -275,12 +283,23 @@ public class Drawer {
     }
 
     public int addObject(ObjectData o, int textureIndex){
-        glBindBuffer(GL_SHADER_STORAGE_BUFFER, objectBufferID);
-        glBufferSubData(GL_SHADER_STORAGE_BUFFER, amountObjects * 8 * 4, o.data);
-        glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-        objectTextureIndices[amountObjects] = textureIndex;
-        amountObjects++;
-        return amountObjects - 1;
+        if(freeIndices.isEmpty())
+        {
+            glBindBuffer(GL_SHADER_STORAGE_BUFFER, objectBufferID);
+            glBufferSubData(GL_SHADER_STORAGE_BUFFER, amountObjects * 8 * 4, o.data);
+            glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+            objectTextureIndices[amountObjects] = textureIndex;
+            amountObjects++;
+            return amountObjects - 1;
+        }
+        else{
+            glBindBuffer(GL_SHADER_STORAGE_BUFFER, objectBufferID);
+            glBufferSubData(GL_SHADER_STORAGE_BUFFER, freeIndices * 8 * 4, o.data);
+            glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+            objectTextureIndices[amountObjects] = textureIndex;
+            amountObjects++;
+            return amountObjects - 1;
+        }
     }
 
     private int amountTextures = 0;
