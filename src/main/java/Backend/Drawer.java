@@ -125,7 +125,7 @@ public class Drawer {
         freeIndices.add(objectIndex);
     }
 
-    public int width = 1800, height = 800;
+    public int width, height;
 
     private Drawer()
     {
