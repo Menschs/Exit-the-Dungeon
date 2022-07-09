@@ -145,7 +145,12 @@ public class Drawer {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
         //Create the window
-        window = glfwCreateWindow(1800, 800, "Test", NULL, NULL);
+        width = glfwGetVideoMode(glfwGetPrimaryMonitor()).width();
+        height = glfwGetVideoMode(glfwGetPrimaryMonitor()).height();
+        //window = glfwCreateWindow(1800, 800, "Test", NULL, NULL);
+        window =   glfwCreateWindow(glfwGetVideoMode(glfwGetPrimaryMonitor()).width(),
+            glfwGetVideoMode(glfwGetPrimaryMonitor()).height(), "My Title",
+            glfwGetPrimaryMonitor(), 0);
         if(window == NULL) throw new RuntimeException("Creation failed: Window");
 
         //Set callbacks for window messages
