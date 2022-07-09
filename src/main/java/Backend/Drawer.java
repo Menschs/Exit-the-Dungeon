@@ -186,7 +186,7 @@ public class Drawer {
                 "\n" +
                 "void main(){\n" +
                 "    vec4 c = texture(TEX_SAMPLER, texCords);\n" +
-                "    if(c.a == 0.0){\n"+
+                "    if(c.w == 0.0){\n"+
                 "       discard;}\n"+
                 "    color = c;\n"+
                 "}";
