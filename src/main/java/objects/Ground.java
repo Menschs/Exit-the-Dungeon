@@ -3,6 +3,7 @@ package objects;
 import Backend.ObjectData;
 import main.ExitTheDungeon;
 import textures.Texture;
+import textures.TextureType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import static main.ExitTheDungeon.getPlayer;
 
 public class Ground {
 
-    private static final Texture tex = Texture.getTextureObject("ground_skin.snow");
+    private static final Texture tex = Texture.getTextureObject(TextureType.ground_skin.tex("snow"));
     private static final List<Integer> OIDs = new ArrayList<>();
 
     public static void paintGround() {
