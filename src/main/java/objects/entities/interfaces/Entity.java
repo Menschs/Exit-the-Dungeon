@@ -48,7 +48,6 @@ public interface Entity extends Updating, Damageable {
         move(XperI, YperI);
         setVelocity(getVelocity().multiply(0.9));
         //if(!getVelocity().equals(Vector.getNullVector()))
-        //System.out.println(getVelocity().lengthSquared());
         if(getVelocity().lengthSquared() < 0.0005) setVelocity(Vector.getNullVector());
         getEffects().values().forEach(statusEffects -> statusEffects.effect(this, 2));
     }

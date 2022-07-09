@@ -174,7 +174,7 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
                 }
             }
             case 3 -> {
-                System.out.println(e.getX() + " " + e.getY());
+                //System.out.println(e.getX() + " " + e.getY());
                 Vector v = new Vector(p.getX(), p.getY(), e.getX(), e.getY());
                 p.rotate(v.normalize());
             }

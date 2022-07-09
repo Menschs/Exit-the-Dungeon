@@ -1,0 +1,7 @@
+#texture
+'type': entity_skin
+texture:
+    '0': default/wooden_chest
+scaling:
+    'x': 0.15
+    'y': 0.15

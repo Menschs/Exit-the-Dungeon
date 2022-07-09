@@ -13,13 +13,13 @@ public class Skin implements Subscriber {
     private int OID;
     protected String state;
     private float a;
+    private double theta = 0;
 
 
     private final List<String> pausedStates = new ArrayList<>();
 
     public Skin(String texture) {
         t = Texture.getTextureObject(texture);
-        System.out.println(texture + " " + t.get(""));
         state = t.getStates().get(0);
         a = t.getScalingX() / t.getScalingY();
     }
@@ -30,8 +30,13 @@ public class Skin implements Subscriber {
         if(data.data[2] == 0) data.data[2] = t.getScalingX();
         if(data.data[3] == 0) data.data[3] = t.getScalingY();
         data.data[4] = 1;
+        data.data[5] = (float) (60 * Math.PI / 180);
         OID = ExitTheDungeon.getInstance().addObject(data, t.get(state));
         if(t.isAnimated()) t.subscribe(this);
+    }
+
+    public void rotate(double theta) {
+        this.theta = theta;
     }
 
     public void scaleX(float x) {
@@ -97,5 +102,9 @@ public class Skin implements Subscriber {
 
     public void remove() {
         ExitTheDungeon.getInstance().disableFreeObject(OID);
+    }
+
+    public Texture getTexture() {
+        return t;
     }
 }

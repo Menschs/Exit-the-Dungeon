@@ -1,10 +1,13 @@
 package objects.elements.interfaces;
 
 import main.ExitTheDungeon;
+import textures.Skin;
 
 import java.awt.*;
 
 public interface Element {
+
+    Skin getSkin();
 
     double getX();
     double getY();

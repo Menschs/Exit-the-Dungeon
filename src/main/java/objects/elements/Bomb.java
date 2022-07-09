@@ -6,6 +6,7 @@ import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
 import objects.entities.Ball;
+import textures.Skin;
 
 import java.awt.*;
 
@@ -17,6 +18,8 @@ public class Bomb implements Element, Damaging {
     private static final double DAMAGE = 20;
 
     private Hitbox hitbox;
+
+    private Skin skin = new Skin("");
 
     private boolean damaged = false;
 
@@ -40,6 +43,11 @@ public class Bomb implements Element, Damaging {
     //        }
     //    });
     //}
+
+    @Override
+    public Skin getSkin() {
+        return skin;
+    }
 
     @Override
     public double getX() {

@@ -55,7 +55,7 @@ public class Dummy implements Entity {
     public void damage(double damage) {
         if(health <= 0) return;
         health -= damage;
-        System.out.println(this + "  "  + health);
+        //System.out.println(this + "  "  + health);
         damagedSeconds = 1;
         if(health <= 0) kill();
     }

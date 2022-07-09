@@ -3,6 +3,7 @@ package objects.hitboxes;
 import objects.interfaces.Updating;
 import objects.entities.interfaces.Entity;
 import objects.elements.interfaces.Element;
+import util.Interval;
 import util.Point;
 
 import java.awt.*;
@@ -14,19 +15,25 @@ public interface Collider extends Updating {
     List<Collider> collider = new ArrayList<>();
     List<Collider> remove = new ArrayList<>();
 
-    List<Point> getPoints();
-
     void paint(Graphics2D g);
     void paintThis(Rectangle r);
-    Rectangle getRect();
+    Interval[] getRect();
+    double getWidth();
+    double getHeight();
 
     default Collider wouldCollide(Point point) {
 
-        Rectangle newRect = (Rectangle) getRect().clone();
-        newRect.setLocation((int)point.getX(), (int)point.getY());
+        Point x1y1 = point;
+        Point x2y1 = new Point(point.getX() + getWidth(), point.getY());
+        Point x1y2 = new Point(point.getX(), point.getY() + getHeight());
+        Point x2y2 = new Point(point.getX() + getWidth(), point.getY() + getHeight());
+
         for (Collider c : collider) {
             if (c == this) continue;
-            if(newRect.intersects(c.getRect())) return c;
+            if(c.intersects(x1y1) || c.intersects(x2y1) || c.intersects(x1y2) ||c.intersects(x2y2)) {
+                //System.out.println("intersecting");
+                return c;
+            }
         }
         return null;
     }
@@ -34,7 +41,7 @@ public interface Collider extends Updating {
     default void collide() {
         for (Collider c : collider) {
             if (c == this) continue;
-            if(this.getRect().intersects(c.getRect())) {
+            if(this.intersects(c)) {
                 collide(c);
             }
         }
@@ -75,4 +82,7 @@ public interface Collider extends Updating {
     Element getObject();
 
     HitboxAction getHitboxAction();
+
+    boolean intersects(Point p);
+    boolean intersects(Collider c);
 }

@@ -1,0 +1,7 @@
+#texture
+'type': item_skin
+texture:
+    '0': default/test
+scaling:
+    'x': 0.15
+    'y': 0.15

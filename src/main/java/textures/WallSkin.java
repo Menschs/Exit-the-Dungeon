@@ -23,10 +23,10 @@ public class WallSkin extends Skin{
         this.height = height;
         this.scaling = scaling;
 
-        for (double d = 0; d < width / t.getScalingX() * scaling; d += t.getScalingX() * scaling/2) {
-            for (double d2 = height / t.getScalingY() * scaling; d2 > 0; d2 -= t.getScalingY() * scaling/2) {
+        for (double d = 0; d < width + t.getScalingX() * scaling; d += t.getScalingX() * scaling) {
+            for (double d2 = height + t.getScalingY() * scaling; d2 > 0; d2 -= t.getScalingY() * scaling) {
                 ObjectData o = new ObjectData();
-                o.data[0] = (float) (x + d) + r.nextFloat(RANDOM_OFFSET) - RANDOM_OFFSET/2;
+                o.data[0] = (float) (x + d)+ r.nextFloat(RANDOM_OFFSET) - RANDOM_OFFSET/2;
                 o.data[1] = (float) (y + d2) + r.nextFloat(RANDOM_OFFSET) - RANDOM_OFFSET/2;
                 o.data[2] = (float) scaling * t.getScalingX();
                 o.data[3] = (float) scaling * t.getScalingY();

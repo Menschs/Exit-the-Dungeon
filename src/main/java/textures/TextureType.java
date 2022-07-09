@@ -6,6 +6,7 @@ public enum TextureType {
     wall_skin("elements.wall"),
     ground_skin("elements.ground"),
     entity_skin("entities"),
+    item_skin("items"),
     unknown("");
 
     private String directory;

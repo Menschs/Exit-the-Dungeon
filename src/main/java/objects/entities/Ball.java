@@ -34,7 +34,7 @@ public class Ball implements Entity {
         this.y = y;
         this.velocity = velocity;
         this.shooter = shooter;
-        hitbox = new Hitbox((int) x, (int) y, SIZE, SIZE, this, new HitboxAction() {
+        hitbox = new Hitbox(x, y, skin.getScaleX(), skin.getScaleY(), this, new HitboxAction() {
             @Override
             public void hit(Collider c) {
                 if(damaged[0]) return;

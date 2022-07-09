@@ -34,8 +34,8 @@ public class Player implements Entity, Inventoryholder {
 
     private Color c = Color.LIGHT_GRAY;
 
-    private double x = 0;
-    private double y = 0;
+    private double x = 0, y = 0;
+    private final double width, height;
     private double rotation = 0;
     private double lastRot = -600;
 
@@ -58,15 +58,17 @@ public class Player implements Entity, Inventoryholder {
         this.x = x;
         this.y = y;
         this.rotation = rotation;
-        hitbox = new Hitbox(0, 0, 50, 50, this, new HitboxAction() {
-            @Override
-            public void hit(Collider c) {
-            }
-        });
         rotate(180);
         create();
         inventory.addItem(new Sword(Rarity.rare));
         skin.finish();
+        width = skin.getScaleX();
+        height = skin.getScaleY();
+        hitbox = new Hitbox(0, 0, width, height, this, new HitboxAction() {
+            @Override
+            public void hit(Collider c) {
+            }
+        });
         skin.move(x, y);
     }
 

@@ -7,6 +7,6 @@ public class Debugger {
         for (Object o1 : o) {
             s.append(o1).append(" ");
         }
-        System.out.println(s);
+        //System.out.println(s);
     }
 }

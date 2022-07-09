@@ -1,5 +1,8 @@
 package objects.hitboxes;
 
+import objects.elements.Wall;
+import util.Debugger;
+import util.Interval;
 import util.Point;
 import objects.entities.interfaces.Entity;
 import objects.elements.interfaces.Element;
@@ -11,13 +14,12 @@ import java.util.Objects;
 
 public class Hitbox implements Collider {
 
-    private final List<Point> points = new ArrayList<>();
     private final double width;
     private final double height;
     private Entity parentEntity;
     private Element parentObject;
 
-    private final Rectangle rect;
+    private final Interval xCorners, yCorners;
 
     private HitboxAction onHit;
 
@@ -26,7 +28,8 @@ public class Hitbox implements Collider {
         this.height = height;
         this.onHit = onHit;
         this.parentEntity = parent;
-        this.rect = new Rectangle((int) (x - width/2), (int) (y - height/2), (int) width, (int) height);
+        this.xCorners = new Interval(x, x + width);
+        this.yCorners = new Interval(y, y + height);
 
         //for (int i = 0; i < width; i++) {
         //    for (int j = 0; j < height; j++) {
@@ -39,12 +42,19 @@ public class Hitbox implements Collider {
         createCollider();
     }
 
-    public Hitbox(int x, int y, int width, int height, Element parent, HitboxAction onHit) {
+    public Hitbox(double x, double y, double width, double height, Element parent, HitboxAction onHit) {
+        if(parent instanceof Wall w) {
+            x -= w.getSkin().getScaleX();
+            y -= w.getSkin().getScaleY();
+            width += 2 * w.getSkin().getScaleX();
+            height += 2 * w.getSkin().getScaleY();
+        }
         this.width = width;
         this.height = height;
         this.onHit = onHit;
         this.parentObject = parent;
-        this.rect = new Rectangle(x, y, width, height);
+        this.xCorners = new Interval(x, x + width);
+        this.yCorners = new Interval(y, y + height);
         //for (int i = 0; i < width; i++) {
         //    for (int j = 0; j < height; j++) {
         //        points.add(new Point(x + i, y + j));
@@ -54,11 +64,6 @@ public class Hitbox implements Collider {
         //    }
         //}
         createCollider();
-    }
-
-    @Override
-    public List<Point> getPoints() {
-        return points;
     }
 
     public void move(double x, double y) {
@@ -73,7 +78,11 @@ public class Hitbox implements Collider {
         //    }
         //}
         //rotate(pivotX, pivotY, rotation);
-        rect.setLocation((int) x, (int) y);
+        xCorners.setS(x);
+        xCorners.setE(x + width);
+
+        yCorners.setS(y);
+        yCorners.setE(y + height);
         collide();
     }
 
@@ -83,15 +92,16 @@ public class Hitbox implements Collider {
     public void paint(Graphics2D g) {
         //points.forEach(point -> point.paint(g));
         g.setColor(Color.red);
-        g.draw(rect);
         g.setColor(Color.CYAN);
         if(r != null) g.fill(r);
     }
 
+    @Override
     public double getWidth() {
         return width;
     }
 
+    @Override
     public double getHeight() {
         return height;
     }
@@ -102,8 +112,8 @@ public class Hitbox implements Collider {
     }
 
     @Override
-    public Rectangle getRect() {
-        return rect;
+    public Interval[] getRect() {
+        return new Interval[]{xCorners, yCorners};
     }
 
     @Override
@@ -136,5 +146,20 @@ public class Hitbox implements Collider {
     @Override
     public int hashCode() {
         return Objects.hash(parentEntity, parentObject);
+    }
+
+    public boolean intersects(Point p) {
+        Debugger.debug(xCorners, yCorners, p, (xCorners.contains(p.getX()) && yCorners.contains(p.getY())));
+        return (xCorners.contains(p.getX()) && yCorners.contains(p.getY()));
+    }
+
+    @Override
+    public boolean intersects(Collider c) {
+        var oXCorners = c.getRect()[0];
+        var oYCorners = c.getRect()[1];
+
+        //Debugger.debug(xCorners, oXCorners, (xCorners.contains(oXCorners) || oXCorners.contains(xCorners)), yCorners, oYCorners, (yCorners.contains(oYCorners) || oYCorners.contains(yCorners)), ((xCorners.contains(oXCorners) || oXCorners.contains(xCorners)) && (yCorners.contains(oYCorners) || oYCorners.contains(yCorners))));
+
+        return ((xCorners.contains(oXCorners) || oXCorners.contains(xCorners)) && (yCorners.contains(oYCorners) || oYCorners.contains(yCorners)));
     }
 }

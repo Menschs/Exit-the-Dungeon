@@ -189,7 +189,7 @@ public class ExitTheDungeon extends Game {
                     multiply = 0.25;
                 }
                 case GLFW_KEY_T -> {
-                    if(!isHolding(GLFW_KEY_T)) new Wall(p.getX(), p.getY(), 0.5, 5);
+                    if(!isHolding(GLFW_KEY_T)) new Wall(p.getX() + 0.5, p.getY() + 0.5, 3, 5);
                 }
                 case GLFW_KEY_ESCAPE -> {
                     endGame();
