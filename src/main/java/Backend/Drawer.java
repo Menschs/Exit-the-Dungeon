@@ -32,7 +32,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 public class Drawer {
     private static final Drawer drawer = new Drawer();
 
-    final int maxObjectCount = 4096;
+    final int maxObjectCount = 32768;
 
     private final long window;
     private MouseInput mouseInput;

@@ -184,6 +184,10 @@ public class Texture {
         return getTexture(statedAnimations.get(state));
     }
 
+    public int get() {
+        return get("");
+    }
+
     public int getTexture(int index) {
         return getTextureIndex(images.get(index).getPath());
     }

@@ -6,8 +6,8 @@ texture:
     '2': hat/right1
     '3': hat/right2
 scaling:
-    'x': 0.25
-    'y': 0.25
+    'x': 0.2
+    'y': 0.2
 animation:
     'delay': 100
 states:

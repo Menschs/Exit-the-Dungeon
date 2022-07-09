@@ -6,8 +6,8 @@ import java.awt.*;
 
 public interface Element {
 
-    int getX();
-    int getY();
+    double getX();
+    double getY();
 
     void paint(Graphics2D g);
 

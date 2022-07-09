@@ -1,39 +1,43 @@
 package objects.elements;
 
 import objects.elements.interfaces.Element;
-import objects.hitboxes.Hitbox;
+import textures.TextureType;
+import textures.WallSkin;
 
 import java.awt.*;
 
 public class Wall implements Element {
 
-    private final int x, y;
-    private final int width, height;
+    private final double x, y;
+    private final double width, height;
 
-    private final Hitbox hitbox;
+    private final WallSkin s;
 
-    public Wall(int x, int y, int width, int height) {
+    //private final Hitbox hitbox;
+
+    public Wall(double x, double y, double width, double height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        hitbox = new Hitbox(x, y, width, height, this, null);
+        s = new WallSkin(TextureType.wall_skin.tex("default"), x, y, width, height, 1);
+        //hitbox = new Hitbox(x, y, width, height, this, null);
     }
 
     @Override
-    public int getX() {
+    public double getX() {
         return x;
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         return y;
     }
 
     @Override
     public void paint(Graphics2D g) {
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(x, y, width, height);
-        //hitbox.paint(g);
+        //g.fillRect(x, y, width, height);
+        //hitbox.padouble(g);
     }
 }

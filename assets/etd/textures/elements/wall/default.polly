@@ -1,6 +1,5 @@
 #texture
 'type': wall_skin
-'multiple': true
 scaling:
     'x': 0.25
     'y': 0.25

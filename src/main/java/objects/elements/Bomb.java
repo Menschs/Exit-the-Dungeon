@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class Bomb implements Element, Damaging {
 
-    private final int x, y;
+    private final double x, y;
     private static final int SIZE = 16;
 
     private static final double DAMAGE = 20;
@@ -20,41 +20,41 @@ public class Bomb implements Element, Damaging {
 
     private boolean damaged = false;
 
-    public Bomb(int x, int y) {
+    public Bomb(double x, double y) {
         this.x = x - SIZE/2;
         this.y = y - SIZE/2;
-        hitbox();
+        //hitbox();
     }
 
-    public void hitbox() {
-        hitbox = new Hitbox(x, y, SIZE, SIZE, this, new HitboxAction() {
-            @Override
-            public void hit(Collider c) {
-                if(damaged) return;
-                if(c.getEntity() != null && !(c.getEntity() instanceof Ball)) {
-                    c.getEntity().damage(DAMAGE);
-                    damaged = true;
-                    hitbox.remove();
-                    remove();
-                }
-            }
-        });
-    }
+    //public void hitbox() {
+    //    hitbox = new Hitbox(x, y, SIZE, SIZE, this, new HitboxAction() {
+    //        @Override
+    //        public void hit(Collider c) {
+    //            if(damaged) return;
+    //            if(c.getEntity() != null && !(c.getEntity() instanceof Ball)) {
+    //                c.getEntity().damage(DAMAGE);
+    //                damaged = true;
+    //                hitbox.remove();
+    //                remove();
+    //            }
+    //        }
+    //    });
+    //}
 
     @Override
-    public int getX() {
+    public double getX() {
         return x;
     }
 
     @Override
-    public int getY() {
+    public double getY() {
         return y;
     }
 
     @Override
     public void paint(Graphics2D g) {
         g.setColor(Color.BLACK);
-        g.fillOval(x, y, SIZE, SIZE);
+        //g.fillOval(x, y, SIZE, SIZE);
         //hitbox.paint(g);
     }
 

@@ -8,10 +8,10 @@ import java.util.List;
 
 public class Skin implements Subscriber {
 
-    private final Texture t;
+    protected final Texture t;
     private final ObjectData data = new ObjectData();
     private int OID;
-    private String state;
+    protected String state;
     private float a;
 
 
@@ -22,14 +22,14 @@ public class Skin implements Subscriber {
         System.out.println(texture + " " + t.get(""));
         state = t.getStates().get(0);
         a = t.getScalingX() / t.getScalingY();
-        data.data[0] = 400;
-        data.data[1] = 400;
-        data.data[2] = t.getScalingX();
-        data.data[3] = t.getScalingY();
-        data.data[4] = 1;
     }
 
     public void finish() {
+        data.data[0] = 400;
+        data.data[1] = 400;
+        if(data.data[2] == 0) data.data[2] = t.getScalingX();
+        if(data.data[3] == 0) data.data[3] = t.getScalingY();
+        data.data[4] = 1;
         OID = ExitTheDungeon.getInstance().addObject(data, t.get(state));
         if(t.isAnimated()) t.subscribe(this);
     }

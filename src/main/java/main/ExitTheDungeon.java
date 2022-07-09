@@ -7,6 +7,7 @@ import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import objects.Ground;
+import objects.elements.Wall;
 import objects.entities.Ball;
 import objects.entities.Player;
 import objects.interfaces.Updating;
@@ -187,11 +188,23 @@ public class ExitTheDungeon extends Game {
                     rotation = 90;
                     multiply = 0.25;
                 }
+                case GLFW_KEY_T -> {
+                    if(!isHolding(GLFW_KEY_T)) new Wall(p.getX(), p.getY(), 0.5, 5);
+                }
                 case GLFW_KEY_ESCAPE -> {
                     endGame();
                 }
             }
             hold(key);
+        }
+
+        for (int i = 0; i < pressed.size(); i++) {
+            try {
+                long key = Long.parseLong(pressed.get(i).replace("k", ""));
+                if (!isKeyPressed((int) key)) releaseKey(key);
+            } catch (NumberFormatException nx) {
+                continue;
+            }
         }
 
         if(!isKeyPressed(GLFW_KEY_D) && !isKeyPressed(GLFW_KEY_A)) {
