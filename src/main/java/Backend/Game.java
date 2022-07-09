@@ -53,6 +53,10 @@ public abstract class Game {
     public void setObjectTextureIndex(int objectIndex, int n_textureIndex){
         drawer.setObjectTextureIndex(objectIndex, n_textureIndex);
     }
+
+    public void disableObject(int objectIndex){
+        drawer.disableObject(objectIndex);
+    }
     public void updateObjectPosition(int ID, float newX, float newY){
         drawer.updateObjectPosition(ID, newX, newY);
     }

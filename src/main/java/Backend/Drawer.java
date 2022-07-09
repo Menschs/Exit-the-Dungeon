@@ -104,6 +104,13 @@ public class Drawer {
         glUseProgram(0);
     }
 
+    public void disableObject(int objectIndex){
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, objectBufferID);
+        float possy[] = {0.0f, 0.0f};
+        glBufferSubData(GL_SHADER_STORAGE_BUFFER, objectIndex * 8 * 4 + 2 * 4, possy);
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    }
+
     public int width = 600, height = 400;
     private Drawer()
     {
@@ -178,7 +185,10 @@ public class Drawer {
                 "out vec4 color;\n" +
                 "\n" +
                 "void main(){\n" +
-                "    color = texture(TEX_SAMPLER, texCords);\n" +
+                "    c = texture(TEX_SAMPLER, texCords);\n" +
+                "    if(c.a < 0.1){\n"+
+                "    discard;}\n"+
+                "    color = c;\n"+
                 "}";
 
         //Create vertex shader
@@ -255,9 +265,6 @@ public class Drawer {
         objectBuffer = BufferUtils.createFloatBuffer(maxObjectCount * 8);
         glBufferData(GL_SHADER_STORAGE_BUFFER, objectBuffer, GL_DYNAMIC_READ);
 
-        //Evil Alpha
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     public int addObject(ObjectData o, int textureIndex){
