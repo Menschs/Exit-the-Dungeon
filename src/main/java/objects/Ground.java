@@ -26,7 +26,6 @@ public class Ground {
                     data.data[2] = 0.2f;
                     data.data[3] = 0.2f;
                     data.data[4] = 0;
-                    System.out.println(tex.get("default"));
                     OIDs.add(getInstance().addObject(data, tex.get("default")));
                 }
             }

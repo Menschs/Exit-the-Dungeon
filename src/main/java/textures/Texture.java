@@ -1,6 +1,7 @@
 package textures;
 
 import main.ExitTheDungeon;
+import util.Debugger;
 import util.filelib.FileConfiguration;
 import util.filelib.exceptions.FileIncompatibleException;
 
@@ -69,7 +70,6 @@ public class Texture {
 
         type = TextureType.get(attributes.getOrDefault("type", "unknown"));
         String identifier = configFile.getPath().substring(configFile.getPath().indexOf("textures")).replace("\\", ".").replace(type.getDirectory(), "").replace(".polly", "");
-        System.out.println(identifier);
         textures.put(type + "." + identifier, this);
 
         for (int i = 0; i < attributes.size(); i++) {
@@ -197,7 +197,7 @@ public class Texture {
         for (File file : f.listFiles()) {
             load(file);
         }
-        imgIndexes.forEach((s, integer) -> System.out.println(s + " " + integer));
+        textures.forEach((s, texture) -> Debugger.debug(s, texture.getStates()));
     }
 
     public List<String> getStates() {
