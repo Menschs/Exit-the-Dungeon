@@ -125,6 +125,13 @@ public class Drawer {
         freeIndices.add(objectIndex);
     }
 
+    public void setObjectRotation(int objectIndex, float n_rotation){
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, objectBufferID);
+        float possy[] = {n_rotation};
+        glBufferSubData(GL_SHADER_STORAGE_BUFFER, objectIndex * 8 * 4 + 5 * 4, possy);
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    }
+
     public int width, height;
 
     private Drawer()
