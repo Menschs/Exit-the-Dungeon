@@ -8,7 +8,7 @@ import java.util.Vector;
 import static org.lwjgl.opengl.GL20.*;
 
 public class Camera {
-    private Vec4f camera;
+    public Vec4f camera;
     public void uploadToShader(int location)
     {
         glUniform4f(location, camera.x, camera.y, camera.z, camera.w);
