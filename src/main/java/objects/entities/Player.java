@@ -294,4 +294,8 @@ public class Player implements Entity, Inventoryholder {
     public HashMap<StatusEffects, StatusEffect> getEffects() {
         return effects;
     }
+
+    public Skin getSkin() {
+        return skin;
+    }
 }

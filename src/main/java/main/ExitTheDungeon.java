@@ -257,12 +257,17 @@ public class ExitTheDungeon extends Game {
         for (Long key : getPressed()) {
             switch (Math.toIntExact(key)) {
                 case GLFW_KEY_W -> multiply = 0.25;
-                case GLFW_KEY_S -> multiply = -0.25;
+                case GLFW_KEY_S -> {
+                    rotation = 180;
+                    multiply = 0.25;
+                }
                 case GLFW_KEY_D -> {
-                    rotation = 90;
-                    multiply = -0.25;
+                    p.getSkin().setState("right");
+                    rotation = -90;
+                    multiply = 0.25;
                 }
                 case GLFW_KEY_A -> {
+                    p.getSkin().setState("left");
                     rotation = 90;
                     multiply = 0.25;
                 }
@@ -270,16 +275,21 @@ public class ExitTheDungeon extends Game {
             hold(key);
         }
 
+        if(!isKeyPressed(GLFW_KEY_D) && !isKeyPressed(GLFW_KEY_A)) {
+            p.rotate(0);
+        }
+
         if(isKeyPressed(GLFW_KEY_W)) {
             if(isKeyPressed(GLFW_KEY_A)) rotation = 45;
-            if(isKeyPressed(GLFW_KEY_D)) rotation = 135;
+            if(isKeyPressed(GLFW_KEY_D)) rotation = -45;
         }
         if(isKeyPressed(GLFW_KEY_S)) {
             if(isKeyPressed(GLFW_KEY_A)) rotation = 135;
-            if(isKeyPressed(GLFW_KEY_D)) rotation = 45;
+            if(isKeyPressed(GLFW_KEY_D)) rotation = -135;
         }
 
         if(isMousePressed(GLFW_MOUSE_BUTTON_LEFT)) {
+            p.rotate(0);
             if(p.hasOpenInventory())  {
                 p.getOpenedInventory().click((int) getMouseX(), (int) getMouseY());
             } else {
