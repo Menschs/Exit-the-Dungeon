@@ -126,7 +126,7 @@ public class Drawer {
     }
 
     public int width, height;
-
+    //Test
     private Drawer()
     {
         //Set up error message output
