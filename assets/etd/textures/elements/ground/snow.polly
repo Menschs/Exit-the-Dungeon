@@ -1,0 +1,9 @@
+#texture
+'type': ground_skin
+texture:
+    '0': snow/snow1
+    '1': snow/snow2
+    '2': snow/snow3
+    '3': snow/snow4
+    '4': snow/snow5
+'random': true

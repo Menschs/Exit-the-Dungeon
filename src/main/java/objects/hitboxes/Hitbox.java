@@ -64,7 +64,7 @@ public class Hitbox implements Collider {
         //int index = 0;
         //for (int i = 0; i < width; i++) {
         //    for (int j = 0; j < height; j++) {
-        //        points.get(index).move(x + i, y + j);
+        //        points.getTextureObject(index).move(x + i, y + j);
         //        index++;
         //        if(i != 0 && i != (int) width -1) {
         //            j += height -2;

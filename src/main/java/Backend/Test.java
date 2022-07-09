@@ -58,7 +58,6 @@ public class Test extends Game{
         addObject(o3, 0);
 
         drawer.addTexture("assets/textures/MTest.jpg");
-        drawer.addTexture("assets/textures/Character With Hat Right.png");
     }
 
 }

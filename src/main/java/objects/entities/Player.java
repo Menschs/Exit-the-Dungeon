@@ -15,6 +15,7 @@ import objects.entities.interfaces.effects.StatusEffects;
 import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
+import textures.Skin;
 import util.Point;
 import org.jetbrains.annotations.NotNull;
 import util.Colors;
@@ -27,6 +28,8 @@ public class Player implements Entity, Inventoryholder {
 
     private final static int[] modelX = new int[] {30, 0, 60};
     private final static int[] modelY = new int[] {0, 60, 60};
+
+    private final Skin skin = new Skin("entities.player.hat");
 
     private final HashMap<StatusEffects, StatusEffect> effects = new HashMap<>();
 
@@ -77,6 +80,7 @@ public class Player implements Entity, Inventoryholder {
             this.x += x;
             this.y += y;
             moved = true;
+            skin.move((int) this.x, (int) this.y);
         } else {
             if(moved) {
                 hitbox.collide(connect);
