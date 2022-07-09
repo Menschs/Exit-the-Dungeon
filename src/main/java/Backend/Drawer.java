@@ -292,9 +292,9 @@ public class Drawer {
             System.out.println("Problem loading image file:"+ filename + e.getMessage());
         }
         //Check if the format is correct:
-        /*if(b.getType() != BufferedImage.TYPE_INT_ARGB){
-            throw new IllegalStateException("Illegal texture format, I want ARGB INT format: " + filename);
-        }*/
+        if(!b.getColorModel().hasAlpha()){
+            throw new IllegalStateException("Illegal texture format, I want Alpha: " + filename);
+        }
 
         //Load texture to float array
         float pixels[] = new float[b.getWidth() * b.getHeight() * 4]; //Width * height for the amount of pixels, four floats per pixel
