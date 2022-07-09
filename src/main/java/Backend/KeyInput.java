@@ -31,6 +31,8 @@ public class KeyInput {
         if(action == GLFW_PRESS) {
             if(!pressed.contains(key)) pressed.add(key);
         }
-        else if(action == GLFW_RELEASE) pressed.remove(key);
+        else if(action == GLFW_RELEASE) {
+            if(pressed.contains(key)) pressed.remove(key);
+        }
     }
 }

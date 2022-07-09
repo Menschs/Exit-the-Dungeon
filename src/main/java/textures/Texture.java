@@ -187,7 +187,7 @@ public class Texture {
     }
 
     public static Texture getTextureObject(String name) {
-        return textures.get(name);
+        return textures.getOrDefault(name, textures.get(name + ".default"));
     }
 
     public static void loadTextures() {

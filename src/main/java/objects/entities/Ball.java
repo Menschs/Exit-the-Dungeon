@@ -17,7 +17,7 @@ public class Ball implements Entity {
     public static final int SIZE = 15;
     private static final double DAMAGE = 5;
 
-    private final Skin skin = new Skin(TextureType.entity_skin.tex("ball.default"));
+    private final Skin skin = new Skin(TextureType.entity_skin.tex("ball"));
 
     private double x = 0;
     private double y = 0;
