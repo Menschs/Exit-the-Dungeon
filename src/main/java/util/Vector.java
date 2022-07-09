@@ -1,5 +1,7 @@
 package util;
 
+import objects.entities.Player;
+
 import java.util.Objects;
 
 public class Vector {
@@ -76,9 +78,15 @@ public class Vector {
     public Vector rotate(double theta) {
         var sinTheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
-        x = (x * cosTheta - y * sinTheta);
-        y = (y * cosTheta + x * sinTheta);
+        double[] rot = Player.rotate(x, y, theta);
+        x = rot[0];
+        y = rot[1];
         return this;
+    }
+
+    public void rotateByDegrees(double theta) {
+        var rotation = theta *  Math.PI / 180;
+        rotate(rotation);
     }
 
     public double getY() {

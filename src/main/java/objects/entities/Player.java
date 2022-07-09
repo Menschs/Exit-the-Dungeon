@@ -63,7 +63,7 @@ public class Player implements Entity, Inventoryholder {
             public void hit(Collider c) {
             }
         });
-        rotate(0);
+        rotate(180);
         create();
         inventory.addItem(new Sword(Rarity.rare));
         skin.finish();
@@ -202,13 +202,13 @@ public class Player implements Entity, Inventoryholder {
         return openedInventory;
     }
 
-    public double[] rotate(double x, double y, double theta) {
+    public static double[] rotate(double x, double y, double theta) {
         var sinTheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
         return rotate(x, y, sinTheta, cosTheta);
     }
 
-    public double[] rotate(double x, double y, double sinTheta, double cosTheta) {
+    public static double[] rotate(double x, double y, double sinTheta, double cosTheta) {
         double nx = (x * cosTheta - y * sinTheta);
         double ny = (y * cosTheta + x * sinTheta);
         return new double[] {nx, ny};

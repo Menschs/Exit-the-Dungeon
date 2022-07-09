@@ -1,5 +1,6 @@
 package main;
 
+import Backend.Drawer;
 import Backend.Game;
 import Backend.ObjectData;
 import net.arikia.dev.drpc.DiscordEventHandlers;
@@ -48,7 +49,6 @@ public class ExitTheDungeon extends Game {
     private static ExitTheDungeon instance;
 
     public static void main(String[] args) {
-        discord();
         instance = new ExitTheDungeon();
         instance.runGame();
         //lorenzWindow();
@@ -63,7 +63,7 @@ public class ExitTheDungeon extends Game {
         new Thread("Discord RPC Callback") {
             @Override
             public void run() {
-                while(true) {
+                while(!glfwWindowShouldClose(Drawer.getWindow())) {
                     DiscordRPC.discordRunCallbacks();
                     try {
                         Thread.sleep(500);
@@ -258,10 +258,25 @@ public class ExitTheDungeon extends Game {
             switch (Math.toIntExact(key)) {
                 case GLFW_KEY_W -> multiply = 0.25;
                 case GLFW_KEY_S -> multiply = -0.25;
-                case GLFW_KEY_D -> p.rotate(-2.5);
-                case GLFW_KEY_A -> p.rotate(2.5);
+                case GLFW_KEY_D -> {
+                    rotation = 90;
+                    multiply = -0.25;
+                }
+                case GLFW_KEY_A -> {
+                    rotation = 90;
+                    multiply = 0.25;
+                }
             }
             hold(key);
+        }
+
+        if(isKeyPressed(GLFW_KEY_W)) {
+            if(isKeyPressed(GLFW_KEY_A)) rotation = 45;
+            if(isKeyPressed(GLFW_KEY_D)) rotation = 135;
+        }
+        if(isKeyPressed(GLFW_KEY_S)) {
+            if(isKeyPressed(GLFW_KEY_A)) rotation = 135;
+            if(isKeyPressed(GLFW_KEY_D)) rotation = 45;
         }
 
         if(isMousePressed(GLFW_MOUSE_BUTTON_LEFT)) {
@@ -284,7 +299,7 @@ public class ExitTheDungeon extends Game {
             p.rotate(v.normalize());
         }
         Vector v = p.getDirection();
-        v.rotate(rotation);
+        v.rotateByDegrees(rotation);
         v.normalize().multiply(multiply);
         if(v.lengthSquared() != 0) p.setVelocity(v);
 
@@ -297,6 +312,7 @@ public class ExitTheDungeon extends Game {
         Texture.loadTextures();
         Ground.paintGround();
         p  = new Player(0, 0, 0);
+        discord();
     }
 
     public static ExitTheDungeon getInstance() {
