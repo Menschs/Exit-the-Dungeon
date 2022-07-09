@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.*;
 
+import java.util.List;
+
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -28,7 +30,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 public class Drawer {
     private static final Drawer drawer = new Drawer();
 
-    final int maxObjectCount = 1024;
+    final int maxObjectCount = 4096;
 
     private final long window;
     private MouseInput mouseInput;
@@ -37,6 +39,10 @@ public class Drawer {
     public boolean isKeyPressed(int keycode)
     {
         return keyInput.keyPressed(keycode);
+    }
+
+    public List<Integer> getPressed() {
+        return keyInput.getPressed();
     }
 
     public double getMouseX() {
@@ -111,7 +117,8 @@ public class Drawer {
         glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
     }
 
-    public int width = 600, height = 400;
+    public int width = 1800, height = 800;
+
     private Drawer()
     {
         //Set up error message output
@@ -130,7 +137,7 @@ public class Drawer {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
         //Create the window
-        window = glfwCreateWindow(width, height, "Test", NULL, NULL);
+        window = glfwCreateWindow(1800, 800, "Test", NULL, NULL);
         if(window == NULL) throw new RuntimeException("Creation failed: Window");
 
         //Set callbacks for window messages
@@ -143,7 +150,7 @@ public class Drawer {
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
 
-        camera = new Camera(0.0f, 0.0f, 600, 400,3.0f);
+        camera = new Camera(0.0f, 0.0f, width, height,3.0f);
 
         GL.createCapabilities();
 

@@ -4,8 +4,6 @@ import inventory.inventory.Inventory;
 import inventory.inventory.InventoryView;
 import inventory.inventory.Inventoryholder;
 import inventory.items.ItemStack;
-import inventory.items.Itemtype;
-import inventory.items.Material;
 import inventory.items.Rarity;
 import inventory.items.items.Sword;
 import main.ExitTheDungeon;
@@ -16,6 +14,7 @@ import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
 import textures.Skin;
+import textures.TextureType;
 import util.Point;
 import org.jetbrains.annotations.NotNull;
 import util.Colors;
@@ -29,7 +28,7 @@ public class Player implements Entity, Inventoryholder {
     private final static int[] modelX = new int[] {30, 0, 60};
     private final static int[] modelY = new int[] {0, 60, 60};
 
-    private final Skin skin = new Skin("entities.player.hat");
+    private final Skin skin = new Skin(TextureType.player_skin.tex("hat"));
 
     private final HashMap<StatusEffects, StatusEffect> effects = new HashMap<>();
 
@@ -67,20 +66,28 @@ public class Player implements Entity, Inventoryholder {
         rotate(0);
         create();
         inventory.addItem(new Sword(Rarity.rare));
+        skin.finish();
+        skin.move(x, y);
     }
 
     boolean moved = false;
 
     @Override
     public void move(double x, double y) {
-        hitbox.move((int) this.x - 25,(int) this.y - 25);
+        hitbox.move(this.x,this.y);
+        if(x == 0.0 && y == 0.0) {
+            skin.pauseAnimation("left", "right");
+        } else {
+            skin.unpauseAnimation("left", "right");
+        }
         if(x == 0 && y == 0) return;
-        Collider connect = hitbox.wouldCollide(new Point(this.x + x - 30, this.y + y - 30));
+        Collider connect = hitbox.wouldCollide(new Point(this.x + x, this.y + y));
         if(connect == null || connect.getObject() == null || !connect.getObject().isBarrier()) {
             this.x += x;
             this.y += y;
             moved = true;
-            skin.move((int) this.x, (int) this.y);
+            skin.move(this.x, this.y);
+            ExitTheDungeon.getInstance().setCameraPos((float) this.x, (float) this.y);
         } else {
             if(moved) {
                 hitbox.collide(connect);
@@ -92,7 +99,18 @@ public class Player implements Entity, Inventoryholder {
     @Override
     public void rotate(double rotation) {
         this.rotation += rotation * Math.PI/180;
-        model = rotate(modelX, modelY);
+        double angle = getDirection().angle(new Vector(0, 1)) / Math.PI * 180;
+        if(!(angle + "").equals("NaN")) {
+            if(angle > 0 && angle < 180) {
+                skin.setState("right");
+            } else if(angle != 0 && angle != 180){
+                skin.setState("left");
+            }
+        }
+    }
+
+    public double getRotationDegrees() {
+        return  rotation / Math.PI * 180;
     }
 
     double rotChange = 0;
@@ -101,29 +119,13 @@ public class Player implements Entity, Inventoryholder {
     public void rotate(Vector v) {
         if(v.equals(getDirection())) return;
 
-        Vector v2 = new Vector(0, -1);
-        double lol = v2.angle(v);
+        double angle = v.angle(new Vector(0, 1));
 
-        //double delta = rotation + rotation + lol * Math.PI;
-        //model = rotate(modelX, modelY, delta);
-        //System.out.println(v2.angle(v) + "  " + v2.angle(getDirection()) + "  " + (rotation - lol));
-        //if(x + v.getX() > x)
-        //    if(v2.angle(v) < v2.angle(getDirection())) {
-        //        rotation = -rotation;
-        //        rotate(-lol);
-        //    } else {
-        //        rotate(lol);
-        //    }
-        //else
-        //    if(v2.angle(v) < v2.angle(getDirection())) {
-        //        rotate(lol);
-        //    } else {
-        //        rotation = -rotation;
-        //        rotate(-lol);
-        //    }
-        rotation = lol;
+        //System.out.println(angle);
+
+        rotation = angle;
         rotate(0);
-        rotChange = lol;
+        rotChange = angle;
     }
 
     @Override

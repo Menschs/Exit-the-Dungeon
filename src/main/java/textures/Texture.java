@@ -23,6 +23,8 @@ public class Texture {
     private final TreeMap<String, Integer> statedAnimations = new TreeMap<>();
     private final File configFile;
     private final FileConfiguration config;
+    private float scalingX = 1;
+    private float scalingY = 1;
     private boolean animated = false;
     private boolean randomized = false;
     private int delay = 500;
@@ -62,13 +64,13 @@ public class Texture {
     }
 
     private void init() {
-        textures.put(configFile.getPath().replace(".polly", "").replace("\\", ".").replace("assets.etd.textures.", ""), this);
         attributes = config.getLoaded();
-
         //attributes.forEach((s, s2) -> System.out.println(s + " " + s2));
 
         type = TextureType.get(attributes.getOrDefault("type", "unknown"));
-        if(type == TextureType.unknown) return;
+        String identifier = configFile.getPath().substring(configFile.getPath().indexOf("textures")).replace("\\", ".").replace(type.getDirectory(), "").replace(".polly", "");
+        System.out.println(identifier);
+        textures.put(type + "." + identifier, this);
 
         for (int i = 0; i < attributes.size(); i++) {
             String attribute = "texture." + i;
@@ -96,11 +98,13 @@ public class Texture {
                 List<Integer> cluster = imgCluster.getOrDefault(key, new ArrayList<>());
                 cluster.add(Integer.valueOf(s2));
                 if(imgCluster.containsKey(key)) imgCluster.replace(key, cluster);
-                    else {
-                        imgCluster.put(key, cluster);
-                        if(animated) statedAnimations.put(key, cluster.get(0));
-                    }
+                else {
+                    imgCluster.put(key, cluster);
+                    statedAnimations.put(key, cluster.get(0));
+                }
             }
+            if(s.equals("scaling.x")) scalingX = Float.parseFloat(s2);
+            if(s.equals("scaling.y")) scalingY = Float.parseFloat(s2);
         });
         if(imgCluster.isEmpty()) {
             List<Integer> defaultCluster = new ArrayList<>();
@@ -108,6 +112,7 @@ public class Texture {
                 defaultCluster.add(i);
             }
             imgCluster.put("default", defaultCluster);
+            statedAnimations.put("default", defaultCluster.get(0));
         }
 
         if(attributes.containsKey("random")) {
@@ -133,7 +138,7 @@ public class Texture {
                         statedAnimations.replace(s, integer);
                     });
                     subscribers.forEach(subscriber -> {
-                        subscriber.update(get(subscriber.getState()));
+                        subscriber.updateSubscriber(get(subscriber.getState()));
                     });
                     try {
                         Thread.sleep(delay);
@@ -168,10 +173,10 @@ public class Texture {
     }
 
     public int get(String state) {
+        if(state.isEmpty() || !imgCluster.containsKey(state)) state = "default";
         if(!imgCluster.containsKey(state)) return 0;
         if(randomized) {
             int index = random.nextInt(imgCluster.get(state).size());
-            System.out.println(index);
             return getTexture(index);
         }
         return getTexture(statedAnimations.get(state));
@@ -182,7 +187,7 @@ public class Texture {
     }
 
     public static Texture getTextureObject(String name) {
-        return textures.get(name);
+        return textures.getOrDefault(name, textures.get(name + ".default"));
     }
 
     public static void loadTextures() {
@@ -201,5 +206,13 @@ public class Texture {
 
     public boolean isAnimated() {
         return animated;
+    }
+
+    public float getScalingX() {
+        return scalingX;
+    }
+
+    public float getScalingY() {
+        return scalingY;
     }
 }

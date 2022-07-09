@@ -1,10 +1,11 @@
 package Backend;
 
+import main.ExitTheDungeon;
+
+import java.util.List;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferSubData;
-import static org.lwjgl.opengl.GL43.GL_SHADER_STORAGE_BUFFER;
 
 public abstract class Game {
     //A function supposed to be overwritten by your game class, which will be called every frame
@@ -20,6 +21,10 @@ public abstract class Game {
         return drawer.isKeyPressed(keycode);
     }
 
+    public List<Integer> getPressed() {
+        return drawer.getPressed();
+    }
+
     public Camera getCamera(){
         return drawer.getCamera();
     }
@@ -29,6 +34,16 @@ public abstract class Game {
 
     public double getMouseY(){
         return drawer.getMouseY();
+    }
+
+    public double getMouseWorldX() {
+        double originX = drawer.width/2.0;
+        return ((getMouseX() - originX) / (originX)) * getCamera().camera.w + ExitTheDungeon.getPlayer().getX();
+    }
+
+    public double getMouseWorldY() {
+        double originY = drawer.height/2.0;
+        return ((getMouseY() - originY) / (originY)) * getCamera().camera.w + ExitTheDungeon.getPlayer().getY();
     }
 
     public boolean isMousePressed(int code){

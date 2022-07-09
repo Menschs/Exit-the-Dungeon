@@ -12,8 +12,8 @@ import java.util.Objects;
 public class Hitbox implements Collider {
 
     private final List<Point> points = new ArrayList<>();
-    private final int width;
-    private final int height;
+    private final double width;
+    private final double height;
     private Entity parentEntity;
     private Element parentObject;
 
@@ -21,12 +21,13 @@ public class Hitbox implements Collider {
 
     private HitboxAction onHit;
 
-    public Hitbox(int x, int y, int width, int height, Entity parent, HitboxAction onHit) {
+    public Hitbox(double x, double y, double width, double height, Entity parent, HitboxAction onHit) {
         this.width = width;
         this.height = height;
         this.onHit = onHit;
         this.parentEntity = parent;
-        this.rect = new Rectangle(x - width/2, y - height/2, width, height);
+        this.rect = new Rectangle((int) (x - width/2), (int) (y - height/2), (int) width, (int) height);
+
         //for (int i = 0; i < width; i++) {
         //    for (int j = 0; j < height; j++) {
         //        points.add(new Point(x + i, y + j));
@@ -60,7 +61,7 @@ public class Hitbox implements Collider {
         return points;
     }
 
-    public void move(int x, int y) {
+    public void move(double x, double y) {
         //int index = 0;
         //for (int i = 0; i < width; i++) {
         //    for (int j = 0; j < height; j++) {
@@ -72,7 +73,7 @@ public class Hitbox implements Collider {
         //    }
         //}
         //rotate(pivotX, pivotY, rotation);
-        rect.setLocation(x, y);
+        rect.setLocation((int) x, (int) y);
         collide();
     }
 
@@ -87,11 +88,11 @@ public class Hitbox implements Collider {
         if(r != null) g.fill(r);
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
