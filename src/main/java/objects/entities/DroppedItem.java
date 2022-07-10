@@ -6,6 +6,7 @@ import objects.entities.interfaces.StaticEntity;
 import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
+import textures.Skin;
 
 import java.awt.*;
 
@@ -50,12 +51,17 @@ public class DroppedItem implements StaticEntity, Permeable {
     }
 
     @Override
-    public void damage(double damage) {
+    public Skin getSkin() {
+        return null;
+    }
+
+    @Override
+    public void damage(float damage) {
 
     }
 
     @Override
-    public void heal(double heal) {
+    public void heal(float heal) {
 
     }
 
@@ -65,12 +71,12 @@ public class DroppedItem implements StaticEntity, Permeable {
     }
 
     @Override
-    public double getX() {
+    public float getX() {
         return x;
     }
 
     @Override
-    public double getY() {
+    public float getY() {
         return y;
     }
 

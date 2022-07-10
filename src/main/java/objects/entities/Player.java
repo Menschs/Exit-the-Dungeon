@@ -24,6 +24,7 @@ import util.Vector;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.List;
 
 public class Player implements Entity, Inventoryholder {
 
@@ -36,10 +37,10 @@ public class Player implements Entity, Inventoryholder {
 
     private Color c = Color.LIGHT_GRAY;
 
-    private double x = 0, y = 0;
-    private final double width, height;
-    private double rotation = 0;
-    private double lastRot = -600;
+    private float x = 0, y = 0;
+    private final float width, height;
+    private float rotation = 0;
+    private float lastRot = -600;
 
     private HeldItem item;
 
@@ -58,7 +59,7 @@ public class Player implements Entity, Inventoryholder {
 
     private Vector velocity = new Vector(0, 0);
 
-    public Player(double x, double y, int rotation) {
+    public Player(float x, float y, int rotation) {
         this.x = x;
         this.y = y;
         this.rotation = rotation;
@@ -73,15 +74,14 @@ public class Player implements Entity, Inventoryholder {
             public void hit(Collider c) {
             }
         });
-        skin.move(x, y);
-        ExitTheDungeon.getInstance().setCameraPos((float) (this.x - skin.getScaleX()/2), (float) (this.y - skin.getScaleY()/2));
+        skin.move(this.x, this.y);
+        ExitTheDungeon.getInstance().setCameraPos(this.x, this.y);
     }
 
     boolean moved = false;
 
     @Override
-    public void move(double x, double y) {
-        hitbox.move(this.x,this.y);
+    public void move(float x, float y) {
         if(x == 0.0 && y == 0.0) {
             skin.pauseAnimation("left", "right");
         } else {
@@ -89,23 +89,24 @@ public class Player implements Entity, Inventoryholder {
         }
         if(x == 0 && y == 0) return;
         CollisionResult result = hitbox.wouldCollide(new Point(this.x + x, this.y + y));
-        Collider connect = result.collider();
+        List<Collider> connect = result.collider();
         if(!result.collisionX()) this.x += x;
         if(!result.collisionY()) this.y += y;
         moved = (!result.collisionX() && !result.collisionY());
         skin.move(this.x, this.y);
+        hitbox.move(this.x,this.y);
         if(item != null) item.move(this.x, this.y);
-        ExitTheDungeon.getInstance().setCameraPos((float) (this.x - skin.getScaleX()/2), (float) (this.y - skin.getScaleY()/2));
-        if(connect != null) {
-            hitbox.collide(connect);
+        ExitTheDungeon.getInstance().setCameraPos((float) (this.x), (float) (this.y));
+        if(!connect.isEmpty()) {
+            connect.forEach(hitbox::collide);
         }
     }
 
     @Override
-    public void rotate(double rotation) {
+    public void rotate(float rotation) {
         this.rotation += rotation * Math.PI/180;
         if(item != null) item.rotate(this.rotation);
-        double angle = getDirection().angle(new Vector(0, 1)) / Math.PI * 180;
+        float angle = (float) (getDirection().angle(new Vector(0, 1)) / Math.PI * 180);
         if(!(angle + "").equals("NaN")) {
             if(angle > 0 && angle < 180) {
                 skin.setState("right");
@@ -120,17 +121,17 @@ public class Player implements Entity, Inventoryholder {
         item.move(this.x, this.y);
     }
 
-    public double getRotationDegrees() {
-        return  rotation / Math.PI * 180;
+    public float getRotationDegrees() {
+        return (float) (rotation / Math.PI * 180);
     }
 
-    double rotChange = 0;
+    float rotChange = 0;
 
     @Override
     public void rotate(Vector v) {
         if(v.equals(getDirection())) return;
 
-        double angle = v.angle(new Vector(0, 1));
+        float angle = v.angle(new Vector(0, 1));
 
         //System.out.println(angle);
 
@@ -156,8 +157,8 @@ public class Player implements Entity, Inventoryholder {
 
     @Override
     public Vector getDirection() {
-        double[] rot = rotate(0, -1, rotation);
-        return new Vector(rot[0], rot[1]);
+        float[] rot = rotate(0, -1, rotation);
+        return new Vector(rot[0], rot[1]).normalize();
     }
 
     @Override
@@ -175,7 +176,7 @@ public class Player implements Entity, Inventoryholder {
         int y = ExitTheDungeon.getFrame().getHeight() - 70;
         g.fillRoundRect(x, y, 250, 10, 5, 5);
         g.setColor(Color.red);
-        double percentage = (health+0.0)/(max_health+0.0);
+        float percentage = (float) ((health+0.0)/(max_health+0.0));
         g.fillRoundRect(x, y, (int) (250 * percentage), 10, 5, 5);
         //hitbox.paint(g);
         if(openInv) openedInventory.paint(g);
@@ -213,16 +214,16 @@ public class Player implements Entity, Inventoryholder {
         return openedInventory;
     }
 
-    public static double[] rotate(double x, double y, double theta) {
+    public static float[] rotate(float x, float y, float theta) {
         var sinTheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
-        return rotate(x, y, sinTheta, cosTheta);
+        return rotate(x, y, (float) sinTheta, (float) cosTheta);
     }
 
-    public static double[] rotate(double x, double y, double sinTheta, double cosTheta) {
-        double nx = (x * cosTheta - y * sinTheta);
-        double ny = (y * cosTheta + x * sinTheta);
-        return new double[] {nx, ny};
+    public static float[] rotate(float x, float y, float sinTheta, float cosTheta) {
+        float nx = (x * cosTheta - y * sinTheta);
+        float ny = (y * cosTheta + x * sinTheta);
+        return new float[] {nx, ny};
     }
 
     public int[][] rotate(int[] toRX, int[] toRY) {
@@ -232,21 +233,21 @@ public class Player implements Entity, Inventoryholder {
         for (int j = 0; j < toRX.length; j++) {
             var x = toRX[j] - 30;
             var y = toRY[j] - 30;
-            double[] rot = rotate(x, y, sinTheta, cosTheta);
+            float[] rot = rotate(x, y, (float) sinTheta, (float) cosTheta);
             result[0][j] = (int) (rot[0]);
             result[1][j] = (int) (rot[1]);
         }
         return result;
     }
 
-    public int[][] rotate(int[] toRX, int[] toRY, double theta) {
+    public int[][] rotate(int[] toRX, int[] toRY, float theta) {
         int[][] result = new int[2][toRX.length];
         var sinTheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
         for (int j = 0; j < toRX.length; j++) {
             var x = toRX[j] - 30;
             var y = toRY[j] - 30;
-            double[] rot = rotate(x, y, sinTheta, cosTheta);
+            float[] rot = rotate(x, (float) y, (float) sinTheta, (float) cosTheta);
             result[0][j] = (int) (rot[0]);
             result[1][j] = (int) (rot[1]);
         }
@@ -265,12 +266,12 @@ public class Player implements Entity, Inventoryholder {
     }
 
     @Override
-    public double getX() {
+    public float getX() {
         return x;
     }
 
     @Override
-    public double getY() {
+    public float getY() {
         return y;
     }
 
@@ -279,18 +280,18 @@ public class Player implements Entity, Inventoryholder {
         return hitbox;
     }
 
-    public double getRotation() {
+    public float getRotation() {
         return rotation;
     }
 
     @Override
-    public void damage(double damage) {
+    public void damage(float damage) {
         health -= damage;
         if(health <= 0) kill();
     }
 
     @Override
-    public void heal(double heal) {
+    public void heal(float heal) {
         if(max_health < health + heal) return;
         health += heal;
         if(health > 0) c = Color.black;
@@ -306,6 +307,7 @@ public class Player implements Entity, Inventoryholder {
         return effects;
     }
 
+    @Override
     public Skin getSkin() {
         return skin;
     }

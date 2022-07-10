@@ -9,6 +9,7 @@ import inventory.items.items.LongSword;
 import inventory.items.items.Sword;
 import objects.hitboxes.CollisionResult;
 import org.lwjgl.glfw.GLFW;
+import textures.Skin;
 import util.Point;
 import objects.entities.interfaces.Entity;
 import objects.hitboxes.Collider;
@@ -20,11 +21,11 @@ import java.awt.*;
 
 public class Dummy implements Entity {
 
-    private double x, y;
+    private float x, y;
 
     private static final int SIZE = 30;
 
-    private double health = 20;
+    private float health = 20;
     private Color c = Colors.gold.getColor();
     private final Hitbox hitbox;
 
@@ -33,7 +34,7 @@ public class Dummy implements Entity {
 
     private Vector velocity = new Vector(0, 0);
 
-    public Dummy(double x, double y) {
+    public Dummy(float x, float y) {
         this.x = x;
         this.y = y;
         this.hitbox = new Hitbox((int) x, (int) y, SIZE, SIZE, this, null);
@@ -53,7 +54,7 @@ public class Dummy implements Entity {
     }
 
     @Override
-    public void damage(double damage) {
+    public void damage(float damage) {
         if(health <= 0) return;
         health -= damage;
         //System.out.println(this + "  "  + health);
@@ -62,7 +63,7 @@ public class Dummy implements Entity {
     }
 
     @Override
-    public void heal(double heal) {
+    public void heal(float heal) {
         health += heal;
     }
 
@@ -76,7 +77,7 @@ public class Dummy implements Entity {
     }
 
     @Override
-    public void move(double x, double y) {
+    public void move(float x, float y) {
         CollisionResult connect = hitbox.wouldCollide(new Point(this.x + x - SIZE/2, this.y + y - SIZE/2));
         if(!connect.collisionX()) this.x += x;
         if(!connect.collisionY()) this.y += y;
@@ -84,7 +85,7 @@ public class Dummy implements Entity {
     }
 
     @Override
-    public void rotate(double rotation) {
+    public void rotate(float rotation) {
     }
 
     @Override
@@ -103,12 +104,17 @@ public class Dummy implements Entity {
     }
 
     @Override
-    public double getX() {
+    public Skin getSkin() {
+        return null;
+    }
+
+    @Override
+    public float getX() {
         return x;
     }
 
     @Override
-    public double getY() {
+    public float getY() {
         return y;
     }
 

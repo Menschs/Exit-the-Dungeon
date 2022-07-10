@@ -171,28 +171,37 @@ public class ExitTheDungeon extends Game {
 
     @Override
     public void runGameUpdate() {
-        double multiply = 0;
-        double rotation = 0;
+        float multiply = 0;
+        float rotation = 0;
 
         for (Long key : getPressed()) {
             switch (Math.toIntExact(key)) {
-                case GLFW_KEY_W -> multiply = 0.25;
+                case GLFW_KEY_W -> multiply = 0.25f;
                 case GLFW_KEY_S -> {
                     rotation = 180;
-                    multiply = 0.25;
+                    multiply = 0.25f;
                 }
                 case GLFW_KEY_D -> {
                     p.getSkin().setState("right");
                     rotation = -90;
-                    multiply = 0.25;
+                    multiply = 0.25f;
                 }
                 case GLFW_KEY_A -> {
                     p.getSkin().setState("left");
                     rotation = 90;
-                    multiply = 0.25;
+                    multiply = 0.25f;
                 }
                 case GLFW_KEY_T -> {
-                    if(!isHolding(GLFW_KEY_T)) new Wall(p.getX() + 0.5, p.getY() + 0.5, 3, 5);
+                    if(!isHolding(GLFW_KEY_T)) new Wall(p.getX() + 0.5f, p.getY() + 0.5f, 30, 30);
+                }
+                case GLFW_KEY_LEFT_SHIFT -> {
+                    if(!isHolding(GLFW_KEY_LEFT_SHIFT)) {
+                        if(p.getVelocity().lengthSquared() == 0 || isMousePressed(GLFW_MOUSE_BUTTON_RIGHT)) p.setVelocity(p.getDirection().multiply(1.25f));
+                        else p.setVelocity(p.getVelocity().normalize().multiply(1.25f));
+                    }
+                }
+                case GLFW_KEY_F3 -> {
+                    if(!isHolding(GLFW_KEY_F3)) Texture.reload();
                 }
                 case GLFW_KEY_ESCAPE -> {
                     endGame();
@@ -229,10 +238,10 @@ public class ExitTheDungeon extends Game {
                 p.getOpenedInventory().click((int) getMouseX(), (int) getMouseY());
             } else {
                 if(!isHoldingMouse("left") && p.getItemInHand() != null) {
-                    Vector v = new Vector(p.getX(), p.getY(), getMouseWorldX(), getMouseWorldY());
+                    Vector v = new Vector(p.getX(), p.getY(), (float) getMouseWorldX(), (float) getMouseWorldY());
                     Texture t = p.getItemInHand().getSkin().getTexture();
                     new Ball(p.getX() + t.getOffsetX(), p.getY() + t.getOffsetY(), p, p.getDirection().multiply(3));
-                    p.setVelocity(p.getDirection().multiply(-0.1));
+                    p.setVelocity(p.getDirection().multiply(-0.1f));
                     ExitTheDungeon.update("throwing a Ball..." , "");
                     holdMouse("left");
                 }
@@ -241,15 +250,15 @@ public class ExitTheDungeon extends Game {
             releaseMouse("left");
         }
         if(isMousePressed(GLFW_MOUSE_BUTTON_RIGHT)) {
-            Vector v = new Vector(p.getX(), p.getY(), getMouseWorldX(), getMouseWorldY());
+            Vector v = new Vector(p.getX(), p.getY(), (float) getMouseWorldX(), (float) getMouseWorldY());
             p.rotate(v.normalize());
         }
         Vector v = new Vector(0, 1);
         v.rotateByDegrees(rotation);
         v.normalize().multiply(multiply);
-        if(v.lengthSquared() != 0) p.setVelocity(v);
+        if(v.lengthSquared() != 0) p.setStaticVelocity(v);
 
-            Updating.update(deltaTime);
+            Updating.update((float) deltaTime);
             Updating.clear();
     }
 

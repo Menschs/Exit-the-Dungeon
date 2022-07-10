@@ -6,7 +6,7 @@ public class HeldItem {
 
     private final ItemStack item;
     private final Skin skin;
-    private double rotation;
+    private float rotation;
 
     public HeldItem(ItemStack item) {
         this.item = item;
@@ -14,11 +14,11 @@ public class HeldItem {
         skin.finish();
     }
 
-    public void move(double x, double y) {
+    public void move(float x, float y) {
         skin.move(x, y);
     }
 
-    public void rotate(double theta) {
+    public void rotate(float theta) {
         rotation = theta;
         skin.rotate(theta);
     }

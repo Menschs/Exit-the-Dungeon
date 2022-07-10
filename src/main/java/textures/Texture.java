@@ -20,7 +20,7 @@ public class Texture {
     private static final TreeMap<String, Integer> imgIndexes = new TreeMap<>();
     private static final TreeMap<String, Texture> textures = new TreeMap<>();
     private static final Random random = new Random();
-    private static boolean stopTicks = false;
+    private boolean stopTicks = false;
     private final List<File> images = new ArrayList<>();
     private final List<Subscriber> subscribers = new ArrayList<>();
     private final TreeMap<String, List<Integer>> imgCluster = new TreeMap<>();
@@ -134,7 +134,7 @@ public class Texture {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (!GLFW.glfwWindowShouldClose(Drawer.getWindow())) {
+                while (!GLFW.glfwWindowShouldClose(Drawer.getWindow()) && !stopTicks) {
                     statedAnimations.forEach((s, integer) -> {
                         integer++;
                         List<Integer> cluster = imgCluster.get(s);
@@ -195,7 +195,7 @@ public class Texture {
     }
 
     public static Texture getTextureObject(String name) {
-        return textures.getOrDefault(name, textures.get(name + ".default"));
+        return textures.getOrDefault(name, textures.get(name + ((name.endsWith(".") ? "" : ".")) + "default"));
     }
 
     public static void loadTextures() {
@@ -208,6 +208,15 @@ public class Texture {
         textures.forEach((s, texture) -> {
             Debugger.debug(s, texture.getStates());
         });
+    }
+
+    public static void reload() {
+        textures.forEach((s, texture) -> texture.stopAnim());
+        textures.clear();
+        imgIndexes.clear();
+        //ExitTheDungeon.getInstance().drawer.reload();
+        loadTextures();
+        Skin.reloadAll();
     }
 
     public List<String> getStates() {
@@ -232,5 +241,13 @@ public class Texture {
 
     public float getOffsetY() {
         return offsetY;
+    }
+
+    public TextureType getType() {
+        return type;
+    }
+
+    public void stopAnim() {
+        stopTicks = true;
     }
 }

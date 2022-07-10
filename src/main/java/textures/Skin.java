@@ -2,31 +2,49 @@ package textures;
 
 import Backend.ObjectData;
 import main.ExitTheDungeon;
+import util.Debugger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Skin implements Subscriber {
 
-    protected final Texture t;
+    private static final List<Skin> skins = new ArrayList<>();
+
+    String name;
+    protected Texture t;
     private final ObjectData data = new ObjectData();
     private int OID;
     protected String state;
     private float a;
-    private double theta = 0;
+    private float theta = 0;
 
 
     private final List<String> pausedStates = new ArrayList<>();
 
     public Skin(String texture) {
-        t = Texture.getTextureObject(texture);
+        name = texture;
+        t = Texture.getTextureObject(name);
         state = t.getStates().get(0);
         a = t.getScalingX() / t.getScalingY();
+        data.data[0] = 400;
+        data.data[1] = 400;
+        skins.add(this);
+    }
+
+    public void reload() {
+        t = Texture.getTextureObject(name);
+        state = (t.getStates().contains(state)) ? state : t.getStates().get(0);
+        a = t.getScalingX() / t.getScalingY();
+        ExitTheDungeon.getInstance().setObjectTextureIndex(OID, t.get(state));
+        if(t.isAnimated()) t.subscribe(this);
+    }
+
+    public static void reloadAll() {
+        skins.forEach(Skin::reload);
     }
 
     public void finish() {
-        data.data[0] = 400;
-        data.data[1] = 400;
         if(data.data[2] == 0) data.data[2] = t.getScalingX();
         if(data.data[3] == 0) data.data[3] = t.getScalingY();
         data.data[4] = 1;
@@ -35,7 +53,7 @@ public class Skin implements Subscriber {
         if(t.isAnimated()) t.subscribe(this);
     }
 
-    public void rotate(double theta) {
+    public void rotate(float theta) {
         this.theta = theta;
         ExitTheDungeon.getInstance().setObjectRotation(OID, (float) theta);
     }
@@ -55,11 +73,11 @@ public class Skin implements Subscriber {
         data.data[3] = y;
     }
 
-    public double getScaleX() {
+    public float getScaleX() {
         return data.data[2];
     }
 
-    public double getScaleY() {
+    public float getScaleY() {
         return data.data[3];
     }
 
@@ -78,8 +96,12 @@ public class Skin implements Subscriber {
         return state;
     }
 
-    public void move(double x, double y) {
-        ExitTheDungeon.getInstance().updateObjectPosition(OID, (float) x + t.getOffsetX(), (float) y + t.getOffsetY());
+    public void move(float x, float y) {
+        if(OID != 0) ExitTheDungeon.getInstance().updateObjectPosition(OID, (float) (x + t.getOffsetX() - getScaleX()/2), (float) (y + t.getOffsetY() - getScaleY()/2));
+        else {
+            data.data[0] = (float) (x - ((t.getType() != TextureType.pointer_skin) ? getScaleX()/2 : 0 ));
+            data.data[1] = (float) (y - ((t.getType() != TextureType.pointer_skin) ? getScaleY()/2 : 0 ));
+        }
     }
 
     public void setState(String state) {
@@ -103,6 +125,7 @@ public class Skin implements Subscriber {
 
     public void remove() {
         ExitTheDungeon.getInstance().disableFreeObject(OID);
+        skins.remove(this);
     }
 
     public Texture getTexture() {

@@ -131,16 +131,16 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
     }
 
     @Override
-    public void tick(double deltaTime) {
+    public void tick(float deltaTime) {
         if(!ExitTheDungeon.isGaming()) return;
         Player p = ExitTheDungeon.getPlayer();
-        final double[] multiply = {0};
-        final double[] rotation = {0};
+        final float[] multiply = {0};
+        final float[] rotation = {0};
         if(!p.hasOpenInventory()) {
             pressed.forEach(character -> {
                 switch (character) {
-                    case "d" -> p.rotate(2.5);
-                    case "a" -> p.rotate(-2.5);
+                    case "d" -> p.rotate(2.5f);
+                    case "a" -> p.rotate(-2.5f);
                     case "w" -> multiply[0] = 5;
                     case "s" -> multiply[0] = -5;
                 }

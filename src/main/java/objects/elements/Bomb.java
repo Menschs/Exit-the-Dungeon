@@ -12,10 +12,10 @@ import java.awt.*;
 
 public class Bomb implements Element, Damaging {
 
-    private final double x, y;
+    private final float x, y;
     private static final int SIZE = 16;
 
-    private static final double DAMAGE = 20;
+    private static final float DAMAGE = 20;
 
     private Hitbox hitbox;
 
@@ -23,7 +23,7 @@ public class Bomb implements Element, Damaging {
 
     private boolean damaged = false;
 
-    public Bomb(double x, double y) {
+    public Bomb(float x, float y) {
         this.x = x - SIZE/2;
         this.y = y - SIZE/2;
         //hitbox();
@@ -50,12 +50,12 @@ public class Bomb implements Element, Damaging {
     }
 
     @Override
-    public double getX() {
+    public float getX() {
         return x;
     }
 
     @Override
-    public double getY() {
+    public float getY() {
         return y;
     }
 
@@ -67,12 +67,12 @@ public class Bomb implements Element, Damaging {
     }
 
     @Override
-    public void setDamage(double damage) {
+    public void setDamage(float damage) {
 
     }
 
     @Override
-    public void getDamage(double damage) {
+    public void getDamage(float damage) {
 
     }
 }

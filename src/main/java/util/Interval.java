@@ -2,10 +2,10 @@ package util;
 
 public class Interval {
 
-    private double s;
-    private double e;
+    private float s;
+    private float e;
 
-    public Interval(double s, double e) {
+    public Interval(float s, float e) {
         this.s = s;
         this.e = e;
         sort();
@@ -13,12 +13,12 @@ public class Interval {
 
     public void sort() {
         if(s < e) return;
-        double z = s;
+        float z = s;
         s = e;
         e = z;
     }
 
-    public boolean contains(double i) {
+    public boolean contains(float i) {
         return (s <= i && i <= e);
     }
 
@@ -28,20 +28,20 @@ public class Interval {
         return result;
     }
 
-    public double getS() {
+    public float getS() {
         return s;
     }
 
-    public void setS(double s) {
+    public void setS(float s) {
         this.s = s;
         sort();
     }
 
-    public double getE() {
+    public float getE() {
         return e;
     }
 
-    public void setE(double e) {
+    public void setE(float e) {
         this.e = e;
         sort();
     }

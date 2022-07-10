@@ -3,6 +3,7 @@ package objects.hitboxes;
 import objects.interfaces.Updating;
 import objects.entities.interfaces.Entity;
 import objects.elements.interfaces.Element;
+import util.Debugger;
 import util.Interval;
 import util.Point;
 
@@ -18,35 +19,35 @@ public interface Collider extends Updating {
     void paint(Graphics2D g);
     void paintThis(Rectangle r);
     Interval[] getRect();
-    double getWidth();
-    double getHeight();
+    float getWidth();
+    float getHeight();
 
     default CollisionResult wouldCollide(Point point) {
-
-        Point x1y1 = point;
-        Point x2y1 = new Point(point.getX() + getWidth(), point.getY());
-        Point x1y2 = new Point(point.getX(), point.getY() + getHeight());
-        Point x2y2 = new Point(point.getX() + getWidth(), point.getY() + getHeight());
-
         Point x0y1 = new Point(getX(), point.getY());
-        Point x0y2 = new Point(getX() + getWidth(), point.getY() + getHeight());
+        Point x0y2 = new Point(getX(), point.getY() + getHeight());
         Point x1y0 = new Point(point.getX(), getY());
-        Point x2y0 = new Point(point.getX() + getWidth(), getY() + getHeight());
+        Point x2y0 = new Point(point.getX() + getWidth(), getY());
+        Point x00y1 = new Point(getX() + getWidth(), point.getY());
+        Point x00y2 = new Point(getX() + getWidth(), point.getY() + getHeight());
+        Point x1y00 = new Point(point.getX(), getY() + getHeight());
+        Point x2y00 = new Point(point.getX() + getWidth(), getY() + getHeight());
 
-        CollisionResult result = new CollisionResult(null, false, false);
+        boolean collisionX = false;
+        boolean collisionY = false;
+        List<Collider> coll = new ArrayList<>();
 
         for (Collider c : collider) {
             if (c == this) continue;
-            if(c.intersects(x0y1) || c.intersects(x0y2)) {
-                result = new CollisionResult(c, false, true);
-            } else if(c.intersects(x1y0) || c.intersects(x2y0)) {
-                result = new CollisionResult(c, true, false);
-            } else if(c.intersects(x1y1) || c.intersects(x2y1) || c.intersects(x1y2) ||c.intersects(x2y2)) {
-                //System.out.println("intersecting");
-                result = new CollisionResult(c, true, true);
+            if(c.intersects(x0y1) || c.intersects(x0y2) || c.intersects(x00y1) || c.intersects(x00y2)) {
+                collisionY = true;
+                coll.add(c);
+            }
+            if(c.intersects(x1y0) || c.intersects(x2y0) || c.intersects(x1y00) || c.intersects(x2y00)) {
+                collisionX = true;
+                coll.add(c);
             }
         }
-        return result;
+        return new CollisionResult(coll, collisionX, collisionY);
     }
 
     default void collide() {
@@ -64,7 +65,7 @@ public interface Collider extends Updating {
     }
 
     @Override
-    default void tick(double deltaTime) {
+    default void tick(float deltaTime) {
         //collider.forEach(collider1 -> {
         //    collider.forEach(collider2 -> {
         //        if (collider1 != collider2) {
@@ -97,6 +98,6 @@ public interface Collider extends Updating {
     boolean intersects(Point p);
     boolean intersects(Collider c);
 
-    double getX();
-    double getY();
+    float getX();
+    float getY();
 }

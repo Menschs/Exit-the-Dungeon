@@ -8,6 +8,7 @@ import inventory.items.items.LongSword;
 import inventory.items.items.Sword;
 import objects.entities.interfaces.StaticEntity;
 import objects.hitboxes.Hitbox;
+import textures.Skin;
 import util.Colors;
 
 import java.awt.*;
@@ -31,12 +32,12 @@ public class Crate implements StaticEntity {
     }
 
     @Override
-    public void damage(double damage) {
+    public void damage(float damage) {
         kill();
     }
 
     @Override
-    public void heal(double heal) {
+    public void heal(float heal) {
 
     }
 
@@ -57,12 +58,17 @@ public class Crate implements StaticEntity {
     }
 
     @Override
-    public double getX() {
+    public Skin getSkin() {
+        return null;
+    }
+
+    @Override
+    public float getX() {
         return x;
     }
 
     @Override
-    public double getY() {
+    public float getY() {
         return y;
     }
 

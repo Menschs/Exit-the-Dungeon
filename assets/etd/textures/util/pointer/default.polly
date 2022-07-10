@@ -1,0 +1,7 @@
+#texture
+'type': pointer_skin
+scaling:
+    'x': 0.20
+    'y': 0.20
+texture:
+    '0': default/pointer

@@ -1,4 +1,6 @@
 package objects.hitboxes;
 
-public record CollisionResult(Collider collider, boolean collisionX, boolean collisionY) {
+import java.util.List;
+
+public record CollisionResult(List<Collider> collider, boolean collisionX, boolean collisionY) {
 }

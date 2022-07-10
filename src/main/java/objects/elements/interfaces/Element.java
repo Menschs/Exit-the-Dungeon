@@ -9,8 +9,8 @@ public interface Element {
 
     Skin getSkin();
 
-    double getX();
-    double getY();
+    float getX();
+    float getY();
 
     void paint(Graphics2D g);
 
