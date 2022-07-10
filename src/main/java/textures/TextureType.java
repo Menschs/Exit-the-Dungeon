@@ -7,6 +7,8 @@ public enum TextureType {
     ground_skin("elements.ground"),
     entity_skin("entities"),
     item_skin("items"),
+    hitbox_skin("hitbox"),
+    pointer_skin("util.pointer"),
     unknown("");
 
     private String directory;

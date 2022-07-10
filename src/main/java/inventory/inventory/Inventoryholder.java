@@ -20,8 +20,8 @@ public interface Inventoryholder {
         return false;
     }
 
-    double getX();
-    double getY();
+    float getX();
+    float getY();
 
     default void dropItem(ItemStack i) {
         i.drop((int) getX(), (int) getY());

@@ -1,6 +1,8 @@
 package objects.hitboxes;
 
 import objects.elements.Wall;
+import textures.Skin;
+import textures.TextureType;
 import util.Debugger;
 import util.Interval;
 import util.Point;
@@ -14,8 +16,8 @@ import java.util.Objects;
 
 public class Hitbox implements Collider {
 
-    private final double width;
-    private final double height;
+    private final float width;
+    private final float height;
     private Entity parentEntity;
     private Element parentObject;
 
@@ -23,14 +25,13 @@ public class Hitbox implements Collider {
 
     private HitboxAction onHit;
 
-    public Hitbox(double x, double y, double width, double height, Entity parent, HitboxAction onHit) {
+    public Hitbox(float x, float y, float width, float height, Entity parent, HitboxAction onHit) {
         this.width = width;
         this.height = height;
         this.onHit = onHit;
         this.parentEntity = parent;
         this.xCorners = new Interval(x, x + width);
         this.yCorners = new Interval(y, y + height);
-
         //for (int i = 0; i < width; i++) {
         //    for (int j = 0; j < height; j++) {
         //        points.add(new Point(x + i, y + j));
@@ -42,13 +43,13 @@ public class Hitbox implements Collider {
         createCollider();
     }
 
-    public Hitbox(double x, double y, double width, double height, Element parent, HitboxAction onHit) {
-        if(parent instanceof Wall w) {
-            x -= w.getSkin().getScaleX();
-            y -= w.getSkin().getScaleY();
-            width += 2 * w.getSkin().getScaleX();
-            height += 2 * w.getSkin().getScaleY();
-        }
+    public Hitbox(float x, float y, float width, float height, Element parent, HitboxAction onHit) {
+        //if(parent instanceof Wall w) {
+        //    x -= w.getSkin().getTexture().getScalingX();
+        //    y -= w.getSkin().getTexture().getScalingY();
+        //    width += 2 * w.getSkin().getTexture().getScalingX();
+        //    height += 2 * w.getSkin().getTexture().getScalingY();
+        //}
         this.width = width;
         this.height = height;
         this.onHit = onHit;
@@ -66,7 +67,7 @@ public class Hitbox implements Collider {
         createCollider();
     }
 
-    public void move(double x, double y) {
+    public void move(float x, float y) {
         //int index = 0;
         //for (int i = 0; i < width; i++) {
         //    for (int j = 0; j < height; j++) {
@@ -97,12 +98,12 @@ public class Hitbox implements Collider {
     }
 
     @Override
-    public double getWidth() {
+    public float getWidth() {
         return width;
     }
 
     @Override
-    public double getHeight() {
+    public float getHeight() {
         return height;
     }
 
@@ -149,7 +150,7 @@ public class Hitbox implements Collider {
     }
 
     public boolean intersects(Point p) {
-        Debugger.debug(xCorners, yCorners, p, (xCorners.contains(p.getX()) && yCorners.contains(p.getY())));
+        //Debugger.debug(xCorners, yCorners, p, (xCorners.contains(p.getX()) && yCorners.contains(p.getY())));
         return (xCorners.contains(p.getX()) && yCorners.contains(p.getY()));
     }
 
@@ -161,5 +162,20 @@ public class Hitbox implements Collider {
         //Debugger.debug(xCorners, oXCorners, (xCorners.contains(oXCorners) || oXCorners.contains(xCorners)), yCorners, oYCorners, (yCorners.contains(oYCorners) || oYCorners.contains(yCorners)), ((xCorners.contains(oXCorners) || oXCorners.contains(xCorners)) && (yCorners.contains(oYCorners) || oYCorners.contains(yCorners))));
 
         return ((xCorners.contains(oXCorners) || oXCorners.contains(xCorners)) && (yCorners.contains(oYCorners) || oYCorners.contains(yCorners)));
+    }
+
+    @Override
+    public float getX() {
+        return xCorners.getS();
+    }
+
+    @Override
+    public float getY() {
+        return yCorners.getS();
+    }
+
+    @Override
+    public void remove() {
+        Collider.super.remove();
     }
 }

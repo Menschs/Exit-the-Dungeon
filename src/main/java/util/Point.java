@@ -4,10 +4,10 @@ import java.awt.*;
 
 public class Point {
 
-    private double x;
-    private double y;
+    private float x;
+    private float y;
 
-    public Point(double x, double y) {
+    public Point(float x, float y) {
         this.x = x;
         this.y = y;
     }
@@ -17,46 +17,46 @@ public class Point {
         g.drawRect((int) x, (int) y, 1, 1);
     }
 
-    public boolean is(double x, double y) {
+    public boolean is(float x, float y) {
         return (this.x >= x - 1  && this.x  <= x + 1  && this.y <= y + 1 && this.y >= y - 1);
     }
 
-    public void move(double x, double y) {
+    public void move(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    public void rotate(double pivotX, double pivotY, double theta) {
-        var sdoubleheta = Math.sin(theta);
+    public void rotate(float pivotX, float pivotY, float theta) {
+        var sfloatheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
 
-        double x = this.x - pivotX;
-        double y = this.y - pivotY;
+        float x = this.x - pivotX;
+        float y = this.y - pivotY;
 
-        this.x = (x * cosTheta - y * sdoubleheta + pivotX);
-        this.y = (y * cosTheta + x * sdoubleheta + pivotY);
+        this.x = (float) (x * cosTheta - y * sfloatheta + pivotX);
+        this.y = (float) (y * cosTheta + x * sfloatheta + pivotY);
     }
 
-    public double getX() {
+    public float getX() {
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public double getY() {
+    public float getY() {
         return y;
     }
 
-    public Point changeY(double y) {
+    public Point changeY(float y) {
         return new Point(x, y);
     }
-    public Point changeX(double x) {
+    public Point changeX(float x) {
         return new Point(x, y);
     }
 
-    public void setY(double y) {
+    public void setY(float y) {
         this.y = y;
     }
 

@@ -540,8 +540,8 @@ Event: 0.507 loading class java/nio/DirectCharBufferU
 Event: 0.508 loading class java/nio/DirectCharBufferU done
 Event: 0.508 loading class java/nio/DirectFloatBufferU
 Event: 0.508 loading class java/nio/DirectFloatBufferU done
-Event: 0.508 loading class java/nio/DirectDoubleBufferU
-Event: 0.508 loading class java/nio/DirectDoubleBufferU done
+Event: 0.508 loading class java/nio/DirectfloatBufferU
+Event: 0.508 loading class java/nio/DirectfloatBufferU done
 Event: 0.508 loading class sun/misc/Unsafe
 Event: 0.508 loading class sun/misc/Unsafe done
 Event: 0.509 loading class jdk/internal/reflect/UnsafeQualifiedStaticObjectFieldAccessorImpl

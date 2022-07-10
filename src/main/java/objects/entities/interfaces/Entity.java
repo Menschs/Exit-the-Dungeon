@@ -7,6 +7,7 @@ import objects.entities.interfaces.effects.StatusEffects;
 import objects.interfaces.Damageable;
 import objects.hitboxes.Hitbox;
 import objects.interfaces.Updating;
+import textures.Skin;
 import util.Vector;
 
 import java.awt.*;
@@ -31,29 +32,33 @@ public interface Entity extends Updating, Damageable {
     default void removeEffect(StatusEffects id) {
         getEffects().remove(id);
     }
-    void move(double x, double y);
-    void rotate(double rotation);
+    void move(float x, float y);
+    void rotate(float rotation);
     void rotate(Vector v);
     void addVelocity(Vector v);
     void setVelocity(Vector v);
-    double getX();
-    double getY();
+    Skin getSkin();
+    float getX();
+    float getY();
     Hitbox getHitbox();
 
     @Override
-    default void tick(double deltaTime) {
+    default void tick(float deltaTime) {
         Vector v = getVelocity();
-        double YperI = v.getY() * 15 * deltaTime;
-        double XperI = v.getX() * 15 * deltaTime;
+        float YperI = v.getY() * 15 * deltaTime;
+        float XperI = v.getX() * 15 * deltaTime;
         move(XperI, YperI);
-        setVelocity(getVelocity().multiply(0.9));
+        setVelocity(getVelocity().multiply(0.9f));
         //if(!getVelocity().equals(Vector.getNullVector()))
         if(getVelocity().lengthSquared() < 0.0005) setVelocity(Vector.getNullVector());
         getEffects().values().forEach(statusEffects -> statusEffects.effect(this, 2));
     }
 
     default void removeEntity() {
-        if(getHitbox() != null) getHitbox().remove();
+        if(getHitbox() != null) {
+            getHitbox().remove();
+        }
+        if(getSkin() != null) getSkin().remove();
         ExitTheDungeon.getBoard().removeEntity(this);
         remove();
     }
@@ -64,7 +69,11 @@ public interface Entity extends Updating, Damageable {
     }
 
     default void dropLoot(ItemStack item) {
-        item.drop((int) (getX() + r.nextDouble(getHitbox().getWidth())), (int) (getY() + r.nextDouble(getHitbox().getHeight())));
+        item.drop((int) (getX() + r.nextFloat(getHitbox().getWidth())), (int) (getY() + r.nextFloat(getHitbox().getHeight())));
+    }
+
+    default void setStaticVelocity(Vector v) {
+        if(getVelocity().lengthSquared() < v.lengthSquared()) setVelocity(v);
     }
 
     Vector getVelocity();

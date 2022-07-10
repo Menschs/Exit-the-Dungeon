@@ -5,3 +5,5 @@ scaling:
     'y': 0.25
 texture:
     '0': default/tree
+offset:
+    'y': -0.18

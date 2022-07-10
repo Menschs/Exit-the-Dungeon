@@ -10,14 +10,14 @@ import java.awt.*;
 
 public class Wall implements Element {
 
-    private final double x, y;
-    private final double width, height;
+    private final float x, y;
+    private final float width, height;
 
     private final WallSkin skin;
 
     private final Hitbox hitbox;
 
-    public Wall(double x, double y, double width, double height) {
+    public Wall(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -32,12 +32,12 @@ public class Wall implements Element {
     }
 
     @Override
-    public double getX() {
+    public float getX() {
         return x;
     }
 
     @Override
-    public double getY() {
+    public float getY() {
         return y;
     }
 
@@ -45,6 +45,6 @@ public class Wall implements Element {
     public void paint(Graphics2D g) {
         g.setColor(Color.LIGHT_GRAY);
         //g.fillRect(x, y, width, height);
-        //hitbox.padouble(g);
+        //hitbox.pafloat(g);
     }
 }

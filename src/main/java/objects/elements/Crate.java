@@ -40,11 +40,11 @@ public class Crate {
 
     }
 
-    public void damage(double damage) {
+    public void damage(float damage) {
         kill();
     }
 
-    public void heal(double heal) {
+    public void heal(float heal) {
 
     }
 

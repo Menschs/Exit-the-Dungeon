@@ -15,12 +15,12 @@ import java.awt.*;
 public class Ball implements Entity {
 
     public static final int SIZE = 15;
-    private static final double DAMAGE = 5;
+    private static final float DAMAGE = 5;
 
     private final Skin skin = new Skin(TextureType.entity_skin.tex("ball"));
 
-    private double x = 0;
-    private double y = 0;
+    private float x = 0;
+    private float y = 0;
 
     private Vector velocity;
 
@@ -29,7 +29,7 @@ public class Ball implements Entity {
     private final Hitbox hitbox;
     private final Entity shooter;
 
-    public Ball(double x, double y, Entity shooter, Vector velocity) {
+    public Ball(float x, float y, Entity shooter, Vector velocity) {
         this.x = x;
         this.y = y;
         this.velocity = velocity;
@@ -52,7 +52,7 @@ public class Ball implements Entity {
     }
 
     @Override
-    public void move(double x, double y) {
+    public void move(float x, float y) {
         if(x == 0 && y == 0) kill();
         this.x += x;
         this.y += y;
@@ -61,7 +61,7 @@ public class Ball implements Entity {
     }
 
     @Override
-    public void rotate(double rotation) {
+    public void rotate(float rotation) {
 
     }
 
@@ -81,18 +81,23 @@ public class Ball implements Entity {
     }
 
     @Override
-    public double getX() {
+    public Skin getSkin() {
+        return skin;
+    }
+
+    @Override
+    public float getX() {
         return x;
     }
 
     @Override
-    public double getY() {
+    public float getY() {
         return y;
     }
 
     @Override
     public Hitbox getHitbox() {
-        return null;
+        return hitbox;
     }
 
     @Override
@@ -113,18 +118,17 @@ public class Ball implements Entity {
     }
 
     @Override
-    public void damage(double damage) {
+    public void damage(float damage) {
 
     }
 
     @Override
-    public void heal(double heal) {
+    public void heal(float heal) {
 
     }
 
     @Override
     public void kill() {
         removeEntity();
-        skin.remove();
     }
 }

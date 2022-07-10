@@ -7,19 +7,19 @@ import java.util.Objects;
 public class Vector {
 
     private static final Vector nullVector = new Vector(0, 0);
-    private double x, y;
+    private float x, y;
 
-    public Vector(double x, double y) {
+    public Vector(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    public Vector(double x, double y, double x2, double y2) {
+    public Vector(float x, float y, float x2, float y2) {
         this.x = x2 - x;
         this.y = y2 - y;
     }
 
-    public Vector add(double x, double y) {
+    public Vector add(float x, float y) {
         this.x += x;
         this.y += y;
         return this;
@@ -30,7 +30,7 @@ public class Vector {
         y += v.getY();
     }
 
-    public void subtract(double x, double y) {
+    public void subtract(float x, float y) {
         this.x -= x;
         this.y -= y;
     }
@@ -40,34 +40,34 @@ public class Vector {
         y -= v.getY();
     }
 
-    public Vector multiply(double multi) {
+    public Vector multiply(float multi) {
         x *= multi;
         y *= multi;
         return this;
     }
 
-    public double crossProduct(Vector v) {
+    public float crossProduct(Vector v) {
         return x * v.getY() - y * v.getX();
     }
 
-    public void setX(double x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public void setY(double y) {
+    public void setY(float y) {
         this.y = y;
     }
 
-    public double getX() {
+    public float getX() {
         return x;
     }
 
-    public double dotProduct(Vector v) {
+    public float dotProduct(Vector v) {
         return v.getX() * x + v.getY() * y;
     }
 
-    public double angle(Vector v) {
-        double sin = Math.asin(crossProduct(v)/(length() * v.length()));
+    public float angle(Vector v) {
+        float sin = (float) Math.asin(crossProduct(v)/(length() * v.length()));
         if(dotProduct(v) < 0) {
             sin *= -1;
             sin += Math.PI;
@@ -75,34 +75,34 @@ public class Vector {
         return sin;
     }
 
-    public Vector rotate(double theta) {
+    public Vector rotate(float theta) {
         var sinTheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
-        double[] rot = Player.rotate(x, y, theta);
+        float[] rot = Player.rotate(x, y, theta);
         x = rot[0];
         y = rot[1];
         return this;
     }
 
-    public void rotateByDegrees(double theta) {
+    public void rotateByDegrees(float theta) {
         var rotation = theta *  Math.PI / 180;
-        rotate(rotation);
+        rotate((float) rotation);
     }
 
-    public double getY() {
+    public float getY() {
         return y;
     }
 
-    public double length() {
-        return Math.sqrt(lengthSquared());
+    public float length() {
+        return (float) Math.sqrt(lengthSquared());
     }
 
-    public double lengthSquared() {
-        return Math.pow(x, 2) + Math.pow(y, 2);
+    public float lengthSquared() {
+        return (float) (Math.pow(x, 2) + Math.pow(y, 2));
     }
 
     public Vector normalize() {
-        double length = length();
+        float length = length();
         if(length == 0) return this;
         multiply(1/length);
         return this;
@@ -125,7 +125,7 @@ public class Vector {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Vector vector = (Vector) o;
-        return Double.compare(vector.x, x) == 0 && Double.compare(vector.y, y) == 0;
+        return Float.compare(vector.x, x) == 0 && Float.compare(vector.y, y) == 0;
     }
 
     @Override

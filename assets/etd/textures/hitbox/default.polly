@@ -1,0 +1,7 @@
+#texture
+'type': hitbox_skin
+scaling:
+    'x': 0.25
+    'y': 0.25
+texture:
+    '0': default/hitbox

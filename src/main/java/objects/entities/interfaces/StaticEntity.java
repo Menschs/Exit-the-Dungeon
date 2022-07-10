@@ -8,10 +8,10 @@ public interface StaticEntity extends Entity {
     default void move(Vector v) {}
 
     @Override
-    default void move(double x, double y) {}
+    default void move(float x, float y) {}
 
     @Override
-    default void rotate(double rotation) {}
+    default void rotate(float rotation) {}
 
     @Override
     default void rotate(Vector v) {}
@@ -31,4 +31,7 @@ public interface StaticEntity extends Entity {
     default Vector getDirection() {
         return Vector.getNullVector();
     }
+
+    @Override
+    default void setStaticVelocity(Vector v) {}
 }
