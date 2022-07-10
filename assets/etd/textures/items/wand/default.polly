@@ -5,3 +5,5 @@ texture:
 scaling:
     'x': 0.15
     'y': 0.15
+offset:
+    'x': 0.22

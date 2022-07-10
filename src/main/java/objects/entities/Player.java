@@ -3,6 +3,7 @@ package objects.entities;
 import inventory.inventory.Inventory;
 import inventory.inventory.InventoryView;
 import inventory.inventory.Inventoryholder;
+import inventory.items.HeldItem;
 import inventory.items.ItemStack;
 import inventory.items.Rarity;
 import inventory.items.items.Sword;
@@ -11,6 +12,7 @@ import objects.entities.interfaces.Entity;
 import objects.entities.interfaces.effects.StatusEffect;
 import objects.entities.interfaces.effects.StatusEffects;
 import objects.hitboxes.Collider;
+import objects.hitboxes.CollisionResult;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
 import textures.Skin;
@@ -38,6 +40,8 @@ public class Player implements Entity, Inventoryholder {
     private final double width, height;
     private double rotation = 0;
     private double lastRot = -600;
+
+    private HeldItem item;
 
     private int[][] model;
 
@@ -70,6 +74,7 @@ public class Player implements Entity, Inventoryholder {
             }
         });
         skin.move(x, y);
+        ExitTheDungeon.getInstance().setCameraPos((float) (this.x - skin.getScaleX()/2), (float) (this.y - skin.getScaleY()/2));
     }
 
     boolean moved = false;
@@ -83,24 +88,23 @@ public class Player implements Entity, Inventoryholder {
             skin.unpauseAnimation("left", "right");
         }
         if(x == 0 && y == 0) return;
-        Collider connect = hitbox.wouldCollide(new Point(this.x + x, this.y + y));
-        if(connect == null || connect.getObject() == null || !connect.getObject().isBarrier()) {
-            this.x += x;
-            this.y += y;
-            moved = true;
-            skin.move(this.x, this.y);
-            ExitTheDungeon.getInstance().setCameraPos((float) (this.x - skin.getScaleX()/2), (float) (this.y - skin.getScaleY()/2));
-        } else {
-            if(moved) {
-                hitbox.collide(connect);
-                moved = false;
-            }
+        CollisionResult result = hitbox.wouldCollide(new Point(this.x + x, this.y + y));
+        Collider connect = result.collider();
+        if(!result.collisionX()) this.x += x;
+        if(!result.collisionY()) this.y += y;
+        moved = (!result.collisionX() && !result.collisionY());
+        skin.move(this.x, this.y);
+        if(item != null) item.move(this.x, this.y);
+        ExitTheDungeon.getInstance().setCameraPos((float) (this.x - skin.getScaleX()/2), (float) (this.y - skin.getScaleY()/2));
+        if(connect != null) {
+            hitbox.collide(connect);
         }
     }
 
     @Override
     public void rotate(double rotation) {
         this.rotation += rotation * Math.PI/180;
+        if(item != null) item.rotate(this.rotation);
         double angle = getDirection().angle(new Vector(0, 1)) / Math.PI * 180;
         if(!(angle + "").equals("NaN")) {
             if(angle > 0 && angle < 180) {
@@ -109,6 +113,11 @@ public class Player implements Entity, Inventoryholder {
                 skin.setState("left");
             }
         }
+    }
+
+    public void setItemInHand(HeldItem item) {
+        this.item = item;
+        item.move(this.x, this.y);
     }
 
     public double getRotationDegrees() {
@@ -299,5 +308,9 @@ public class Player implements Entity, Inventoryholder {
 
     public Skin getSkin() {
         return skin;
+    }
+
+    public HeldItem getItemInHand() {
+        return item;
     }
 }

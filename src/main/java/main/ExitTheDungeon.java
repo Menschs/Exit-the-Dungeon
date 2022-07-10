@@ -3,6 +3,9 @@ package main;
 import Backend.Drawer;
 import Backend.Game;
 import Backend.ObjectData;
+import inventory.items.HeldItem;
+import inventory.items.Rarity;
+import inventory.items.items.Sword;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
@@ -225,9 +228,10 @@ public class ExitTheDungeon extends Game {
             if(p.hasOpenInventory())  {
                 p.getOpenedInventory().click((int) getMouseX(), (int) getMouseY());
             } else {
-                if(!isHoldingMouse("left")) {
+                if(!isHoldingMouse("left") && p.getItemInHand() != null) {
                     Vector v = new Vector(p.getX(), p.getY(), getMouseWorldX(), getMouseWorldY());
-                    new Ball(p.getX(), p.getY(), p, p.getDirection().multiply(3));
+                    Texture t = p.getItemInHand().getSkin().getTexture();
+                    new Ball(p.getX() + t.getOffsetX(), p.getY() + t.getOffsetY(), p, p.getDirection().multiply(3));
                     p.setVelocity(p.getDirection().multiply(-0.1));
                     ExitTheDungeon.update("throwing a Ball..." , "");
                     holdMouse("left");
@@ -254,6 +258,7 @@ public class ExitTheDungeon extends Game {
         Texture.loadTextures();
         Ground.paintGround();
         p  = new Player(0, 0, 0);
+        p.setItemInHand(new HeldItem(new Sword(Rarity.legendary)));
         discord();
     }
 

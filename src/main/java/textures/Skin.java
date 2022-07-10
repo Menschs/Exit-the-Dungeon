@@ -30,12 +30,14 @@ public class Skin implements Subscriber {
         if(data.data[2] == 0) data.data[2] = t.getScalingX();
         if(data.data[3] == 0) data.data[3] = t.getScalingY();
         data.data[4] = 1;
+        //data.data[5] = (float) (60 * Math.PI/180);
         OID = ExitTheDungeon.getInstance().addObject(data, t.get(state));
         if(t.isAnimated()) t.subscribe(this);
     }
 
     public void rotate(double theta) {
         this.theta = theta;
+        ExitTheDungeon.getInstance().setObjectRotation(OID, (float) theta);
     }
 
     public void scaleX(float x) {
@@ -77,7 +79,7 @@ public class Skin implements Subscriber {
     }
 
     public void move(double x, double y) {
-        ExitTheDungeon.getInstance().updateObjectPosition(OID, (float) x, (float) y);
+        ExitTheDungeon.getInstance().updateObjectPosition(OID, (float) x + t.getOffsetX(), (float) y + t.getOffsetY());
     }
 
     public void setState(String state) {

@@ -27,8 +27,8 @@ public class Texture {
     private final TreeMap<String, Integer> statedAnimations = new TreeMap<>();
     private final File configFile;
     private final FileConfiguration config;
-    private float scalingX = 1;
-    private float scalingY = 1;
+    private float scalingX = 1, scalingY =1;
+    private float offsetX = 0, offsetY = 0;
     private boolean animated = false;
     private boolean randomized = false;
     private int delay = 500;
@@ -107,6 +107,8 @@ public class Texture {
             }
             if(s.equals("scaling.x")) scalingX = Float.parseFloat(s2);
             if(s.equals("scaling.y")) scalingY = Float.parseFloat(s2);
+            if(s.equals("offset.x")) offsetX = Float.parseFloat(s2);
+            if(s.equals("offset.y")) offsetY = Float.parseFloat(s2);
         });
         if(imgCluster.isEmpty()) {
             List<Integer> defaultCluster = new ArrayList<>();
@@ -203,7 +205,9 @@ public class Texture {
         for (File file : f.listFiles()) {
             load(file);
         }
-        textures.forEach((s, texture) -> Debugger.debug(s, texture.getStates()));
+        textures.forEach((s, texture) -> {
+            Debugger.debug(s, texture.getStates());
+        });
     }
 
     public List<String> getStates() {
@@ -220,5 +224,13 @@ public class Texture {
 
     public float getScalingY() {
         return scalingY;
+    }
+
+    public float getOffsetX() {
+        return offsetX;
+    }
+
+    public float getOffsetY() {
+        return offsetY;
     }
 }

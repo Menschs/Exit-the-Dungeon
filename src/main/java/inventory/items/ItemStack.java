@@ -1,6 +1,7 @@
 package inventory.items;
 
 import objects.entities.DroppedItem;
+import textures.Skin;
 import util.frame.gui.Text;
 
 import java.awt.*;

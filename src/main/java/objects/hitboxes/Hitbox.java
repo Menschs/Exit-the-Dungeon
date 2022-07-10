@@ -149,7 +149,7 @@ public class Hitbox implements Collider {
     }
 
     public boolean intersects(Point p) {
-        Debugger.debug(xCorners, yCorners, p, (xCorners.contains(p.getX()) && yCorners.contains(p.getY())));
+        //Debugger.debug(xCorners, yCorners, p, (xCorners.contains(p.getX()) && yCorners.contains(p.getY())));
         return (xCorners.contains(p.getX()) && yCorners.contains(p.getY()));
     }
 
@@ -161,5 +161,15 @@ public class Hitbox implements Collider {
         //Debugger.debug(xCorners, oXCorners, (xCorners.contains(oXCorners) || oXCorners.contains(xCorners)), yCorners, oYCorners, (yCorners.contains(oYCorners) || oYCorners.contains(yCorners)), ((xCorners.contains(oXCorners) || oXCorners.contains(xCorners)) && (yCorners.contains(oYCorners) || oYCorners.contains(yCorners))));
 
         return ((xCorners.contains(oXCorners) || oXCorners.contains(xCorners)) && (yCorners.contains(oYCorners) || oYCorners.contains(yCorners)));
+    }
+
+    @Override
+    public double getX() {
+        return xCorners.getS();
+    }
+
+    @Override
+    public double getY() {
+        return yCorners.getS();
     }
 }

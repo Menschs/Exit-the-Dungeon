@@ -7,6 +7,7 @@ import inventory.items.Material;
 import inventory.items.Rarity;
 import inventory.items.items.LongSword;
 import inventory.items.items.Sword;
+import objects.hitboxes.CollisionResult;
 import org.lwjgl.glfw.GLFW;
 import util.Point;
 import objects.entities.interfaces.Entity;
@@ -76,11 +77,9 @@ public class Dummy implements Entity {
 
     @Override
     public void move(double x, double y) {
-        Collider connect = hitbox.wouldCollide(new Point(this.x + x - SIZE/2, this.y + y - SIZE/2));
-        if(connect == null || connect.getObject() == null) {
-            this.x += x;
-            this.y += y;
-        }
+        CollisionResult connect = hitbox.wouldCollide(new Point(this.x + x - SIZE/2, this.y + y - SIZE/2));
+        if(!connect.collisionX()) this.x += x;
+        if(!connect.collisionY()) this.y += y;
         hitbox.move((int) this.x,(int) this.y);
     }
 

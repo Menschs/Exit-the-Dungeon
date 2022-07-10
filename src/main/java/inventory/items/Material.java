@@ -1,19 +1,29 @@
 package inventory.items;
 
+import textures.Texture;
+import textures.TextureType;
+
 public enum Material {
 
-    sword("Schwert", 1), longsword("Langschwert", 10);
+    sword("Schwert", 1, TextureType.item_skin.tex("wand")), longsword("Langschwert", 10, TextureType.item_skin.tex("wand"));
 
     private final String name;
+    private final String texture;
     private int maxStack = 20;
 
-    Material(String name, int maxStack) {
+    Material(String name, int maxStack, String texture) {
         this.name = name;
         this.maxStack = maxStack;
+        this.texture = texture;
     }
 
-    Material(String name) {
+    Material(String name, String texture) {
         this.name = name;
+        this.texture = texture;
+    }
+
+    public String getTexture() {
+        return texture;
     }
 
     public int getMaxStack() {
