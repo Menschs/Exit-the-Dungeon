@@ -90,6 +90,8 @@ public class Player implements Entity, Inventoryholder {
             skin.setWalking(true);
         }
         if(x == 0 && y == 0) return;
+        if(x < 0) skin.setDirection(EntityDirection.left);
+        if(x > 0) skin.setDirection(EntityDirection.right);
         CollisionResult result = hitbox.wouldCollide(new Point(this.x + x, this.y + y));
         List<Collider> connect = result.collider();
         if(!result.collisionX()) this.x += x;

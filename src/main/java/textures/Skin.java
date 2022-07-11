@@ -20,6 +20,8 @@ public abstract class Skin implements Subscriber {
     private float theta = 0;
     private boolean playingAnimation = false;
 
+    private Thread animation;
+
     private final List<String> pausedStates = new ArrayList<>();
 
     public Skin(String texture) {
@@ -131,8 +133,9 @@ public abstract class Skin implements Subscriber {
     public void playOnce(String state) {
         if(!t.getStates().contains(state)) return;
         playingAnimation = true;
+        if(animation != null) animation.stop();
         final List<Integer> anim = t.getAnimation(state);
-        Thread animation = new Thread(new Runnable() {
+        animation = new Thread(new Runnable() {
             @Override
             public void run() {
                 for (Integer integer : anim) {

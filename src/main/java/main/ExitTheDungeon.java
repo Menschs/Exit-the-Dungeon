@@ -183,12 +183,10 @@ public class ExitTheDungeon extends Game {
                     multiply = 0.25f;
                 }
                 case GLFW_KEY_D -> {
-                    p.getSkin().setDirection(EntityDirection.right);
                     rotation = -90;
                     multiply = 0.25f;
                 }
                 case GLFW_KEY_A -> {
-                    p.getSkin().setDirection(EntityDirection.left);
                     rotation = 90;
                     multiply = 0.25f;
                 }
