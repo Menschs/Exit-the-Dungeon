@@ -19,8 +19,6 @@ public class Bomb implements Element, Damaging {
 
     private Hitbox hitbox;
 
-    private Skin skin = new Skin("");
-
     private boolean damaged = false;
 
     public Bomb(float x, float y) {
@@ -46,7 +44,7 @@ public class Bomb implements Element, Damaging {
 
     @Override
     public Skin getSkin() {
-        return skin;
+        return null;
     }
 
     @Override

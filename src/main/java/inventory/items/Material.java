@@ -5,7 +5,7 @@ import textures.TextureType;
 
 public enum Material {
 
-    sword("Schwert", 1, TextureType.item_skin.tex("wand")), longsword("Langschwert", 10, TextureType.item_skin.tex("wand"));
+    sword("Schwert", 1, TextureType.item_skin.tex("sword")), longsword("Langschwert", 10, TextureType.item_skin.tex("sword"));
 
     private final String name;
     private final String texture;

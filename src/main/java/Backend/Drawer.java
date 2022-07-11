@@ -202,10 +202,8 @@ public class Drawer {
                 "    vec2 mpos = pos;\n" +
                 "\n" +
                 "    //Rotate\n" +
-                "    \n" +
-                "    \n"+
-                "    \n" +
-                "    \n" +
+                "    mpos.x = ((mpos.x) * cos(ObjectBuffer.objects[objectId].rotation) - (mpos.y) * sin(ObjectBuffer.objects[objectId].rotation));\n" +
+                "    mpos.y = ((mpos.y) * cos(ObjectBuffer.objects[objectId].rotation) + (mpos.x) * sin(ObjectBuffer.objects[objectId].rotation));\n" +
                 "\n" +
                 "    //Scale\n" +
                 "    mpos = mpos * ObjectBuffer.objects[objectId].scaling;\n" +

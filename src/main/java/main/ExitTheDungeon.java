@@ -14,6 +14,7 @@ import objects.elements.Wall;
 import objects.entities.Ball;
 import objects.entities.Player;
 import objects.interfaces.Updating;
+import textures.EntityDirection;
 import textures.Texture;
 import util.Debugger;
 import util.Vector;
@@ -182,12 +183,12 @@ public class ExitTheDungeon extends Game {
                     multiply = 0.25f;
                 }
                 case GLFW_KEY_D -> {
-                    p.getSkin().setState("right");
+                    p.getSkin().setDirection(EntityDirection.right);
                     rotation = -90;
                     multiply = 0.25f;
                 }
                 case GLFW_KEY_A -> {
-                    p.getSkin().setState("left");
+                    p.getSkin().setDirection(EntityDirection.left);
                     rotation = 90;
                     multiply = 0.25f;
                 }
@@ -241,6 +242,7 @@ public class ExitTheDungeon extends Game {
                     Vector v = new Vector(p.getX(), p.getY(), (float) getMouseWorldX(), (float) getMouseWorldY());
                     Texture t = p.getItemInHand().getSkin().getTexture();
                     new Ball(p.getX() + t.getOffsetX(), p.getY() + t.getOffsetY(), p, p.getDirection().multiply(3));
+                    p.attack();
                     p.setVelocity(p.getDirection().multiply(-0.1f));
                     ExitTheDungeon.update("throwing a Ball..." , "");
                     holdMouse("left");

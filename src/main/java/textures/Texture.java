@@ -98,7 +98,7 @@ public class Texture {
                 s = s.replace(attributeKey, "");
                 String key = s.substring(0, s.indexOf("."));
                 List<Integer> cluster = imgCluster.getOrDefault(key, new ArrayList<>());
-                cluster.add(Integer.valueOf(s2));
+                cluster.add(Integer.valueOf(s2.replace(" ", "")));
                 if(imgCluster.containsKey(key)) imgCluster.replace(key, cluster);
                 else {
                     imgCluster.put(key, cluster);
@@ -138,7 +138,7 @@ public class Texture {
                     statedAnimations.forEach((s, integer) -> {
                         integer++;
                         List<Integer> cluster = imgCluster.get(s);
-                        if(integer > cluster.get(cluster.size() - 1)) integer = cluster.get(0);
+                        if(integer >= cluster.size()) integer = 0;
                         statedAnimations.replace(s, integer);
                     });
                     subscribers.forEach(subscriber -> {
@@ -183,7 +183,7 @@ public class Texture {
             int index = random.nextInt(imgCluster.get(state).size());
             return getTexture(index);
         }
-        return getTexture(statedAnimations.get(state));
+        return getTexture(imgCluster.get(state).get(statedAnimations.get(state)));
     }
 
     public int get() {
@@ -249,5 +249,13 @@ public class Texture {
 
     public void stopAnim() {
         stopTicks = true;
+    }
+
+    public List<Integer> getAnimation(String state) {
+        return imgCluster.get(state);
+    }
+
+    public int getDelay() {
+        return delay;
     }
 }

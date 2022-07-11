@@ -1,0 +1,49 @@
+#texture
+'type': player_skin
+texture:
+    '0': default/idle_left
+    '1': default/idle_right
+    '2': default/walk_left1
+    '3': default/walk_left2
+    '4': default/walk_right1
+    '5': default/walk_right2
+    '6': default/attack_left1
+    '7': default/attack_left2
+    '8': default/attack_right1
+    '9': default/attack_right2
+scaling:
+    'x': 0.2
+    'y': 0.2
+animation:
+    'delay': 100
+states:
+    idle_left:
+        '0': 0
+    idle_right:
+        '0': 1
+    walk_left:
+        '0': 0
+        '1': 2
+        '2': 3
+        '3': 2
+        '4': 0
+    walk_right:
+        '0': 1
+        '1': 4
+        '2': 5
+        '3': 4
+        '4': 1
+    attack_left:
+        '0': 0
+        '1': 6
+        '2': 7
+        '3': 7
+        '4': 6
+        '5': 0
+    attack_right:
+        '0': 0
+        '1': 8
+        '2': 9
+        '3': 9
+        '4': 8
+        '5': 1
