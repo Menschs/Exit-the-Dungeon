@@ -1,16 +1,17 @@
 package inventory.items;
 
+import textures.ItemSkin;
 import textures.Skin;
 
 public class HeldItem {
 
     private final ItemStack item;
-    private final Skin skin;
+    private final ItemSkin skin;
     private float rotation;
 
     public HeldItem(ItemStack item) {
         this.item = item;
-        this.skin = new Skin(item.getMaterial().getTexture());
+        this.skin = new ItemSkin(item.getMaterial().getTexture());
         skin.finish();
     }
 
@@ -23,7 +24,11 @@ public class HeldItem {
         skin.rotate(theta);
     }
 
-    public Skin getSkin() {
+    public void attack() {
+        skin.attack();
+    }
+
+    public ItemSkin getSkin() {
         return skin;
     }
 }

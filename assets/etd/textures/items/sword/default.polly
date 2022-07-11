@@ -1,0 +1,21 @@
+#texture
+'type': item_skin
+texture:
+    '0': default/idle
+    '1': default/attack1
+    '2': default/attack2
+scaling:
+    'x': 0.2
+    'y': 0.2
+offset:
+    'x': -0.3
+    'y': -0.2
+animation:
+    'delay': 100
+states:
+    idle:
+        '0': 0
+    attack:
+        '0': 0
+        '1': 1
+        '2': 2

@@ -15,6 +15,8 @@ import objects.hitboxes.Collider;
 import objects.hitboxes.CollisionResult;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
+import textures.EntityDirection;
+import textures.EntitySkin;
 import textures.Skin;
 import textures.TextureType;
 import util.Point;
@@ -31,7 +33,7 @@ public class Player implements Entity, Inventoryholder {
     private final static int[] modelX = new int[] {30, 0, 60};
     private final static int[] modelY = new int[] {0, 60, 60};
 
-    private final Skin skin = new Skin(TextureType.player_skin.tex("hat"));
+    private final EntitySkin skin = new EntitySkin(TextureType.player_skin.tex("slime"));
 
     private final HashMap<StatusEffects, StatusEffect> effects = new HashMap<>();
 
@@ -83,9 +85,9 @@ public class Player implements Entity, Inventoryholder {
     @Override
     public void move(float x, float y) {
         if(x == 0.0 && y == 0.0) {
-            skin.pauseAnimation("left", "right");
+            skin.setIdle(true);
         } else {
-            skin.unpauseAnimation("left", "right");
+            skin.setWalking(true);
         }
         if(x == 0 && y == 0) return;
         CollisionResult result = hitbox.wouldCollide(new Point(this.x + x, this.y + y));
@@ -109,9 +111,9 @@ public class Player implements Entity, Inventoryholder {
         float angle = (float) (getDirection().angle(new Vector(0, 1)) / Math.PI * 180);
         if(!(angle + "").equals("NaN")) {
             if(angle > 0 && angle < 180) {
-                skin.setState("right");
+                skin.setDirection(EntityDirection.right);
             } else if(angle != 0 && angle != 180){
-                skin.setState("left");
+                skin.setDirection(EntityDirection.left);
             }
         }
     }
@@ -290,6 +292,11 @@ public class Player implements Entity, Inventoryholder {
         if(health <= 0) kill();
     }
 
+    public void attack() {
+        skin.attack();
+        if(item != null) item.attack();
+    }
+
     @Override
     public void heal(float heal) {
         if(max_health < health + heal) return;
@@ -308,7 +315,7 @@ public class Player implements Entity, Inventoryholder {
     }
 
     @Override
-    public Skin getSkin() {
+    public EntitySkin getSkin() {
         return skin;
     }
 

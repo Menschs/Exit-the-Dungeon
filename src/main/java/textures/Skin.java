@@ -7,7 +7,7 @@ import util.Debugger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Skin implements Subscriber {
+public abstract class Skin implements Subscriber {
 
     private static final List<Skin> skins = new ArrayList<>();
 
@@ -18,7 +18,7 @@ public class Skin implements Subscriber {
     protected String state;
     private float a;
     private float theta = 0;
-
+    private boolean playingAnimation = false;
 
     private final List<String> pausedStates = new ArrayList<>();
 
@@ -83,7 +83,7 @@ public class Skin implements Subscriber {
 
     @Override
     public void updateSubscriber(int newIndex) {
-        if(pausedStates.contains(getState())) return;
+        if(pausedStates.contains(getState()) || playingAnimation) return;
         update(newIndex);
     }
 
@@ -126,6 +126,25 @@ public class Skin implements Subscriber {
     public void remove() {
         ExitTheDungeon.getInstance().disableFreeObject(OID);
         skins.remove(this);
+    }
+
+    public void playOnce(String state) {
+        if(!t.getStates().contains(state)) return;
+        playingAnimation = true;
+        final List<Integer> anim = t.getAnimation(state);
+        Thread animation = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (Integer integer : anim) {
+                    update(t.getTexture(integer));
+                    try {
+                        Thread.sleep(t.getDelay());
+                    } catch (InterruptedException ignored) {}
+                }
+                playingAnimation = false;
+            }
+        });
+        animation.start();
     }
 
     public Texture getTexture() {

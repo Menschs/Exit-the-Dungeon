@@ -5,6 +5,7 @@ import objects.entities.interfaces.Permeable;
 import objects.hitboxes.Collider;
 import objects.hitboxes.Hitbox;
 import objects.hitboxes.HitboxAction;
+import textures.EntitySkin;
 import textures.Skin;
 import textures.Texture;
 import textures.TextureType;
@@ -17,7 +18,7 @@ public class Ball implements Entity {
     public static final int SIZE = 15;
     private static final float DAMAGE = 5;
 
-    private final Skin skin = new Skin(TextureType.entity_skin.tex("ball"));
+    private final EntitySkin skin = new EntitySkin(TextureType.entity_skin.tex("ball"));
 
     private float x = 0;
     private float y = 0;
