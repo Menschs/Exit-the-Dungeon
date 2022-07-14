@@ -314,6 +314,7 @@ public class Drawer {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         //glEnable(GL_DEPTH_TEST);
+        //glDepthFunc(GL_LESS);
     }
 
     public int addObject(ObjectData o, int textureIndex){
