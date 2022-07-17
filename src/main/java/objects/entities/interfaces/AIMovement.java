@@ -39,6 +39,7 @@ public interface AIMovement {
 
     static void generatePath() {
         Tile t = getTile(ExitTheDungeon.getPlayer().getX(), ExitTheDungeon.getPlayer().getY());
+        Debugger.debug(t);
         if(t == prevTile[0]) return;
         HashMap<String, HeatedTile> heatMap = generateHeatMap(t.getX(), t.getY());
         if(heatMap.isEmpty()) return;

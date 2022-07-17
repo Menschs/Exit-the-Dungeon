@@ -1,16 +1,38 @@
 package map;
 
+import textures.ItemSkin;
+import textures.Skin;
+import textures.TextureType;
 import util.Vector;
+
+import java.util.HashMap;
 
 public class HeatedTile {
 
     private final Tile parent;
-    private float heat;
+    private float heat = Float.MAX_VALUE;
     private Vector v;
 
-    public HeatedTile(Tile parent, float heat) {
+    private static final HashMap<Tile, HeatedTile> heats = new HashMap<>();
+
+    private ItemSkin s = new ItemSkin(TextureType.item_skin.tex("sword"));
+
+    private HeatedTile(Tile parent) {
         this.parent = parent;
-        this.heat = heat;
+        s.move(parent.getX(), parent.getY());
+        s.finish();
+        heats.put(parent, this);
+    }
+
+    public static HeatedTile get(Tile parent) {
+        HeatedTile heat = heats.getOrDefault(parent, new HeatedTile(parent));
+        heat.reset();
+        return heat;
+    }
+
+    public void reset() {
+        heat = Float.MAX_VALUE;
+        v = Vector.getNullVector();
     }
 
     public Tile getParent() {
@@ -31,6 +53,7 @@ public class HeatedTile {
 
     public void setV(Vector v) {
         this.v = v;
+        s.rotate(new Vector(1, 0).angle(v));
     }
 
     @Override

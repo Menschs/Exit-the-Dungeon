@@ -53,4 +53,13 @@ public class Tile {
     public float getY() {
         return y;
     }
+
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "x=" + x +
+                ", y=" + y +
+                ", blocking=" + blocking +
+                '}';
+    }
 }

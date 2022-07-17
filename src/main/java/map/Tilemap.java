@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Tilemap {
 
-    protected static final float HEATMAP_SIZE_X = 5, HEATMAP_SIZE_Y = 5;
+    protected static final float HEATMAP_SIZE_X = 1, HEATMAP_SIZE_Y = 1;
     public static final float TILE_SIZE = 0.5f, DIAGONALLY = (float) Math.sqrt(2 * Math.pow(TILE_SIZE, 2));
 
     protected static final HashMap<String, Tile> tiles = new HashMap<>();
@@ -57,7 +57,8 @@ public class Tilemap {
     public static HashMap<String, HeatedTile> generateHeatMap(Tile start) {
         final HashMap<String, HeatedTile> result = new HashMap<>();
         if(start.isBlocked()) return result;
-        HeatedTile heatedStart = new HeatedTile(start, 0);
+        HeatedTile heatedStart = HeatedTile.get(start);
+        heatedStart.setHeat(0);
         result.put(start.getIdentifier(), heatedStart);
         for (Tile neighbour : start.getNeighbourTiles()) {
             generateHeat(heatedStart, neighbour, result, new float[] {start.getX(), start.getY()});
@@ -71,7 +72,7 @@ public class Tilemap {
         float distance = (parent.getX() - t.getX() != 0 && parent.getY() - t.getY() != 0) ? DIAGONALLY : TILE_SIZE;
         float heat = previous.getHeat() + distance;
         heat = Math.abs(heat);
-        HeatedTile current = heatMap.getOrDefault(t.getIdentifier(), new HeatedTile(t, heat));
+        HeatedTile current = heatMap.getOrDefault(t.getIdentifier(), HeatedTile.get(t));
 
         if(heat < current.getHeat()) current.setHeat(heat);
 
