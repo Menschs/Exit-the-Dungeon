@@ -1,11 +1,12 @@
 package objects.elements.interfaces;
 
 import main.ExitTheDungeon;
+import objects.hitboxes.HitboxHolder;
 import textures.Skin;
 
 import java.awt.*;
 
-public interface Element {
+public interface Element extends HitboxHolder {
 
     Skin getSkin();
 

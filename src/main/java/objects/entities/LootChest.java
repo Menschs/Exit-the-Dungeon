@@ -36,7 +36,7 @@ public class LootChest implements StaticEntity, Inventoryholder, Permeable {
         hitbox = new Hitbox(x, y, SIZE, SIZE, this, new HitboxAction() {
             @Override
             public void hit(Collider c) {
-                if(c.getEntity() instanceof Player p) {
+                if(c.getHolder() instanceof Player p) {
                     p.setOpenedInventory(view);
                 }
             }

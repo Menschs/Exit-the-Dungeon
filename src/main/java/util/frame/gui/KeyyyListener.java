@@ -169,7 +169,7 @@ public class KeyyyListener implements KeyListener, MouseListener, MouseMotionLis
                 if(p.hasOpenInventory())  {
                     p.getOpenedInventory().click(e.getX(), e.getY());
                 } else {
-                    new Ball(p.getX() - Ball.SIZE/2, p.getY() - Ball.SIZE/2, p, p.getDirection().multiply(3));
+                    new Ball(p.getX() - Ball.SIZE/2, p.getY() - Ball.SIZE/2, p, p.getDirection().multiply(3), 2);
                     ExitTheDungeon.update("throwing a Ball..." , "");
                 }
             }

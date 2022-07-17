@@ -73,4 +73,9 @@ public class Bomb implements Element, Damaging {
     public void getDamage(float damage) {
 
     }
+
+    @Override
+    public Hitbox getHitbox() {
+        return hitbox;
+    }
 }

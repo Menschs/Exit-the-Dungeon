@@ -47,4 +47,9 @@ public class Wall implements Element {
         //g.fillRect(x, y, width, height);
         //hitbox.pafloat(g);
     }
+
+    @Override
+    public Hitbox getHitbox() {
+        return hitbox;
+    }
 }

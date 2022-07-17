@@ -34,4 +34,15 @@ public interface StaticEntity extends Entity {
 
     @Override
     default void setStaticVelocity(Vector v) {}
+
+    @Override
+    default void setRangedVelocity(Vector v, float range) {}
+
+    @Override
+    default void removeRange(float distanceTraveled_squared) {}
+
+    @Override
+    default float getRange() {
+        return 0f;
+    }
 }

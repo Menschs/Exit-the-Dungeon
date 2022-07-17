@@ -12,7 +12,9 @@ import net.arikia.dev.drpc.DiscordRichPresence;
 import objects.Ground;
 import objects.elements.Wall;
 import objects.entities.Ball;
+import objects.entities.Dummy;
 import objects.entities.Player;
+import objects.entities.interfaces.AIMovement;
 import objects.interfaces.Updating;
 import textures.EntityDirection;
 import textures.Texture;
@@ -191,13 +193,17 @@ public class ExitTheDungeon extends Game {
                     multiply = 0.25f;
                 }
                 case GLFW_KEY_T -> {
-                    if(!isHolding(GLFW_KEY_T)) new Wall(p.getX() + 0.5f, p.getY() + 0.5f, 30, 30);
+                    if(!isHolding(GLFW_KEY_T)) new Wall(p.getX() + 0.5f, p.getY() + 0.5f, 0.5f, 0.5f);
                 }
                 case GLFW_KEY_LEFT_SHIFT -> {
                     if(!isHolding(GLFW_KEY_LEFT_SHIFT)) {
                         if(p.getVelocity().lengthSquared() == 0 || isMousePressed(GLFW_MOUSE_BUTTON_RIGHT)) p.setVelocity(p.getDirection().multiply(1.25f));
                         else p.setVelocity(p.getVelocity().normalize().multiply(1.25f));
                     }
+                }
+                case GLFW_KEY_G -> {
+                    if(!isHolding(GLFW_KEY_G))
+                        new Dummy(p.getX() + 2, p.getY() + 2);
                 }
                 case GLFW_KEY_F3 -> {
                     if(!isHolding(GLFW_KEY_F3)) Texture.reload();
@@ -239,7 +245,7 @@ public class ExitTheDungeon extends Game {
                 if(!isHoldingMouse("left") && p.getItemInHand() != null) {
                     Vector v = new Vector(p.getX(), p.getY(), (float) getMouseWorldX(), (float) getMouseWorldY());
                     Texture t = p.getItemInHand().getSkin().getTexture();
-                    new Ball(p.getX() + t.getOffsetX(), p.getY() + t.getOffsetY(), p, p.getDirection().multiply(3));
+                    new Ball(p.getX() + t.getOffsetX(), p.getY() + t.getOffsetY(), p, p.getDirection().multiply(0.2f), 3);
                     p.attack();
                     p.setVelocity(p.getDirection().multiply(-0.1f));
                     ExitTheDungeon.update("throwing a Ball..." , "");
@@ -258,8 +264,9 @@ public class ExitTheDungeon extends Game {
         v.normalize().multiply(multiply);
         if(v.lengthSquared() != 0) p.setStaticVelocity(v);
 
-            Updating.update((float) deltaTime);
-            Updating.clear();
+        AIMovement.generatePath();
+        Updating.update((float) deltaTime);
+        Updating.clear();
     }
 
     @Override

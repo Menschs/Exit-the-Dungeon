@@ -109,7 +109,7 @@ public class Vector {
     }
 
     public static Vector getNullVector() {
-        return nullVector;
+        return nullVector.clone();
     }
 
     @Override
@@ -131,5 +131,14 @@ public class Vector {
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
+    }
+
+    public Vector clone() {
+        return new Vector(x, y);
+    }
+
+    public void copyTo(Vector v) {
+        x = v.getX();
+        y = v.getY();
     }
 }

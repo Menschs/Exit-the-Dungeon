@@ -7,9 +7,15 @@ import inventory.items.Material;
 import inventory.items.Rarity;
 import inventory.items.items.LongSword;
 import inventory.items.items.Sword;
+import main.ExitTheDungeon;
+import objects.entities.interfaces.AIMovement;
 import objects.hitboxes.CollisionResult;
 import org.lwjgl.glfw.GLFW;
+import textures.EntityDirection;
+import textures.EntitySkin;
 import textures.Skin;
+import textures.TextureType;
+import util.Debugger;
 import util.Point;
 import objects.entities.interfaces.Entity;
 import objects.hitboxes.Collider;
@@ -18,8 +24,9 @@ import util.Colors;
 import util.Vector;
 
 import java.awt.*;
+import java.util.List;
 
-public class Dummy implements Entity {
+public class Dummy implements Entity, AIMovement {
 
     private float x, y;
 
@@ -28,29 +35,34 @@ public class Dummy implements Entity {
     private float health = 20;
     private Color c = Colors.gold.getColor();
     private final Hitbox hitbox;
+    private float range;
+
+    private final EntitySkin skin = new EntitySkin(TextureType.player_skin.tex("slime"));
 
     private int damagedSeconds = 0;
     private final ItemStack[] loot = {new Sword(Rarity.uncommon), new LongSword(Rarity.legendary)};
 
-    private Vector velocity = new Vector(0, 0);
+    private Vector velocity = Vector.getNullVector();
 
     public Dummy(float x, float y) {
         this.x = x;
         this.y = y;
-        this.hitbox = new Hitbox((int) x, (int) y, SIZE, SIZE, this, null);
+        this.hitbox = new Hitbox((int) x, (int) y, skin.getScaleX(), skin.getScaleY(), this, null);
+        skin.move(x, y);
+        skin.finish();
         createEntity();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(health > 0 && !GLFW.glfwWindowShouldClose(Drawer.getWindow())) {
-                    damagedSeconds--;
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ignored) {
-                    }
-                }
-            }
-        }).start();
+        //new Thread(new Runnable() {
+        //    @Override
+        //    public void run() {
+        //        while(health > 0 && !GLFW.glfwWindowShouldClose(Drawer.getWindow())) {
+        //            damagedSeconds--;
+        //            try {
+        //                Thread.sleep(1000);
+        //            } catch (InterruptedException ignored) {
+        //            }
+        //        }
+        //    }
+        //}).start();
     }
 
     @Override
@@ -76,12 +88,28 @@ public class Dummy implements Entity {
         removeEntity();
     }
 
+    boolean moved = false;
+
     @Override
     public void move(float x, float y) {
-        CollisionResult connect = hitbox.wouldCollide(new Point(this.x + x - SIZE/2, this.y + y - SIZE/2));
-        if(!connect.collisionX()) this.x += x;
-        if(!connect.collisionY()) this.y += y;
-        hitbox.move((int) this.x,(int) this.y);
+        if(x == 0.0 && y == 0.0) {
+            skin.setIdle(true);
+        } else {
+            skin.setWalking(true);
+        }
+        if(x == 0 && y == 0) return;
+        if(x < 0) skin.setDirection(EntityDirection.left);
+        if(x > 0) skin.setDirection(EntityDirection.right);
+        CollisionResult result = hitbox.wouldCollide(new Point(this.x + x, this.y + y));
+        List<Collider> connect = result.collider();
+        if(!result.collisionX()) this.x += x;
+        if(!result.collisionY()) this.y += y;
+        moved = (!result.collisionX() && !result.collisionY());
+        skin.move(this.x, this.y);
+        hitbox.move(this.x,this.y);
+        if(!connect.isEmpty()) {
+            connect.forEach(hitbox::collide);
+        }
     }
 
     @Override
@@ -91,6 +119,22 @@ public class Dummy implements Entity {
     @Override
     public void rotate(Vector v) {
 
+    }
+
+    @Override
+    public void setRangedVelocity(Vector v, float range) {
+        this.range = range;
+        setVelocity(v);
+    }
+
+    @Override
+    public void removeRange(float distanceTraveled) {
+        range -= distanceTraveled;
+    }
+
+    @Override
+    public float getRange() {
+        return range;
     }
 
     @Override
@@ -105,7 +149,7 @@ public class Dummy implements Entity {
 
     @Override
     public Skin getSkin() {
-        return null;
+        return skin;
     }
 
     @Override
@@ -138,5 +182,10 @@ public class Dummy implements Entity {
         g.setColor((damagedSeconds > 0) ? new Color(255, c.getGreen()/2, c.getBlue()/2) : c);
         g.fillOval((int) x, (int) y, SIZE, SIZE);
         //hitbox.paint(g);
+    }
+
+    @Override
+    public void move() {
+        setVelocity(find(x, y));
     }
 }

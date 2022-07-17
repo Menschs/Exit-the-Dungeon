@@ -9,6 +9,7 @@ import textures.EntitySkin;
 import textures.Skin;
 import textures.Texture;
 import textures.TextureType;
+import util.Debugger;
 import util.Vector;
 
 import java.awt.*;
@@ -20,8 +21,9 @@ public class Ball implements Entity {
 
     private final EntitySkin skin = new EntitySkin(TextureType.entity_skin.tex("ball"));
 
-    private float x = 0;
-    private float y = 0;
+    private float x;
+    private float y;
+    private float range;
 
     private Vector velocity;
 
@@ -30,20 +32,23 @@ public class Ball implements Entity {
     private final Hitbox hitbox;
     private final Entity shooter;
 
-    public Ball(float x, float y, Entity shooter, Vector velocity) {
+    public Ball(float x, float y, Entity shooter, Vector velocity, float range) {
         this.x = x;
         this.y = y;
-        this.velocity = velocity;
+        setRangedVelocity(velocity, range);
         this.shooter = shooter;
         hitbox = new Hitbox(x, y, skin.getScaleX(), skin.getScaleY(), this, new HitboxAction() {
             @Override
             public void hit(Collider c) {
                 if(damaged[0]) return;
-                if(c.getObject() != null) kill();
-                if(c.getEntity() != null && !(c.getEntity() instanceof Ball) && shooter != c.getEntity()) {
-                    if(c.getEntity() instanceof Permeable) return;
-                    c.getEntity().damage(DAMAGE);
-                    damaged[0] = true;
+                if(c.getHolder() instanceof Entity e) {
+                    if(!(e instanceof Ball && shooter != e)) {
+                        if(e instanceof Permeable) return;
+                        e.damage(DAMAGE);
+                        damaged[0] = true;
+                        kill();
+                    }
+                } else {
                     kill();
                 }
             }
@@ -64,6 +69,22 @@ public class Ball implements Entity {
     @Override
     public void rotate(float rotation) {
 
+    }
+
+    @Override
+    public void setRangedVelocity(Vector v, float range) {
+        this.range = range;
+        setVelocity(v);
+    }
+
+    @Override
+    public void removeRange(float distanceTraveled) {
+        range -= distanceTraveled;
+    }
+
+    @Override
+    public float getRange() {
+        return range;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package objects.hitboxes;
 
+import map.Tilemap;
 import objects.interfaces.Updating;
 import objects.entities.interfaces.Entity;
 import objects.elements.interfaces.Element;
@@ -83,15 +84,16 @@ public interface Collider extends Updating {
 
     default void createCollider() {
         collider.add(this);
+        if(getHolder() instanceof Element) Tilemap.blockSquare(getRect()[0], getRect()[1], getWidth(), getHeight(), this);
         create();
     }
 
     default void remove() {
         remove.add(this);
+        if(getHolder() instanceof Element) Tilemap.unBlockSquare(getRect()[0], getRect()[1], getWidth(), getHeight(), this);
     }
 
-    Entity getEntity();
-    Element getObject();
+    HitboxHolder getHolder();
 
     HitboxAction getHitboxAction();
 

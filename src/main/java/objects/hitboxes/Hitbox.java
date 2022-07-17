@@ -18,52 +18,19 @@ public class Hitbox implements Collider {
 
     private final float width;
     private final float height;
-    private Entity parentEntity;
-    private Element parentObject;
+    private HitboxHolder parent;
 
     private final Interval xCorners, yCorners;
 
     private HitboxAction onHit;
 
-    public Hitbox(float x, float y, float width, float height, Entity parent, HitboxAction onHit) {
+    public Hitbox(float x, float y, float width, float height, HitboxHolder parent, HitboxAction onHit) {
         this.width = width;
         this.height = height;
         this.onHit = onHit;
-        this.parentEntity = parent;
+        this.parent = parent;
         this.xCorners = new Interval(x, x + width);
         this.yCorners = new Interval(y, y + height);
-        //for (int i = 0; i < width; i++) {
-        //    for (int j = 0; j < height; j++) {
-        //        points.add(new Point(x + i, y + j));
-        //        if(i != 0 && i != (int) width -1) {
-        //            j += height -2;
-        //        }
-        //    }
-        //}
-        createCollider();
-    }
-
-    public Hitbox(float x, float y, float width, float height, Element parent, HitboxAction onHit) {
-        //if(parent instanceof Wall w) {
-        //    x -= w.getSkin().getTexture().getScalingX();
-        //    y -= w.getSkin().getTexture().getScalingY();
-        //    width += 2 * w.getSkin().getTexture().getScalingX();
-        //    height += 2 * w.getSkin().getTexture().getScalingY();
-        //}
-        this.width = width;
-        this.height = height;
-        this.onHit = onHit;
-        this.parentObject = parent;
-        this.xCorners = new Interval(x, x + width);
-        this.yCorners = new Interval(y, y + height);
-        //for (int i = 0; i < width; i++) {
-        //    for (int j = 0; j < height; j++) {
-        //        points.add(new Point(x + i, y + j));
-        //        if(i != 0 && i != (int) width -1) {
-        //            j += height -2;
-        //        }
-        //    }
-        //}
         createCollider();
     }
 
@@ -118,16 +85,6 @@ public class Hitbox implements Collider {
     }
 
     @Override
-    public Entity getEntity() {
-        return parentEntity;
-    }
-
-    @Override
-    public Element getObject() {
-        return parentObject;
-    }
-
-    @Override
     public HitboxAction getHitboxAction() {
         return onHit;
     }
@@ -141,12 +98,12 @@ public class Hitbox implements Collider {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Hitbox hitbox = (Hitbox) o;
-        return Objects.equals(parentEntity, hitbox.parentEntity) && Objects.equals(parentObject, hitbox.parentObject);
+        return Objects.equals(parent, hitbox.parent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(parentEntity, parentObject);
+        return Objects.hash(parent);
     }
 
     public boolean intersects(Point p) {
@@ -177,5 +134,10 @@ public class Hitbox implements Collider {
     @Override
     public void remove() {
         Collider.super.remove();
+    }
+
+    @Override
+    public HitboxHolder getHolder() {
+        return parent;
     }
 }

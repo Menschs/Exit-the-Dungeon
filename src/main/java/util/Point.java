@@ -1,6 +1,10 @@
 package util;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.HashMap;
 
 public class Point {
 
@@ -21,20 +25,19 @@ public class Point {
         return (this.x >= x - 1  && this.x  <= x + 1  && this.y <= y + 1 && this.y >= y - 1);
     }
 
-    public void move(float x, float y) {
-        this.x = x;
-        this.y = y;
+    public Point move(float x, float y) {
+        return new Point(this.x + x, this.y + y);
     }
 
     public void rotate(float pivotX, float pivotY, float theta) {
-        var sfloatheta = Math.sin(theta);
+        var sinTheta = Math.sin(theta);
         var cosTheta = Math.cos(theta);
 
         float x = this.x - pivotX;
         float y = this.y - pivotY;
 
-        this.x = (float) (x * cosTheta - y * sfloatheta + pivotX);
-        this.y = (float) (y * cosTheta + x * sfloatheta + pivotY);
+        this.x = (float) (x * cosTheta - y * sinTheta + pivotX);
+        this.y = (float) (y * cosTheta + x * sinTheta + pivotY);
     }
 
     public float getX() {

@@ -8,6 +8,7 @@ import inventory.items.ItemStack;
 import inventory.items.Rarity;
 import inventory.items.items.Sword;
 import main.ExitTheDungeon;
+import objects.entities.interfaces.AIMovement;
 import objects.entities.interfaces.Entity;
 import objects.entities.interfaces.effects.StatusEffect;
 import objects.entities.interfaces.effects.StatusEffects;
@@ -19,6 +20,7 @@ import textures.EntityDirection;
 import textures.EntitySkin;
 import textures.Skin;
 import textures.TextureType;
+import util.Debugger;
 import util.Point;
 import org.jetbrains.annotations.NotNull;
 import util.Colors;
@@ -33,7 +35,7 @@ public class Player implements Entity, Inventoryholder {
     private final static int[] modelX = new int[] {30, 0, 60};
     private final static int[] modelY = new int[] {0, 60, 60};
 
-    private final EntitySkin skin = new EntitySkin(TextureType.player_skin.tex("slime"));
+    private final EntitySkin skin = new EntitySkin(TextureType.player_skin.tex("hat"));
 
     private final HashMap<StatusEffects, StatusEffect> effects = new HashMap<>();
 
@@ -43,6 +45,7 @@ public class Player implements Entity, Inventoryholder {
     private final float width, height;
     private float rotation = 0;
     private float lastRot = -600;
+    private float range;
 
     private HeldItem item;
 
@@ -100,7 +103,7 @@ public class Player implements Entity, Inventoryholder {
         skin.move(this.x, this.y);
         hitbox.move(this.x,this.y);
         if(item != null) item.move(this.x, this.y);
-        ExitTheDungeon.getInstance().setCameraPos((float) (this.x), (float) (this.y));
+        ExitTheDungeon.getInstance().setCameraPos(this.x, this.y);
         if(!connect.isEmpty()) {
             connect.forEach(hitbox::collide);
         }
@@ -152,6 +155,22 @@ public class Player implements Entity, Inventoryholder {
     @Override
     public void setVelocity(Vector v) {
         velocity = v;
+    }
+
+    @Override
+    public void setRangedVelocity(Vector v, float range) {
+        this.range = range;
+        setVelocity(v);
+    }
+
+    @Override
+    public void removeRange(float distanceTraveled) {
+        range -= distanceTraveled;
+    }
+
+    @Override
+    public float getRange() {
+        return range;
     }
 
     @Override
@@ -295,8 +314,8 @@ public class Player implements Entity, Inventoryholder {
     }
 
     public void attack() {
-        skin.attack();
-        if(item != null) item.attack();
+        //skin.attack();
+        //if(item != null) item.attack();
     }
 
     @Override

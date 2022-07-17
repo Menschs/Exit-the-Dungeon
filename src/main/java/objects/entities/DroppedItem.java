@@ -30,7 +30,7 @@ public class DroppedItem implements StaticEntity, Permeable {
             @Override
             public void hit(Collider c) {
                 if(pickedUp) return;
-                if(c.getEntity() instanceof Player p) {
+                if(c.getHolder() instanceof Player p) {
                     pickedUp = p.addDroppedItem(tis);
                     if(pickedUp) kill();
                 }

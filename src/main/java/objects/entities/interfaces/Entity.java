@@ -4,17 +4,19 @@ import inventory.items.ItemStack;
 import main.ExitTheDungeon;
 import objects.entities.interfaces.effects.StatusEffect;
 import objects.entities.interfaces.effects.StatusEffects;
+import objects.hitboxes.HitboxHolder;
 import objects.interfaces.Damageable;
 import objects.hitboxes.Hitbox;
 import objects.interfaces.Updating;
 import textures.Skin;
+import util.Debugger;
 import util.Vector;
 
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Random;
 
-public interface Entity extends Updating, Damageable {
+public interface Entity extends Updating, Damageable, HitboxHolder {
 
     Random r = new Random();
 
@@ -37,20 +39,25 @@ public interface Entity extends Updating, Damageable {
     void rotate(Vector v);
     void addVelocity(Vector v);
     void setVelocity(Vector v);
+    void setRangedVelocity(Vector v, float range);
+    float getRange();
+    void removeRange(float distanceTraveled);
     Skin getSkin();
     float getX();
     float getY();
-    Hitbox getHitbox();
 
     @Override
     default void tick(float deltaTime) {
+        if(this instanceof AIMovement ai) {
+            ai.move();
+        }
         Vector v = getVelocity();
-        float YperI = v.getY() * 15 * deltaTime;
-        float XperI = v.getX() * 15 * deltaTime;
-        move(XperI, YperI);
-        setVelocity(getVelocity().multiply(0.9f));
+        Vector distance = v.clone().multiply(15 * deltaTime);
+        move(distance.getX(), distance.getY());
+        if(getRange() <= 0) getVelocity().multiply(0.7f);
+        else removeRange(distance.length());
         //if(!getVelocity().equals(Vector.getNullVector()))
-        if(getVelocity().lengthSquared() < 0.0005) setVelocity(Vector.getNullVector());
+        if(getVelocity().lengthSquared() < 0.00005) setVelocity(Vector.getNullVector());
         getEffects().values().forEach(statusEffects -> statusEffects.effect(this, 2));
     }
 
